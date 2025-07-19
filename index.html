@@ -1,156 +1,292 @@
 <!-- index.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Student Group Lookup</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Internship Posting Dashboard</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       margin: 0;
       background-color: #f0f2f5;
+      padding: 20px;
+      box-sizing: border-box;
     }
-    #search-container {
-      text-align: center;
-      padding: 40px;
-      border-radius: 8px;
+    #app-container {
+      width: 100%;
+      max-width: 500px;
+    }
+    .card {
       background-color: white;
+      border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      width: 320px;
+      padding: 25px 30px;
+      margin-bottom: 20px;
+    }
+    #search-card {
+      text-align: center;
     }
     #current-date {
-      margin-bottom: 25px;
+      margin-top: 0;
+      margin-bottom: 20px;
       color: #555;
       font-size: 16px;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 15px;
+    }
+    #input-wrapper {
+      display: flex;
+      gap: 10px;
     }
     #rollInput {
       padding: 10px;
       font-size: 16px;
-      width: calc(70% - 22px); /* Adjust for padding and border */
-      margin-bottom: 15px;
+      flex-grow: 1;
       border: 1px solid #ccc;
       border-radius: 4px;
     }
     button {
       padding: 10px 20px;
       font-size: 16px;
+      font-weight: 500;
       cursor: pointer;
       border: 1px solid #007bff;
       background-color: #007bff;
       color: white;
       border-radius: 4px;
-      transition: background-color 0.2s, border-color 0.2s;
+      transition: background-color 0.2s;
     }
     button:hover:not(:disabled) {
       background-color: #0056b3;
-      border-color: #0056b3;
     }
     button:disabled {
       background-color: #ccc;
       border-color: #ccc;
       cursor: not-allowed;
     }
-    #result {
+    #results-container {
+      display: none; /* Hidden by default */
+    }
+    .result-card h3, .result-card h4 {
+      margin-top: 0;
+      color: #0056b3;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+    .result-card p {
+      margin: 0 0 10px 0;
+      line-height: 1.6;
+      color: #333;
+    }
+    .result-card strong {
+      color: #111;
+    }
+    #guideline-title {
+      display: block;
+      margin-bottom: 8px;
+    }
+    #result-status {
       margin-top: 20px;
       font-size: 18px;
-      min-height: 27px; /* Prevents layout shift when text appears */
+      font-weight: 500;
       color: #333;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <div id="search-container">
-    <h2>Student Group Lookup</h2>
-    <p id="current-date"></p>
-    <input type="text" id="rollInput" placeholder="Loading group data..." disabled />
-    <button id="searchButton" onclick="lookupGroup()" disabled>Search</button>
-    <p id="result"></p>
+  <div id="app-container">
+    <div id="search-card" class="card">
+      <h2>Internship Dashboard</h2>
+      <p id="current-date"></p>
+      <div id="input-wrapper">
+        <input type="text" id="rollInput" placeholder="Loading data..." disabled />
+        <button id="searchButton" onclick="lookupInfo()" disabled>Search</button>
+      </div>
+      <p id="result-status"></p>
+    </div>
+
+    <div id="results-container">
+      <div class="card">
+        <h3><span id="result-department"></span></h3>
+        <p><strong>Posting Site:</strong> <span id="result-site"></span></p>
+        <p><strong>Today's Focus:</strong> <span id="result-task"></span></p>
+      </div>
+      <div class="card">
+        <h4>Colleagues in this Posting</h4>
+        <p id="result-colleagues">No other colleagues found.</p>
+      </div>
+      <div class="card">
+        <h4>Guideline of the Day</h4>
+        <strong id="guideline-title"></strong>
+        <p id="guideline-text"></p>
+      </div>
+    </div>
   </div>
 
   <script>
-    let groupData = null; // This will hold the data from group-data.json
+    const appData = {};
+    const PIVOT_DATE = new Date('2025-07-21T00:00:00Z'); // The date the new schedule starts
 
     document.addEventListener("DOMContentLoaded", () => {
       const rollInputElement = document.getElementById("rollInput");
       const searchButton = document.getElementById("searchButton");
-      const resultElement = document.getElementById("result");
+      const statusElement = document.getElementById("result-status");
       const dateElement = document.getElementById("current-date");
 
-      // --- Date Grabber ---
-      // Get today's date and format it into a readable string.
       const today = new Date();
       const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
       dateElement.textContent = `Today is ${today.toLocaleDateString('en-US', options)}`;
 
-      fetch('group-data.json')
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response.json();
+      // Load all data files concurrently
+      const dataFiles = {
+        groups: 'database/json_data/group-data.json',
+        oldGroups: 'database/json_data/old-group-data.json',
+        schedule: 'database/json_data/schedule-data.json',
+        groupA: 'database/json_data/group-a-schedule.json',
+        groupB: 'database/json_data/group-b-schedule.json',
+        groupC: 'database/json_data/group-c-schedule.json',
+        groupD: 'database/json_data/group-d-schedule.json',
+        legend: 'database/json_data/legend.json',
+        guidelines: 'database/json_data/guidelines.json',
+      };
+
+      const promises = Object.entries(dataFiles).map(([key, url]) =>
+        fetch(url)
+        .then(res => {
+          if (!res.ok) throw new Error(`Failed to load ${url}`);
+          return res.json();
         })
-        .then(data => {
-          groupData = data;
+        .then(data => { appData[key] = data; })
+      );
+
+      Promise.all(promises)
+        .then(() => {
+          console.log("All data loaded successfully:", appData);
           rollInputElement.placeholder = "Enter Roll No. or Group";
           rollInputElement.disabled = false;
           searchButton.disabled = false;
         })
         .catch(error => {
-          console.error("Error loading group data:", error);
-          resultElement.textContent = "Failed to load group data. Please refresh.";
+          console.error("Error loading application data:", error);
+          statusElement.textContent = "Failed to load data. Please refresh.";
           rollInputElement.placeholder = "Error";
         });
 
       rollInputElement.addEventListener("keyup", function(event) {
         if (event.key === "Enter") {
-          lookupGroup();
+          lookupInfo();
         }
       });
     });
 
-    function lookupGroup() {
-      if (!groupData) {
-        document.getElementById("result").textContent = "Group data is not loaded yet.";
+    function findGroupFromRoll(roll, groupData) {
+      const rollAsNumber = parseInt(roll, 10);
+      const searchKey = isNaN(rollAsNumber) ? roll.toUpperCase() : rollAsNumber;
+      for (const [group, rolls] of Object.entries(groupData)) {
+        if (rolls.includes(searchKey)) {
+          return group;
+        }
+      }
+      return null;
+    }
+
+    function lookupInfo() {
+      const statusElement = document.getElementById("result-status");
+      const resultsContainer = document.getElementById("results-container");
+      statusElement.textContent = "";
+      resultsContainer.style.display = "none";
+
+      if (Object.keys(appData).length === 0) {
+        statusElement.textContent = "Data is not loaded yet.";
         return;
       }
 
       const rollInputElement = document.getElementById("rollInput");
       const rollInput = rollInputElement.value.trim().toUpperCase();
-      const result = document.getElementById("result");
 
       if (!rollInput) {
-        result.textContent = "Please enter a roll number.";
+        statusElement.textContent = "Please enter a roll number or group code.";
         return;
       }
 
-      // Feature: Check if the input is a valid group name first.
-      if (groupData[rollInput]) {
-        const rollsInGroup = groupData[rollInput].join(', ');
-        result.textContent = `Group '${rollInput}' contains: ${rollsInGroup}`;
-        return; // End the function here if we found a group match.
-      }
+      // --- Determine which schedule and group data to use ---
+      const today = new Date();
+      const isOldSchedule = today < PIVOT_DATE;
+      const scheduleKey = isOldSchedule ? 'oldSchedule' : 'newSchedule';
+      const groupData = isOldSchedule ? appData.oldGroups : appData.groups;
 
-      const rollAsNumber = parseInt(rollInput, 10);
-      const searchKey = isNaN(rollAsNumber) ? rollInput : rollAsNumber;
-
-      let foundGroup = null;
-      for (const [group, rolls] of Object.entries(groupData)) {
-        if (rolls.includes(searchKey)) {
-          foundGroup = group;
-          break;
+      // --- Find the student's group code ---
+      let studentGroupCode = findGroupFromRoll(rollInput, groupData);
+      if (!studentGroupCode) {
+        // If not found as a roll, check if it's a valid group code itself
+        if (groupData[rollInput]) {
+          studentGroupCode = rollInput;
+        } else {
+          statusElement.textContent = `No group found for '${rollInput}'.`;
+          return;
         }
       }
 
-      if (foundGroup) {
-        result.textContent = `Roll No. '${rollInput}' belongs to Group: ${foundGroup}`;
-      } else {
-        result.textContent = `No group or roll number found for '${rollInput}'.`;
+      // --- Find the correct schedule data ---
+      const groupLetter = studentGroupCode.charAt(0);
+      const detailedScheduleData = appData[`group${groupLetter}`];
+      if (!detailedScheduleData) {
+        statusElement.textContent = `Could not find schedule for group ${groupLetter}.`;
+        return;
       }
+
+      // --- Find the current week's posting ---
+      const todayStr = today.toISOString().split('T')[0];
+      const weekSchedule = detailedScheduleData[scheduleKey].find(week =>
+        todayStr >= week.startDate && todayStr <= week.endDate
+      );
+      const atAGlanceSchedule = appData.schedule[scheduleKey].find(week =>
+        todayStr >= week.startDate && todayStr <= week.endDate
+      );
+
+      if (!weekSchedule || !atAGlanceSchedule) {
+        statusElement.textContent = `No posting found for today's date.`;
+        return;
+      }
+
+      const postingCode = weekSchedule.postings[studentGroupCode]; // e.g., "GS - MSW"
+      const departmentCode = atAGlanceSchedule.postings[studentGroupCode]; // e.g., "GS"
+
+      if (!postingCode || !departmentCode) {
+        statusElement.textContent = `Posting details not found for group ${studentGroupCode}.`;
+        return;
+      }
+
+      // --- Look up details in the legend ---
+      const legendEntry = appData.legend.legend.find(item => item.code === postingCode);
+      const departmentEntry = appData.regulations.regulations.find(item => item.abbreviation === departmentCode);
+
+      // --- Find Colleagues ---
+      const colleagueGroups = Object.entries(weekSchedule.postings)
+        .filter(([group, code]) => code === postingCode && group !== studentGroupCode)
+        .map(([group]) => group);
+
+      const colleagueRolls = colleagueGroups
+        .flatMap(group => groupData[group] || [])
+        .join(', ');
+
+      // --- Get a random guideline ---
+      const randomGuideline = appData.guidelines[Math.floor(Math.random() * appData.guidelines.length)];
+
+      // --- Update the DOM with all the information ---
+      document.getElementById('result-department').textContent = departmentEntry?.department || departmentCode;
+      document.getElementById('result-site').textContent = legendEntry?.site || postingCode;
+      document.getElementById('result-task').textContent = legendEntry?.split || "No specific task description found.";
+      document.getElementById('result-colleagues').textContent = colleagueRolls || "You are posted alone or with a different subgroup.";
+      document.getElementById('guideline-title').textContent = randomGuideline.title;
+      document.getElementById('guideline-text').textContent = randomGuideline.points.join(' ');
+
+      resultsContainer.style.display = "block";
     }
   </script>
 </body>
