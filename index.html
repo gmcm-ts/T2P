@@ -186,6 +186,39 @@
       margin-bottom: 0;
       padding-bottom: 0;
     }
+    .report-issue-card {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .issue-button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #f0f2f5;
+      color: #666;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: all 0.2s ease;
+      border: 1px solid #ddd;
+    }
+    .issue-button:hover {
+      background-color: #e4e6e9;
+      color: #333;
+      border-color: #ccc;
+    }
+    .disclaimer {
+      font-size: 11px;
+      color: #888;
+      margin-top: 8px;
+      text-align: center;
+    }
+    .copyright {
+      font-size: 12px;
+      color: #666;
+      text-align: center;
+      margin-top: 15px;
+      font-weight: 500;
+    }
   </style>
 </head>
 <body>
@@ -233,9 +266,20 @@
         <strong id="guideline-title"></strong>
         <p id="guideline-text"></p>
       </div>
+      <div class="report-issue-card">
+        <a href="https://github.com/Devaprasad-reddy/T2P/issues/new" target="_blank" rel="noopener noreferrer" class="issue-button">
+          Something not right? Report an issue
+        </a>
+      </div>
     </div>
 
-    <div id="faculty-results-container" class="card"></div>
+    <div id="faculty-results-container" class="card">
+    </div>
+    <div class="report-issue-card">
+      <a href="https://github.com/Devaprasad-reddy/T2P/issues/new" target="_blank" rel="noopener noreferrer" class="issue-button">
+        Something not right? Report an issue
+      </a>
+    </div>
   </div>
 
   <script>

@@ -1,22 +1,56 @@
-# T2P - Student Group Lookup
+# T2P - Internship Schedule Lookup
 
-A simple, fast, static web application to look up a student's group based on their roll number.
+A comprehensive web application for managing and viewing internship schedules, designed for both students and faculty.
 
 ## Features
-- Fetches group data from an external JSON file.
-- Provides a clean interface to search for a group by roll number.
-- Supports both numeric and alphanumeric (e.g., "R5") roll numbers.
-- User-friendly feedback during data loading and for search results.
+
+### Student View
+
+- Look up internship postings by roll number or group code
+- View detailed posting information:
+  - Department and site location
+  - Current day's focus/tasks
+  - List of colleague interns in the same posting
+  - Daily guideline reminders
+- Supports both old and new schedules with automatic date-based switching
+
+### Faculty View
+
+- Search departments using fuzzy matching
+- View all students currently posted in different sites
+- Intelligent handling of department aliases and variations
+- Supports multiple schedule periods
+
+### Common Features
+
+- Date selection with automatic today's date default
+- Clean, responsive interface
+- Real-time search and updates
+- Comprehensive data validation and error handling
 
 ## Setup
-This project is a static website and requires no special server-side setup.
-1.  Ensure the `group-data.json` file is present in the root directory and contains the group mappings.
-2.  Host the folder (containing `index.html` and `group-data.json`) on any static web host, like GitHub Pages.
 
-## How it Works
--   **HTML5/CSS3**: Structures and styles the user interface.
--   **JavaScript**:
-    -   On page load, it asynchronously fetches the `group-data.json` file.
-    -   It handles user input to search for a roll number within the loaded data.
-    -   It dynamically displays the result to the user.
--   **GitHub Pages**: Used for hosting the static website.
+This project is a static website requiring no server-side setup.
+
+1. Ensure all JSON data files are present in the `database/json_data/` directory:
+   - Schedule files (group-data.json, schedule-data.json)
+   - Detailed schedules (group-a-schedule.json through group-d-schedule.json)
+   - Reference data (legend.json, guidelines.json, regulations.json)
+2. Host the folder on any static web host, like GitHub Pages
+
+## Technical Details
+
+- **Frontend Technologies**:
+  - HTML5/CSS3 for structure and responsive design
+  - Vanilla JavaScript for functionality
+  - Modern CSS Grid and Flexbox for layouts
+- **Data Management**:
+  - Asynchronous JSON data loading
+  - Fuzzy search implementation for department matching
+  - Smart date-based schedule switching
+  - Efficient data structures for quick lookups
+- **User Experience**:
+  - Real-time feedback
+  - Intuitive mode switching
+  - Comprehensive error messages
+  - Mobile-responsive design
