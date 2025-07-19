@@ -6,35 +6,118 @@
   <style>
     body { font-family: Arial; padding: 20px; }
     .posting { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+    #search { margin-top: 20px; }
   </style>
 </head>
 <body>
   <h1>Today's Student Postings</h1>
   <div id="postings"></div>
 
+  <!-- Roll Number Search -->
+  <div id="search">
+    <input type="text" id="rollInput" placeholder="Enter Roll Number" />
+    <button onclick="lookupGroup()">Search</button>
+    <p id="result"></p>
+  </div>
+
   <script>
-    // Replace with your Google Apps Script URL
-    const scriptUrl = "https://script.google.com/macros/s/AKfycbyydDseHGAAxy8erMjtSauyaMVCxgRKBAzrgYMzLdd2qLKKX0X70A7KwlXm80shG0L_/exec";
-    
-    fetch(scriptUrl)
+    // Hardcoded group data based on your TSV
+    const groupData = {
+      "A1": [1, 2, 3, 14],
+      "A2": [4, 5, 6, 16],
+      "A3": [7, 8, 9, 17],
+      "A4": [10, 11, 12],
+      "A5": [13, 15, 18],
+      "A6": [22, 23, 25],
+      "A7": [28, 29, 30, 117],
+      "A8": [31, 32, 34],
+      "A9": [35, 36, 37],
+      "A10": [38, 40, 41, 19],
+      "A11": [42, 43, 21],
+      "A12": [44, 46, 24],
+      "A13": [47, 48, 49],
+      "B1": [50, 51, 52, 26],
+      "B2": [53, 54, 56],
+      "B3": [57, 58, 60],
+      "B4": [62, 63, 64, 33],
+      "B5": [65, 66, 39],
+      "B6": [67, 68, 71],
+      "B7": [72, 73, 74, 45],
+      "B8": [75, 76, 77],
+      "B9": [78, 80, 83, 55],
+      "B10": [84, 85, 86],
+      "B11": [87, 88, 89],
+      "B12": [90, 91, 59],
+      "B13": [92, 93, 94],
+      "C1": [95, 96, 97, 61],
+      "C2": [98, 99, 101, 69],
+      "C3": [102, 103, 104, 70],
+      "C4": [105, 106, 107],
+      "C5": [108, 109, 110],
+      "C6": [111, 113, 114],
+      "C7": [115, 116, 118],
+      "C8": [119, 120, 121, 82],
+      "C9": [122, 123, 124, 100],
+      "C10": [125, 127, 126],
+      "C11": [129, 130, 131],
+      "C12": [132, 133, 134],
+      "C13": [135, 136, 137],
+      "D1": [139, 140, 141, 128],
+      "D2": [142, 143, 144],
+      "D3": [145, 146, 147],
+      "D4": [148, 149, 150],
+      "D5": [151, 153, 152],
+      "D6": [154, 155, 157, 156],
+      "D7": [158, 159, 160],
+      "D8": [161, 162, 163],
+      "D9": [164, 165, 166],
+      "D10": [167, 168, 169],
+      "D11": [170, 171, 172],
+      "D12": [173, 174, 175],
+      "D13": ["R5", "R101", "R141", "R12"]
+    };
+
+    function lookupGroup() {
+      const rollInput = document.getElementById("rollInput").value.trim();
+      const result = document.getElementById("result");
+
+      if (!rollInput) {
+        result.textContent = "Please enter a roll number.";
+        return;
+      }
+
+      let found = false;
+      for (const [group, rolls] of Object.entries(groupData)) {
+        if (rolls.includes(rollInput) || rolls.includes(parseInt(rollInput))) {
+          result.textContent = `Roll number ${rollInput} belongs to Group: ${group}`;
+          found = true;
+          break;
+        }
+      }
+
+      if (!found) {
+        result.textContent = `No group found for roll number ${rollInput}.`;
+      }
+    }
+
+    // Example: Display student postings (unchanged from original)
+    fetch("data.json")
       .then(response => response.json())
       .then(data => {
-        const container = document.getElementById('postings');
-        if (data.length === 0) {
-          container.innerHTML = '<p>No postings today.</p>';
-          return;
+        const container = document.getElementById("postings");
+        if (data.Timetable && data.Timetable.length > 0) {
+          data.Timetable.forEach(student => {
+            const div = document.createElement("div");
+            div.textContent = `${student["Student Name"]} - ${student["Posting Location"]}`;
+            container.appendChild(div);
+          });
+        } else {
+          container.textContent = "No postings today.";
         }
-        
-        data.forEach(student => {
-          const div = document.createElement('div');
-          div.className = 'posting';
-          div.innerHTML = `<strong>${student.name}</strong> - ${student.post}`;
-          container.appendChild(div);
-        });
       })
       .catch(error => {
-        console.error('Error fetching data:', error);
-        document.body.innerHTML = '<p>Error loading postings. Please try again later.</p>';
+        console.error("Error loading data:", error);
+        document.body.innerHTML = "<p>Error loading data. Please try again later.</p>";
       });
   </script>
 </body>
