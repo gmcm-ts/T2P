@@ -101,7 +101,7 @@
       transform: translateX(22px);
     }
     #rollInput,
-    #department-select {
+    #department-input {
       padding: 10px;
       font-size: 16px;
       flex-grow: 1;
@@ -196,7 +196,10 @@
       </div>
       <div id="input-wrapper">
         <div id="student-input-container"><input type="text" id="rollInput" placeholder="Loading data..." disabled /></div>
-        <div id="faculty-input-container" style="display: none;"><select id="department-select" disabled><option>Loading departments...</option></select></div>
+        <div id="faculty-input-container" style="display: none;">
+          <input type="text" id="department-input" list="department-list" placeholder="Type or select a department..." disabled>
+          <datalist id="department-list"></datalist>
+        </div>
         <div id="search-button-wrapper"><button id="searchButton" disabled>Search</button></div>
       </div>
       <p id="result-status"></p>
@@ -238,7 +241,7 @@
       const modeToggle = document.getElementById("mode-toggle-switch");
       const studentInput = document.getElementById("student-input-container");
       const facultyInput = document.getElementById("faculty-input-container");
-      const departmentSelect = document.getElementById("department-select");
+      const departmentInput = document.getElementById("department-input");
       const titleElement = document.getElementById("dashboard-title");
 
       function updateDateDisplay(date) {
@@ -275,8 +278,8 @@
         dateElement.style.display = 'block';
 
         // If a roll number is already in the input, re-run the search for the new date.
-        if (currentMode === 'student' && rollInputElement.value.trim()) {
-          lookupStudent();
+        if (rollInputElement.value.trim()) {
+          if (currentMode === 'student') lookupStudent();
         }
       });
 
@@ -287,9 +290,11 @@
       });
 
       modeToggle.addEventListener('change', () => {
+        const searchButtonWrapper = document.getElementById('search-button-wrapper');
         currentMode = modeToggle.checked ? 'faculty' : 'student';
         studentInput.style.display = (currentMode === 'student') ? 'block' : 'none';
         facultyInput.style.display = (currentMode === 'faculty') ? 'block' : 'none';
+        searchButtonWrapper.style.display = (currentMode === 'student') ? 'flex' : 'none';
         titleElement.textContent = (currentMode === 'student') ? 'Internship Schedule' : 'Faculty Department View';
 
         // Clear results when switching modes
@@ -300,18 +305,13 @@
 
       searchButton.addEventListener('click', () => {
         const studentResultsContainer = document.getElementById('student-results-container');
-        const facultyResultsContainer = document.getElementById('faculty-results-container');
 
         // If results are already visible, reload the page to reset for a new search.
-        if (studentResultsContainer.style.display === 'block' || facultyResultsContainer.style.display === 'block') {
+        if (studentResultsContainer.style.display === 'block') {
           location.reload();
         } else {
-          // Otherwise, perform the search based on the current mode.
-          if (currentMode === 'student') {
-            lookupStudent();
-          } else {
-            lookupFaculty();
-          }
+          // Otherwise, perform the student search.
+          lookupStudent();
         }
       });
 
@@ -341,8 +341,8 @@
       Promise.all(promises)
         .then(() => {
           console.log("All data loaded successfully:", appData);
-          populateDepartments();
-          departmentSelect.disabled = false;
+          populateDepartmentDatalist();
+          departmentInput.disabled = false;
           rollInputElement.placeholder = "Enter Roll No. or Group";
           rollInputElement.disabled = false;
           searchButton.disabled = false;
@@ -358,20 +358,40 @@
           lookupStudent();
         }
       });
+
+      departmentInput.addEventListener('input', () => {
+        const value = departmentInput.value;
+        const departmentList = document.getElementById('department-list');
+        let selectedCode = null;
+
+        // Find the option in the datalist that exactly matches the input's value
+        for (const option of departmentList.options) {
+          if (option.value === value) {
+            selectedCode = option.dataset.code;
+            break;
+          }
+        }
+
+        if (selectedCode) {
+          lookupFaculty(selectedCode);
+        } else {
+          // Clear results if the input is not a valid department
+          document.getElementById("faculty-results-container").style.display = 'none';
+          document.getElementById("result-status").textContent = '';
+        }
+      });
     });
 
-    function populateDepartments() {
-      const departmentSelect = document.getElementById("department-select");
-      departmentSelect.innerHTML = ''; // Clear loading message
-      const departments = new Set();
+    function populateDepartmentDatalist() {
+      const departmentList = document.getElementById("department-list");
+      departmentList.innerHTML = ''; // Clear
       appData.regulations.regulations.forEach(reg => {
-        if (reg.department && !reg.department.includes('TOTAL')) departments.add(reg.abbreviation);
-      });
-      departments.forEach(deptCode => {
-        const option = document.createElement('option');
-        option.value = deptCode;
-        option.textContent = appData.regulations.regulations.find(r => r.abbreviation === deptCode).department;
-        departmentSelect.appendChild(option);
+        if (reg.department && !reg.department.includes('TOTAL')) {
+          const option = document.createElement('option');
+          option.value = reg.department;
+          option.dataset.code = reg.abbreviation;
+          departmentList.appendChild(option);
+        }
       });
     }
 
@@ -546,18 +566,12 @@
       studentResultsContainer.style.display = "block";
     }
 
-    function lookupFaculty() {
+    function lookupFaculty(departmentCode) {
       const statusElement = document.getElementById("result-status");
       const facultyResultsContainer = document.getElementById("faculty-results-container");
       statusElement.textContent = "";
       facultyResultsContainer.style.display = "none";
       facultyResultsContainer.innerHTML = '';
-
-      const departmentCode = document.getElementById("department-select").value;
-      if (!departmentCode) {
-        statusElement.textContent = "Please select a department.";
-        return;
-      }
 
       const isOldSchedule = selectedDate < PIVOT_DATE;
       const scheduleKey = isOldSchedule ? 'oldSchedule' : 'newSchedule';
