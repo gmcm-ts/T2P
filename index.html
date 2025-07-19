@@ -110,18 +110,19 @@
     }
     #search-button-wrapper {
       display: flex;
+      flex-grow: 0;
     }
     button {
-      padding: 10px 20px;
-      font-size: 16px;
+      padding: 8px 15px;
+      font-size: 14px;
       font-weight: 500;
       cursor: pointer;
       border: 1px solid #007bff;
       background-color: #007bff;
       color: white;
       border-radius: 4px;
-      flex-grow: 1;
       transition: background-color 0.2s;
+      white-space: nowrap;
     }
     button:hover:not(:disabled) {
       background-color: #0056b3;
@@ -195,12 +196,14 @@
         <input type="date" id="date-picker" style="display: none; width: 100%; box-sizing: border-box; font-family: inherit; font-size: 16px; padding: 5px; border: 1px solid #ccc; border-radius: 4px; text-align: center;">
       </div>
       <div id="input-wrapper">
-        <div id="student-input-container"><input type="text" id="rollInput" placeholder="Loading data..." disabled /></div>
+        <div id="student-input-container" style="display: flex; gap: 10px;">
+          <input type="text" id="rollInput" placeholder="Loading data..." disabled />
+          <div id="search-button-wrapper"><button id="searchButton" disabled>Go</button></div>
+        </div>
         <div id="faculty-input-container" style="display: none;">
           <input type="text" id="department-input" list="department-list" placeholder="Type or select a department..." disabled>
           <datalist id="department-list"></datalist>
         </div>
-        <div id="search-button-wrapper"><button id="searchButton" disabled>Search</button></div>
       </div>
       <p id="result-status"></p>
     </div>
