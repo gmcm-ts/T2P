@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Internship Posting Dashboard</title>
+  <title>Internship Schedule</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -31,6 +31,38 @@
     #search-card {
       text-align: center;
     }
+    #dashboard-title {
+      margin-top: 0;
+    }
+    .mode-toggle {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 28px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 28px;
+    }
     #date-wrapper {
       cursor: pointer;
       padding: 5px 0;
@@ -41,6 +73,17 @@
     #date-wrapper:hover {
       background-color: #e9ecef;
     }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
     #current-date {
       margin: 0;
       color: #555;
@@ -49,13 +92,24 @@
     #input-wrapper {
       display: flex;
       gap: 10px;
+      flex-direction: column;
+    }
+    input:checked + .slider {
+      background-color: #007bff;
+    }
+    input:checked + .slider:before {
+      transform: translateX(22px);
     }
     #rollInput {
+    #department-select {
       padding: 10px;
       font-size: 16px;
       flex-grow: 1;
       border: 1px solid #ccc;
       border-radius: 4px;
+    }
+    #search-button-wrapper {
+      display: flex;
     }
     button {
       padding: 10px 20px;
@@ -66,6 +120,7 @@
       background-color: #007bff;
       color: white;
       border-radius: 4px;
+      flex-grow: 1;
       transition: background-color 0.2s;
     }
     button:hover:not(:disabled) {
@@ -76,7 +131,8 @@
       border-color: #ccc;
       cursor: not-allowed;
     }
-    #results-container {
+    #student-results-container,
+    #faculty-results-container {
       display: none; /* Hidden by default */
     }
     .result-card h3, .result-card h4 {
@@ -105,24 +161,48 @@
       color: #333;
       text-align: center;
     }
+    #faculty-results-container ul {
+      list-style-type: none;
+      padding: 0;
+      text-align: left;
+    }
+    #faculty-results-container li {
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #f0f2f5;
+    }
+    #faculty-results-container li:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
   </style>
 </head>
 <body>
   <div id="app-container">
     <div id="search-card" class="card">
-      <h2>Internship Dashboard</h2>
+      <h2 id="dashboard-title">Internship Schedule</h2>
+      <div class="mode-toggle">
+        <span>Student</span>
+        <label class="switch">
+          <input type="checkbox" id="mode-toggle-switch">
+          <span class="slider"></span>
+        </label>
+        <span>Faculty</span>
+      </div>
       <div id="date-wrapper" title="Click to change date">
         <p id="current-date"></p>
         <input type="date" id="date-picker" style="display: none; width: 100%; box-sizing: border-box; font-family: inherit; font-size: 16px; padding: 5px; border: 1px solid #ccc; border-radius: 4px; text-align: center;">
       </div>
       <div id="input-wrapper">
-        <input type="text" id="rollInput" placeholder="Loading data..." disabled />
-        <button id="searchButton" onclick="lookupInfo()" disabled>Search</button>
+        <div id="student-input-container"><input type="text" id="rollInput" placeholder="Loading data..." disabled /></div>
+        <div id="faculty-input-container" style="display: none;"><select id="department-select" disabled><option>Loading departments...</option></select></div>
+        <div id="search-button-wrapper"><button id="searchButton" disabled>Search</button></div>
       </div>
       <p id="result-status"></p>
     </div>
 
-    <div id="results-container">
+    <div id="student-results-container">
       <div class="card">
         <h3><span id="result-department"></span></h3>
         <p><strong>Posting Site:</strong> <span id="result-site"></span></p>
@@ -138,10 +218,13 @@
         <p id="guideline-text"></p>
       </div>
     </div>
+
+    <div id="faculty-results-container" class="card"></div>
   </div>
 
   <script>
     const appData = {};
+    let currentMode = 'student'; // 'student' or 'faculty'
     let selectedDate = new Date();
     const PIVOT_DATE = new Date('2025-07-21T00:00:00Z'); // The date the new schedule starts
 
@@ -152,6 +235,11 @@
       const dateWrapper = document.getElementById("date-wrapper");
       const dateElement = document.getElementById("current-date");
       const datePicker = document.getElementById("date-picker");
+      const modeToggle = document.getElementById("mode-toggle-switch");
+      const studentInput = document.getElementById("student-input-container");
+      const facultyInput = document.getElementById("faculty-input-container");
+      const departmentSelect = document.getElementById("department-select");
+      const titleElement = document.getElementById("dashboard-title");
 
       function updateDateDisplay(date) {
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -187,8 +275,8 @@
         dateElement.style.display = 'block';
 
         // If a roll number is already in the input, re-run the search for the new date.
-        if (document.getElementById("rollInput").value.trim()) {
-          lookupInfo();
+        if (currentMode === 'student' && rollInputElement.value.trim()) {
+          lookupStudent();
         }
       });
 
@@ -196,6 +284,26 @@
       datePicker.addEventListener('blur', () => {
         datePicker.style.display = 'none';
         dateElement.style.display = 'block';
+      });
+
+      modeToggle.addEventListener('change', () => {
+        currentMode = modeToggle.checked ? 'faculty' : 'student';
+        studentInput.style.display = (currentMode === 'student') ? 'block' : 'none';
+        facultyInput.style.display = (currentMode === 'faculty') ? 'block' : 'none';
+        titleElement.textContent = (currentMode === 'student') ? 'Internship Schedule' : 'Faculty Department View';
+
+        // Clear results when switching modes
+        document.getElementById('student-results-container').style.display = 'none';
+        document.getElementById('faculty-results-container').style.display = 'none';
+        statusElement.textContent = '';
+      });
+
+      searchButton.addEventListener('click', () => {
+        if (currentMode === 'student') {
+          lookupStudent();
+        } else {
+          lookupFaculty();
+        }
       });
 
       // Load all data files concurrently
@@ -224,6 +332,8 @@
       Promise.all(promises)
         .then(() => {
           console.log("All data loaded successfully:", appData);
+          populateDepartments();
+          departmentSelect.disabled = false;
           rollInputElement.placeholder = "Enter Roll No. or Group";
           rollInputElement.disabled = false;
           searchButton.disabled = false;
@@ -236,10 +346,25 @@
 
       rollInputElement.addEventListener("keyup", function(event) {
         if (event.key === "Enter") {
-          lookupInfo();
+          lookupStudent();
         }
       });
     });
+
+    function populateDepartments() {
+      const departmentSelect = document.getElementById("department-select");
+      departmentSelect.innerHTML = ''; // Clear loading message
+      const departments = new Set();
+      appData.regulations.regulations.forEach(reg => {
+        if (reg.department && !reg.department.includes('TOTAL')) departments.add(reg.abbreviation);
+      });
+      departments.forEach(deptCode => {
+        const option = document.createElement('option');
+        option.value = deptCode;
+        option.textContent = appData.regulations.regulations.find(r => r.abbreviation === deptCode).department;
+        departmentSelect.appendChild(option);
+      });
+    }
 
     function findGroupFromRoll(roll, groupData) {
       const rollAsNumber = parseInt(roll, 10);
@@ -277,11 +402,11 @@
       return allRollsInPosting.filter(roll => roll !== searchKey).join(', ');
     }
 
-    function lookupInfo() {
+    function lookupStudent() {
       const statusElement = document.getElementById("result-status");
-      const resultsContainer = document.getElementById("results-container");
+      const studentResultsContainer = document.getElementById("student-results-container");
       statusElement.textContent = "";
-      resultsContainer.style.display = "none";
+      studentResultsContainer.style.display = "none";
 
       if (Object.keys(appData).length === 0) {
         statusElement.textContent = "Data is not loaded yet.";
@@ -376,7 +501,69 @@
       document.getElementById('guideline-title').textContent = randomGuideline.title;
       document.getElementById('guideline-text').textContent = randomGuideline.points.join(' ');
 
-      resultsContainer.style.display = "block";
+      studentResultsContainer.style.display = "block";
+    }
+
+    function lookupFaculty() {
+      const statusElement = document.getElementById("result-status");
+      const facultyResultsContainer = document.getElementById("faculty-results-container");
+      statusElement.textContent = "";
+      facultyResultsContainer.style.display = "none";
+      facultyResultsContainer.innerHTML = '';
+
+      const departmentCode = document.getElementById("department-select").value;
+      if (!departmentCode) {
+        statusElement.textContent = "Please select a department.";
+        return;
+      }
+
+      const isOldSchedule = selectedDate < PIVOT_DATE;
+      const scheduleKey = isOldSchedule ? 'oldSchedule' : 'newSchedule';
+      const groupData = isOldSchedule ? appData.oldGroups : appData.groups;
+
+      const atAGlanceWeek = appData.schedule[scheduleKey].find(week =>
+        selectedDate.toISOString().split('T')[0] >= week.startDate && selectedDate.toISOString().split('T')[0] <= week.endDate
+      );
+
+      if (!atAGlanceWeek) {
+        statusElement.textContent = `No schedule found for the selected date.`;
+        return;
+      }
+
+      const postingsBySite = {};
+
+      for (const groupCode of Object.keys(atAGlanceWeek.postings)) {
+        if (atAGlanceWeek.postings[groupCode] === departmentCode) {
+          const groupLetter = groupCode.charAt(0);
+          const detailedScheduleData = appData[`group${groupLetter}`];
+          const weekSchedule = detailedScheduleData[scheduleKey].find(w => w.startDate === atAGlanceWeek.startDate);
+
+          if (weekSchedule && weekSchedule.postings[groupCode]) {
+            const postingCode = weekSchedule.postings[groupCode];
+            const legendEntry = appData.legend.legend.find(item => item.code === postingCode);
+            const siteName = legendEntry?.site || postingCode;
+
+            if (!postingsBySite[siteName]) {
+              postingsBySite[siteName] = [];
+            }
+            postingsBySite[siteName].push(...(groupData[groupCode] || []));
+          }
+        }
+      }
+
+      if (Object.keys(postingsBySite).length === 0) {
+        statusElement.textContent = `No students found in ${departmentCode} for the selected date.`;
+        return;
+      }
+
+      let html = '<ul>';
+      for (const [site, rolls] of Object.entries(postingsBySite)) {
+        html += `<li><strong>${site}:</strong><br>${rolls.join(', ')}</li>`;
+      }
+      html += '</ul>';
+
+      facultyResultsContainer.innerHTML = html;
+      facultyResultsContainer.style.display = 'block';
     }
   </script>
 </body>
