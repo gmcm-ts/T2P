@@ -198,20 +198,27 @@
 
     /**
      * Finds all colleagues for a given student in a specific week.
-     * @param {string} studentGroupCode - The group code of the student being searched for (e.g., "A5").
+     * @param {string} searchedInput - The original roll number or group code that was searched for.
      * @param {string} postingCode - The specific posting code for that student (e.g., "GS - MSW").
      * @param {object} weekSchedule - The weekly schedule object from the detailed view (e.g., group-a-schedule.json).
      * @param {object} groupData - The group-to-roll-number mapping object.
      * @returns {string} A comma-separated string of colleague roll numbers.
      */
-    function findColleagues(studentGroupCode, postingCode, weekSchedule, groupData) {
-      // From the detailed week schedule, find all other group codes that have the exact same posting.
-      const colleagueGroups = Object.entries(weekSchedule.postings)
-        .filter(([group, code]) => code === postingCode && group !== studentGroupCode)
+    function findColleagues(searchedInput, postingCode, weekSchedule, groupData) {
+      // Find all groups that have the exact same posting.
+      const allGroupsInPosting = Object.entries(weekSchedule.postings)
+        .filter(([group, code]) => code === postingCode)
         .map(([group]) => group);
 
-      // For each of those groups, get their list of roll numbers and join them.
-      return colleagueGroups.flatMap(group => groupData[group] || []).join(', ');
+      // Get a flat list of all roll numbers from those groups.
+      const allRollsInPosting = allGroupsInPosting.flatMap(group => groupData[group] || []);
+
+      // If the search was for a specific roll number, filter it out from the colleagues list.
+      const searchedRollAsNumber = parseInt(searchedInput, 10);
+      const isRollNumberSearch = !isNaN(searchedRollAsNumber);
+      const searchKey = isRollNumberSearch ? searchedRollAsNumber : searchedInput.toUpperCase();
+
+      return allRollsInPosting.filter(roll => roll !== searchKey).join(', ');
     }
 
     function lookupInfo() {
@@ -287,7 +294,7 @@
       const legendEntry = appData.legend.legend.find(item => item.code === postingCode);
       const departmentEntry = appData.regulations.regulations.find(item => item.abbreviation === departmentCode);
 
-      const colleagueRolls = findColleagues(studentGroupCode, postingCode, weekSchedule, groupData);
+      const colleagueRolls = findColleagues(rollInput, postingCode, weekSchedule, groupData);
 
       // --- Get a random guideline ---
       const randomGuideline = appData.guidelines[Math.floor(Math.random() * appData.guidelines.length)];
