@@ -411,6 +411,38 @@
       return allRollsInPosting.filter(roll => roll !== searchKey).join(', ');
     }
 
+    /**
+     * Returns a list of possible schedule codes for a given department code from regulations.
+     * This handles inconsistencies between regulations data and schedule data (e.g., RD* vs R&L).
+     * @param {string} deptCode - The department code from the regulations file.
+     * @returns {string[]} An array of equivalent codes to search for in schedules.
+     */
+    function getEquivalentScheduleCodes(deptCode) {
+      const equivalents = {
+        'RD*': ['R&L'],   // Radio-diagnosis in old schedule
+        'TB*': ['TB'],    // TB in all schedules
+        'LAB*': ['LABS'], // Lab Medicine in new schedule
+        'FP': ['FP&AY'],  // Family Planning in old schedule
+        'AY*': ['FP&AY'], // AYUSH in old schedule
+      };
+      // Return the original code plus any known equivalents
+      return [deptCode, ...(equivalents[deptCode] || [])];
+    }
+
+    /**
+     * Returns the canonical posting code to handle typos or variations in schedule data.
+     * This is used for looking up the site/task in the legend.
+     * @param {string} postingCode - The posting code found in the detailed schedule.
+     * @returns {string} The canonical posting code for legend lookup.
+     */
+    function getCanonicalPostingCode(postingCode) {
+      const variations = {
+        'GM - FMTW': 'GM - FMW', // Typo in old schedule for Female Medical Ward.
+        'FP & AY': 'FWP',      // Combined posting in old schedule; map to FWP for legend lookup.
+      };
+      return variations[postingCode] || postingCode;
+    }
+
     function lookupStudent() {
       const statusElement = document.getElementById("result-status");
       const studentResultsContainer = document.getElementById("student-results-container");
@@ -494,10 +526,11 @@
       }
 
       // --- Look up details in the legend ---
-      const legendEntry = appData.legend.legend.find(item => item.code === postingCode);
+      const canonicalPostingCode = getCanonicalPostingCode(postingCode);
+      const legendEntry = appData.legend.legend.find(item => item.code === canonicalPostingCode);
       const departmentEntry = appData.regulations.regulations.find(item => item.abbreviation === departmentCode);
 
-      const colleagueRolls = findColleagues(rollInput, postingCode, weekSchedule, groupData);
+      const colleagueRolls = findColleagues(rollInput, postingCode, weekSchedule, groupData); // Use raw postingCode for colleague lookup
 
       // --- Get a random guideline ---
       const randomGuideline = appData.guidelines[Math.floor(Math.random() * appData.guidelines.length)];
@@ -541,16 +574,19 @@
 
       const postingsBySite = {};
 
+      const searchCodes = getEquivalentScheduleCodes(departmentCode);
+
       for (const groupCode of Object.keys(atAGlanceWeek.postings)) {
-        if (atAGlanceWeek.postings[groupCode] === departmentCode) {
+        if (searchCodes.includes(atAGlanceWeek.postings[groupCode])) {
           const groupLetter = groupCode.charAt(0);
           const detailedScheduleData = appData[`group${groupLetter}`];
           const weekSchedule = detailedScheduleData[scheduleKey].find(w => w.startDate === atAGlanceWeek.startDate);
 
           if (weekSchedule && weekSchedule.postings[groupCode]) {
-            const postingCode = weekSchedule.postings[groupCode];
-            const legendEntry = appData.legend.legend.find(item => item.code === postingCode);
-            const siteName = legendEntry?.site || postingCode;
+            const rawPostingCode = weekSchedule.postings[groupCode];
+            const canonicalPostingCode = getCanonicalPostingCode(rawPostingCode);
+            const legendEntry = appData.legend.legend.find(item => item.code === canonicalPostingCode);
+            const siteName = legendEntry?.site || rawPostingCode;
 
             if (!postingsBySite[siteName]) {
               postingsBySite[siteName] = [];
