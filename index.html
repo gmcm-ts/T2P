@@ -1,0 +1,41 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Postings</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    .posting { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+  <h1>Today's Student Postings</h1>
+  <div id="postings"></div>
+
+  <script>
+    // Replace with your Google Apps Script URL
+    const scriptUrl = "https://https://script.google.com/macros/s/AKfycbyydDseHGAAxy8erMjtSauyaMVCxgRKBAzrgYMzLdd2qLKKX0X70A7KwlXm80shG0L_/exec.google.com/macros/s/YOUR_SCRIPT_ID/exec";
+    
+    fetch(scriptUrl)
+      .then(response => response.json())
+      .then(data => {
+        const container = document.getElementById('postings');
+        if (data.length === 0) {
+          container.innerHTML = '<p>No postings today.</p>';
+          return;
+        }
+        
+        data.forEach(student => {
+          const div = document.createElement('div');
+          div.className = 'posting';
+          div.innerHTML = `<strong>${student.name}</strong> - ${student.post}`;
+          container.appendChild(div);
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        document.body.innerHTML = '<p>Error loading postings. Please try again later.</p>';
+      });
+  </script>
+</body>
+</html>
