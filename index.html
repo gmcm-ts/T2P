@@ -253,8 +253,17 @@
         if (groupData[rollInput]) {
           studentGroupCode = rollInput;
         } else {
-          statusElement.textContent = `No group found for '${rollInput}'.`;
-          return;
+          // If not found, check the OTHER schedule's group data for a better error message.
+          const otherGroupData = isOldSchedule ? appData.groups : appData.oldGroups;
+          const foundInOther = findGroupFromRoll(rollInput, otherGroupData);
+          if (foundInOther) {
+            const scheduleType = isOldSchedule ? 'new' : 'old';
+            const scheduleDate = PIVOT_DATE.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            statusElement.textContent = `Roll No. '${rollInput}' is found in the ${scheduleType} schedule (from ${scheduleDate}), but not in the current one.`;
+          } else {
+            statusElement.textContent = `No group found for '${rollInput}'.`;
+          }
+          return; // Stop execution
         }
       }
 
