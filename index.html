@@ -284,9 +284,14 @@
       });
 
       datePicker.addEventListener('change', () => {
-        // The picker gives a string 'YYYY-MM-DD'. To avoid timezone issues,
-        // we create the date object ensuring it's interpreted in the local timezone.
-        selectedDate = new Date(datePicker.value + 'T00:00:00');
+        if (!datePicker.value) {
+          // If no date is selected, reset to today
+          selectedDate = new Date();
+        } else {
+          // The picker gives a string 'YYYY-MM-DD'. To avoid timezone issues,
+          // we create the date object ensuring it's interpreted in the local timezone.
+          selectedDate = new Date(datePicker.value + 'T00:00:00');
+        }
         updateDateDisplay(selectedDate);
         datePicker.style.display = 'none';
         dateElement.style.display = 'block';
@@ -410,30 +415,41 @@
         const code = reg.abbreviation;
         const name = reg.department;
 
-        // The full name is a searchable term
-        const searchTerms = [name.toLowerCase()];
+        // The full name is a searchable term, split by common separators
+        const nameTerms = name.toLowerCase()
+          .split(/[\/,&\(\)]+/) // Split on /, comma, &, and parentheses
+          .map(term => term.trim())
+          .filter(term => term.length > 1); // Filter out single characters
+
+        const searchTerms = [...nameTerms];
 
         // Add the abbreviation itself (without '*')
-        searchTerms.push(code.replace('*', '').toLowerCase());
+        const abbr = code.replace('*', '').toLowerCase();
+        if (!searchTerms.includes(abbr)) {
+          searchTerms.push(abbr);
+        }
 
         // Add custom aliases
         const customAliases = {
-          'PSM': ['spm', 'cm', 'community medicine', 'social medicine', 'preventive medicine'],
-          'OBG': ['obs', 'gynae', 'obstetrics', 'gynaecology', 'gynecology'],
-          'PED': ['peds', 'paediatrics', 'pediatrics', 'child health'],
-          'ORT': ['ortho', 'orthopaedics', 'orthopedics'],
-          'OPT': ['ophtha', 'ophthalmology', 'eye'],
-          'EM': ['casualty', 'emergency', 'accident', 'trauma'],
-          'ANS': ['anaesthesia', 'anesthesiology', 'anesthesia', 'anaesthesiology'],
-          'DVL': ['derma', 'dermatology', 'skin', 'venereology', 'leprosy'],
-          'FP': ['family planning', 'family welfare'],
-          'FMT': ['forensic', 'forensics', 'medical jurisprudence'],
-          'RD*': ['rd', 'radio', 'radiology', 'radio-diagnosis', 'imaging'],
-          'LAB*': ['labs', 'lab', 'patho', 'micro', 'pathology', 'microbiology', 'laboratory medicine', 'diagnostic labs', 'clinical pathology', 'r&l'],
-          'R&L': ['labs', 'lab', 'patho', 'micro', 'pathology', 'microbiology', 'laboratory medicine', 'diagnostic labs', 'clinical pathology', 'r&l'],
-          'LABS': ['labs', 'lab', 'patho', 'micro', 'pathology', 'microbiology', 'laboratory medicine', 'diagnostic labs', 'clinical pathology', 'r&l'],
-          'TB*': ['tb', 'dots', 'tuberculosis', 'chest'],
-          'AY*': ['ayush', 'ayurveda', 'yoga', 'unani', 'siddha', 'homeopathy']
+          'PSM': ['psm', 'cm', 'community', 'social', 'preventive', 'medicine'],
+          'GM': ['gm', 'medicine', 'general'],
+          'GS': ['gs', 'surgery', 'general'],
+          'OBG': ['obg', 'obs', 'gyn', 'gynae', 'obstetrics', 'gynaecology'],
+          'PED': ['ped', 'paediatrics', 'pediatrics'],
+          'ORT': ['ort', 'ortho', 'pmr', 'rehabilitation', 'physical medicine'],
+          'OPT': ['opt', 'eye', 'ophth', 'ophthalmology'],
+          'ENT': ['ent', 'ear', 'nose', 'throat', 'otorhinolaryngology'],
+          'EM': ['em', 'emergency', 'casualty', 'trauma'],
+          'ANS': ['ans', 'anesthesia', 'anaesthesia', 'critical', 'care'],
+          'PSY': ['psy', 'psych', 'psychiatry'],
+          'DVL': ['dvl', 'derm', 'skin', 'venereology', 'leprosy', 'dermatology'],
+          'FP': ['fp', 'family', 'welfare', 'planning'],
+          'FMT': ['fmt', 'forensic', 'toxicology'],
+          'RD*': ['rd', 'radio', 'radiology', 'diagnosis', 'r&l'],
+          'LAB*': ['lab', 'path', 'micro', 'pathology', 'microbiology', 'r&l', 'labs'],
+          'R&L': ['r&l', 'rl', 'radiology', 'lab', 'pathology', 'radio', 'labs'],
+          'TB*': ['tb', 'dots', 'tuberculosis', 'center'],
+          'AY*': ['ay', 'ayur', 'ayurvedic', 'medicine']
         };
 
         if (customAliases[code]) {
@@ -491,13 +507,12 @@
      */
     function getEquivalentScheduleCodes(deptCode) {
       const equivalents = {
-        'RD*': ['R&L'],   // Radio-diagnosis in old schedule
-        'TB*': ['TB'],    // TB in all schedules
-        'LAB*': ['LABS', 'R&L'], // Lab Medicine/Pathology/Microbiology in all schedules
-        'R&L': ['LAB*', 'LABS'], // Reverse mapping for R&L
-        'LABS': ['LAB*', 'R&L'], // Reverse mapping for LABS
-        'FP': ['FP&AY'],  // Family Planning in old schedule
-        'AY*': ['FP&AY'], // AYUSH in old schedule
+        'RD*': ['R&L'],        // Radio-diagnosis maps to Radiology in old schedule
+        'LAB*': ['R&L'],       // Lab Medicine maps to Radiology in old schedule
+        'R&L': ['RD*', 'LAB*'], // Radiology maps back to both Lab and Radio-diagnosis
+        'TB*': ['TB'],         // TB Center remains consistent
+        'FP': ['FP&AY'],       // Family Planning maps to combined posting
+        'AY*': ['FP&AY']       // Ayurvedic maps to combined posting
       };
       // Return the original code plus any known equivalents
       return [deptCode, ...(equivalents[deptCode] || [])];
@@ -511,8 +526,10 @@
      */
     function getCanonicalPostingCode(postingCode) {
       const variations = {
-        'GM - FMTW': 'GM - FMW', // Typo in old schedule for Female Medical Ward.
-        'FP & AY': 'FWP',      // Combined posting in old schedule; map to FWP for legend lookup.
+        'GM - FMTW': 'GM - FMW',   // Typo in old schedule for Female Medical Ward.
+        'FP & AY': 'FWP',          // Combined posting in old schedule; map to FWP for legend lookup.
+        'R&L': 'RD*',              // Map Radiology to Radio-diagnosis for legend lookup
+        'LABS': 'LAB*'             // Map Labs to Lab Medicine for legend lookup
       };
       return variations[postingCode] || postingCode;
     }
