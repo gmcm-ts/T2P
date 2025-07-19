@@ -2,92 +2,139 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Student Postings</title>
+  <title>Student Group Lookup</title>
   <style>
-    body { font-family: Arial; padding: 20px; }
-    .posting { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
-    #search { margin-top: 20px; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f2f5;
+    }
+    #search-container {
+      text-align: center;
+      padding: 40px;
+      border-radius: 8px;
+      background-color: white;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 320px;
+    }
+    #current-date {
+      margin-bottom: 25px;
+      color: #555;
+      font-size: 16px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 15px;
+    }
+    #rollInput {
+      padding: 10px;
+      font-size: 16px;
+      width: calc(70% - 22px); /* Adjust for padding and border */
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border: 1px solid #007bff;
+      background-color: #007bff;
+      color: white;
+      border-radius: 4px;
+      transition: background-color 0.2s, border-color 0.2s;
+    }
+    button:hover:not(:disabled) {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+    button:disabled {
+      background-color: #ccc;
+      border-color: #ccc;
+      cursor: not-allowed;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      min-height: 27px; /* Prevents layout shift when text appears */
+      color: #333;
+    }
   </style>
 </head>
 <body>
-  <h1>Today's Student Postings</h1>
-  <div id="postings"></div>
-
-  <!-- Roll Number Search -->
-  <div id="search">
-    <input type="text" id="rollInput" placeholder="Enter Roll Number" />
-    <button onclick="lookupGroup()">Search</button>
+  <div id="search-container">
+    <h2>Student Group Lookup</h2>
+    <p id="current-date"></p>
+    <input type="text" id="rollInput" placeholder="Loading group data..." disabled />
+    <button id="searchButton" onclick="lookupGroup()" disabled>Search</button>
     <p id="result"></p>
   </div>
 
   <script>
-    // Hardcoded group data based on your TSV
-    const groupData = {
-      "A1": [1, 2, 3, 14],
-      "A2": [4, 5, 6, 16],
-      "A3": [7, 8, 9, 17],
-      "A4": [10, 11, 12],
-      "A5": [13, 15, 18],
-      "A6": [22, 23, 25],
-      "A7": [28, 29, 30, 117],
-      "A8": [31, 32, 34],
-      "A9": [35, 36, 37],
-      "A10": [38, 40, 41, 19],
-      "A11": [42, 43, 21],
-      "A12": [44, 46, 24],
-      "A13": [47, 48, 49],
-      "B1": [50, 51, 52, 26],
-      "B2": [53, 54, 56],
-      "B3": [57, 58, 60],
-      "B4": [62, 63, 64, 33],
-      "B5": [65, 66, 39],
-      "B6": [67, 68, 71],
-      "B7": [72, 73, 74, 45],
-      "B8": [75, 76, 77],
-      "B9": [78, 80, 83, 55],
-      "B10": [84, 85, 86],
-      "B11": [87, 88, 89],
-      "B12": [90, 91, 59],
-      "B13": [92, 93, 94],
-      "C1": [95, 96, 97, 61],
-      "C2": [98, 99, 101, 69],
-      "C3": [102, 103, 104, 70],
-      "C4": [105, 106, 107],
-      "C5": [108, 109, 110],
-      "C6": [111, 113, 114],
-      "C7": [115, 116, 118],
-      "C8": [119, 120, 121, 82],
-      "C9": [122, 123, 124, 100],
-      "C10": [125, 127, 126],
-      "C11": [129, 130, 131],
-      "C12": [132, 133, 134],
-      "C13": [135, 136, 137],
-      "D1": [139, 140, 141, 128],
-      "D2": [142, 143, 144],
-      "D3": [145, 146, 147],
-      "D4": [148, 149, 150],
-      "D5": [151, 153, 152],
-      "D6": [154, 155, 157, 156],
-      "D7": [158, 159, 160],
-      "D8": [161, 162, 163],
-      "D9": [164, 165, 166],
-      "D10": [167, 168, 169],
-      "D11": [170, 171, 172],
-      "D12": [173, 174, 175],
-      "D13": ["R5", "R101", "R141", "R12"]
-    };
+    let groupData = null; // This will hold the data from group-data.json
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const rollInputElement = document.getElementById("rollInput");
+      const searchButton = document.getElementById("searchButton");
+      const resultElement = document.getElementById("result");
+      const dateElement = document.getElementById("current-date");
+
+      // --- Date Grabber ---
+      // Get today's date and format it into a readable string.
+      const today = new Date();
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      dateElement.textContent = `Today is ${today.toLocaleDateString('en-US', options)}`;
+
+      fetch('group-data.json')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          groupData = data;
+          rollInputElement.placeholder = "Enter Roll No. or Group";
+          rollInputElement.disabled = false;
+          searchButton.disabled = false;
+        })
+        .catch(error => {
+          console.error("Error loading group data:", error);
+          resultElement.textContent = "Failed to load group data. Please refresh.";
+          rollInputElement.placeholder = "Error";
+        });
+
+      rollInputElement.addEventListener("keyup", function(event) {
+        if (event.key === "Enter") {
+          lookupGroup();
+        }
+      });
+    });
 
     function lookupGroup() {
+      if (!groupData) {
+        document.getElementById("result").textContent = "Group data is not loaded yet.";
+        return;
+      }
+
       const rollInputElement = document.getElementById("rollInput");
-      const rollInput = rollInputElement.value.trim();
+      const rollInput = rollInputElement.value.trim().toUpperCase();
       const result = document.getElementById("result");
 
       if (!rollInput) {
         result.textContent = "Please enter a roll number.";
         return;
       }
-      
-      // Try to convert to a number, but keep the original string if it fails (for "R5" etc.)
+
+      // Feature: Check if the input is a valid group name first.
+      if (groupData[rollInput]) {
+        const rollsInGroup = groupData[rollInput].join(', ');
+        result.textContent = `Group '${rollInput}' contains: ${rollsInGroup}`;
+        return; // End the function here if we found a group match.
+      }
+
       const rollAsNumber = parseInt(rollInput, 10);
       const searchKey = isNaN(rollAsNumber) ? rollInput : rollAsNumber;
 
@@ -100,39 +147,11 @@
       }
 
       if (foundGroup) {
-        result.textContent = `Roll number ${rollInput} belongs to Group: ${foundGroup}`;
+        result.textContent = `Roll No. '${rollInput}' belongs to Group: ${foundGroup}`;
       } else {
-        result.textContent = `No group found for roll number ${rollInput}.`;
+        result.textContent = `No group or roll number found for '${rollInput}'.`;
       }
     }
-
-    // Example: Display student postings (unchanged from original)
-    fetch("data.json")
-      .then(response => response.json())
-      .then(data => {
-        const container = document.getElementById("postings");
-        if (data.Timetable && data.Timetable.length > 0) {
-          data.Timetable.forEach(student => {
-            const div = document.createElement("div");
-            div.textContent = `${student["Student Name"]} - ${student["Posting Location"]}`;
-            container.appendChild(div);
-          });
-        } else {
-          container.textContent = "No postings today.";
-        }
-      })
-      .catch(error => {
-        console.error("Error loading data:", error);
-        const container = document.getElementById("postings");
-        container.innerHTML = "<p>Error loading postings. Please try again later.</p>";
-      });
-
-    // Add event listener for 'Enter' key on the input field
-    document.getElementById("rollInput").addEventListener("keyup", function(event) {
-      if (event.key === "Enter") {
-        lookupGroup();
-      }
-    });
   </script>
 </body>
 </html>

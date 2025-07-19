@@ -1,18 +1,22 @@
-# T2P - Student Posting Tracker
+# T2P - Student Group Lookup
 
-This is a static website designed to display student postings from a Google Sheets timetable.
+A simple, fast, static web application to look up a student's group based on their roll number.
 
 ## Features
-- Displays student postings for the current day
-- Automatically updates based on the current date
+- Fetches group data from an external JSON file.
+- Provides a clean interface to search for a group by roll number.
+- Supports both numeric and alphanumeric (e.g., "R5") roll numbers.
+- User-friendly feedback during data loading and for search results.
 
-## Setup Instructions
-1. Begin by creating a new JSON file to store your timetable data. Ensure that the JSON file is properly formatted with the necessary student posting information.
-2. Next, update the index.html file by specifying the correct path to your newly created JSON file. This will allow the website to retrieve the data from the JSON file.
-3. After making the necessary changes, push your code to a GitHub repository. Once the code is on GitHub, enable GitHub Pages to host your website. This will make your site accessible online.
+## Setup
+This project is a static website and requires no special server-side setup.
+1.  Ensure the `group-data.json` file is present in the root directory and contains the group mappings.
+2.  Host the folder (containing `index.html` and `group-data.json`) on any static web host, like GitHub Pages.
 
-## Technologies
-- HTML5: Used for structuring the web page and displaying the student postings.
-- CSS3: Utilized for styling the web page to ensure it is visually appealing and user-friendly.
-- JavaScript: Implemented to fetch and display the student postings from the JSON file dynamically.
-- GitHub Pages: Used to host the static website, making it accessible via the web.
+## How it Works
+-   **HTML5/CSS3**: Structures and styles the user interface.
+-   **JavaScript**:
+    -   On page load, it asynchronously fetches the `group-data.json` file.
+    -   It handles user input to search for a roll number within the loaded data.
+    -   It dynamically displays the result to the user.
+-   **GitHub Pages**: Used for hosting the static website.
