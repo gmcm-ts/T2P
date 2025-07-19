@@ -196,6 +196,24 @@
       return null;
     }
 
+    /**
+     * Finds all colleagues for a given student in a specific week.
+     * @param {string} studentGroupCode - The group code of the student being searched for (e.g., "A5").
+     * @param {string} postingCode - The specific posting code for that student (e.g., "GS - MSW").
+     * @param {object} weekSchedule - The weekly schedule object from the detailed view (e.g., group-a-schedule.json).
+     * @param {object} groupData - The group-to-roll-number mapping object.
+     * @returns {string} A comma-separated string of colleague roll numbers.
+     */
+    function findColleagues(studentGroupCode, postingCode, weekSchedule, groupData) {
+      // From the detailed week schedule, find all other group codes that have the exact same posting.
+      const colleagueGroups = Object.entries(weekSchedule.postings)
+        .filter(([group, code]) => code === postingCode && group !== studentGroupCode)
+        .map(([group]) => group);
+
+      // For each of those groups, get their list of roll numbers and join them.
+      return colleagueGroups.flatMap(group => groupData[group] || []).join(', ');
+    }
+
     function lookupInfo() {
       const statusElement = document.getElementById("result-status");
       const resultsContainer = document.getElementById("results-container");
@@ -242,21 +260,23 @@
       }
 
       // --- Find the current week's posting ---
+      // The detailed schedule (e.g., group-a-schedule.json) is used to find the specific posting.
       const todayStr = today.toISOString().split('T')[0];
       const weekSchedule = detailedScheduleData[scheduleKey].find(week =>
         todayStr >= week.startDate && todayStr <= week.endDate
       );
-      const atAGlanceSchedule = appData.schedule[scheduleKey].find(week =>
+      // The "at a glance" schedule is used to find the major department.
+      const atAGlanceWeek = appData.schedule[scheduleKey].find(week =>
         todayStr >= week.startDate && todayStr <= week.endDate
       );
 
-      if (!weekSchedule || !atAGlanceSchedule) {
+      if (!weekSchedule || !atAGlanceWeek) {
         statusElement.textContent = `No posting found for today's date.`;
         return;
       }
 
-      const postingCode = weekSchedule.postings[studentGroupCode]; // e.g., "GS - MSW"
-      const departmentCode = atAGlanceSchedule.postings[studentGroupCode]; // e.g., "GS"
+      const postingCode = weekSchedule.postings[studentGroupCode]; // e.g., "GS - MSW" from the detailed schedule
+      const departmentCode = atAGlanceWeek.postings[studentGroupCode]; // e.g., "GS" from the at-a-glance schedule
 
       if (!postingCode || !departmentCode) {
         statusElement.textContent = `Posting details not found for group ${studentGroupCode}.`;
@@ -267,14 +287,7 @@
       const legendEntry = appData.legend.legend.find(item => item.code === postingCode);
       const departmentEntry = appData.regulations.regulations.find(item => item.abbreviation === departmentCode);
 
-      // --- Find Colleagues ---
-      const colleagueGroups = Object.entries(weekSchedule.postings)
-        .filter(([group, code]) => code === postingCode && group !== studentGroupCode)
-        .map(([group]) => group);
-
-      const colleagueRolls = colleagueGroups
-        .flatMap(group => groupData[group] || [])
-        .join(', ');
+      const colleagueRolls = findColleagues(studentGroupCode, postingCode, weekSchedule, groupData);
 
       // --- Get a random guideline ---
       const randomGuideline = appData.guidelines[Math.floor(Math.random() * appData.guidelines.length)];
