@@ -78,24 +78,30 @@
     };
 
     function lookupGroup() {
-      const rollInput = document.getElementById("rollInput").value.trim();
+      const rollInputElement = document.getElementById("rollInput");
+      const rollInput = rollInputElement.value.trim();
       const result = document.getElementById("result");
 
       if (!rollInput) {
         result.textContent = "Please enter a roll number.";
         return;
       }
+      
+      // Try to convert to a number, but keep the original string if it fails (for "R5" etc.)
+      const rollAsNumber = parseInt(rollInput, 10);
+      const searchKey = isNaN(rollAsNumber) ? rollInput : rollAsNumber;
 
-      let found = false;
+      let foundGroup = null;
       for (const [group, rolls] of Object.entries(groupData)) {
-        if (rolls.includes(rollInput) || rolls.includes(parseInt(rollInput))) {
-          result.textContent = `Roll number ${rollInput} belongs to Group: ${group}`;
-          found = true;
+        if (rolls.includes(searchKey)) {
+          foundGroup = group;
           break;
         }
       }
 
-      if (!found) {
+      if (foundGroup) {
+        result.textContent = `Roll number ${rollInput} belongs to Group: ${foundGroup}`;
+      } else {
         result.textContent = `No group found for roll number ${rollInput}.`;
       }
     }
@@ -117,8 +123,16 @@
       })
       .catch(error => {
         console.error("Error loading data:", error);
-        document.body.innerHTML = "<p>Error loading data. Please try again later.</p>";
+        const container = document.getElementById("postings");
+        container.innerHTML = "<p>Error loading postings. Please try again later.</p>";
       });
+
+    // Add event listener for 'Enter' key on the input field
+    document.getElementById("rollInput").addEventListener("keyup", function(event) {
+      if (event.key === "Enter") {
+        lookupGroup();
+      }
+    });
   </script>
 </body>
 </html>

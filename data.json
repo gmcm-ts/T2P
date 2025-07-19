@@ -1,0 +1,12 @@
+{
+  "Timetable": [
+    {
+      "Student Name": "Student One",
+      "Posting Location": "Location A"
+    },
+    {
+      "Student Name": "Student Two",
+      "Posting Location": "Location B"
+    }
+  ]
+}
