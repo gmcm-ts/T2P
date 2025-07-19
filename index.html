@@ -100,7 +100,7 @@
     input:checked + .slider:before {
       transform: translateX(22px);
     }
-    #rollInput {
+    #rollInput,
     #department-select {
       padding: 10px;
       font-size: 16px;
@@ -299,10 +299,19 @@
       });
 
       searchButton.addEventListener('click', () => {
-        if (currentMode === 'student') {
-          lookupStudent();
+        const studentResultsContainer = document.getElementById('student-results-container');
+        const facultyResultsContainer = document.getElementById('faculty-results-container');
+
+        // If results are already visible, reload the page to reset for a new search.
+        if (studentResultsContainer.style.display === 'block' || facultyResultsContainer.style.display === 'block') {
+          location.reload();
         } else {
-          lookupFaculty();
+          // Otherwise, perform the search based on the current mode.
+          if (currentMode === 'student') {
+            lookupStudent();
+          } else {
+            lookupFaculty();
+          }
         }
       });
 
