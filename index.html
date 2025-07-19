@@ -227,6 +227,7 @@
 
   <script>
     const appData = {};
+    const fuzzyDeptSearch = {};
     let currentMode = 'student'; // 'student' or 'faculty'
     let selectedDate = new Date();
     const PIVOT_DATE = new Date('2025-07-21T00:00:00Z'); // The date the new schedule starts
@@ -278,8 +279,8 @@
         dateElement.style.display = 'block';
 
         // If a roll number is already in the input, re-run the search for the new date.
-        if (rollInputElement.value.trim()) {
-          if (currentMode === 'student') lookupStudent();
+        if (currentMode === 'student' && rollInputElement.value.trim()) {
+          lookupStudent();
         }
       });
 
@@ -342,6 +343,7 @@
         .then(() => {
           console.log("All data loaded successfully:", appData);
           populateDepartmentDatalist();
+          buildFuzzySearchData();
           departmentInput.disabled = false;
           rollInputElement.placeholder = "Enter Roll No. or Group";
           rollInputElement.disabled = false;
@@ -360,22 +362,15 @@
       });
 
       departmentInput.addEventListener('input', () => {
-        const value = departmentInput.value;
-        const departmentList = document.getElementById('department-list');
-        let selectedCode = null;
+        const value = departmentInput.value.trim().toLowerCase();
+        const match = fuzzyDeptSearch[value];
 
-        // Find the option in the datalist that exactly matches the input's value
-        for (const option of departmentList.options) {
-          if (option.value === value) {
-            selectedCode = option.dataset.code;
-            break;
-          }
-        }
-
-        if (selectedCode) {
-          lookupFaculty(selectedCode);
+        if (match) {
+          // To provide good UX, set the input to the full name when a match is found
+          departmentInput.value = match.name;
+          lookupFaculty(match.code);
         } else {
-          // Clear results if the input is not a valid department
+          // If user clears input or types something invalid, hide results
           document.getElementById("faculty-results-container").style.display = 'none';
           document.getElementById("result-status").textContent = '';
         }
@@ -392,6 +387,48 @@
           option.dataset.code = reg.abbreviation;
           departmentList.appendChild(option);
         }
+      });
+    }
+
+    function buildFuzzySearchData() {
+      appData.regulations.regulations.forEach(reg => {
+        if (!reg.department || reg.department.includes('TOTAL')) return;
+
+        const code = reg.abbreviation;
+        const name = reg.department;
+
+        // The full name is a searchable term
+        const searchTerms = [name.toLowerCase()];
+
+        // Add the abbreviation itself (without '*')
+        searchTerms.push(code.replace('*', '').toLowerCase());
+
+        // Add custom aliases
+        const customAliases = {
+          'PSM': ['spm', 'cm', 'community medicine'],
+          'OBG': ['obs', 'gynae'],
+          'PED': ['peds', 'paediatrics'],
+          'ORT': ['ortho', 'orthopaedics'],
+          'OPT': ['ophtha', 'ophthalmology'],
+          'EM': ['casualty', 'emergency'],
+          'ANS': ['anaesthesia', 'anesthesiology'],
+          'DVL': ['derma', 'dermatology'],
+          'FP': ['family planning'],
+          'FMT': ['forensic'],
+          'RD*': ['rd', 'radio', 'radiology', 'radio-diagnosis'],
+          'LAB*': ['labs', 'lab', 'patho', 'micro'],
+          'TB*': ['tb', 'dots'],
+          'AY*': ['ayush']
+        };
+
+        if (customAliases[code]) {
+          searchTerms.push(...customAliases[code]);
+        }
+
+        // Add all unique terms to the fuzzy search map
+        new Set(searchTerms).forEach(term => {
+          fuzzyDeptSearch[term] = { name: name, code: code };
+        });
       });
     }
 
