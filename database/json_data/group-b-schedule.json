@@ -1,0 +1,963 @@
+{
+  "oldSchedule": [
+    {
+      "startDate": "2025-04-21",
+      "endDate": "2025-04-28",
+      "postings": {
+        "B1": "GM - OP",
+        "B2": "GM - OP",
+        "B3": "GM - MMW",
+        "B4": "GM - FMTW",
+        "B5": "GM - PMW",
+        "B6": "GM - ICU",
+        "B7": "PSY",
+        "B8": "DVL",
+        "B9": "EM",
+        "B10": "EM",
+        "B11": "FMT",
+        "B12": "R&L"
+      }
+    },
+    {
+      "startDate": "2025-04-29",
+      "endDate": "2025-05-05",
+      "postings": {
+        "B1": "GM - OP",
+        "B2": "GM - MMW",
+        "B3": "GM - FMTW",
+        "B4": "GM - PMW",
+        "B5": "GM - ICU",
+        "B6": "PSY",
+        "B7": "DVL",
+        "B8": "EM",
+        "B9": "EM",
+        "B10": "FMT",
+        "B11": "R&L",
+        "B12": "GM - OP"
+      }
+    },
+    {
+      "startDate": "2025-05-06",
+      "endDate": "2025-05-12",
+      "postings": {
+        "B1": "GM - MMW",
+        "B2": "GM - FMTW",
+        "B3": "GM - PMW",
+        "B4": "GM - ICU",
+        "B5": "PSY",
+        "B6": "DVL",
+        "B7": "EM",
+        "B8": "EM",
+        "B9": "FMT",
+        "B10": "R&L",
+        "B11": "GM - OP",
+        "B12": "GM - OP"
+      }
+    },
+    {
+      "startDate": "2025-05-13",
+      "endDate": "2025-05-20",
+      "postings": {
+        "B1": "GM - FMTW",
+        "B2": "GM - PMW",
+        "B3": "GM - ICU",
+        "B4": "PSY",
+        "B5": "DVL",
+        "B6": "EM",
+        "B7": "EM",
+        "B8": "FMT",
+        "B9": "R&L",
+        "B10": "GM - OP",
+        "B11": "GM - OP",
+        "B12": "GM - MMW"
+      }
+    },
+    {
+      "startDate": "2025-05-21",
+      "endDate": "2025-05-28",
+      "postings": {
+        "B1": "GM - PMW",
+        "B2": "GM - ICU",
+        "B3": "PSY",
+        "B4": "DVL",
+        "B5": "EM",
+        "B6": "EM",
+        "B7": "FMT",
+        "B8": "R&L",
+        "B9": "GM - OP",
+        "B10": "GM - OP",
+        "B11": "GM - MMW",
+        "B12": "GM - FMTW"
+      }
+    },
+    {
+      "startDate": "2025-05-29",
+      "endDate": "2025-06-04",
+      "postings": {
+        "B1": "GM - ICU",
+        "B2": "PSY",
+        "B3": "DVL",
+        "B4": "EM",
+        "B5": "EM",
+        "B6": "FMT",
+        "B7": "R&L",
+        "B8": "GM - OP",
+        "B9": "GM - OP",
+        "B10": "GM - MMW",
+        "B11": "GM - FMTW",
+        "B12": "GM - PMW"
+      }
+    },
+    {
+      "startDate": "2025-06-05",
+      "endDate": "2025-06-12",
+      "postings": {
+        "B1": "PSY",
+        "B2": "DVL",
+        "B3": "EM",
+        "B4": "EM",
+        "B5": "FMT",
+        "B6": "R&L",
+        "B7": "GM - OP",
+        "B8": "GM - OP",
+        "B9": "GM - MMW",
+        "B10": "GM - FMTW",
+        "B11": "GM - PMW",
+        "B12": "GM - ICU"
+      }
+    },
+    {
+      "startDate": "2025-06-13",
+      "endDate": "2025-06-19",
+      "postings": {
+        "B1": "DVL",
+        "B2": "EM",
+        "B3": "EM",
+        "B4": "FMT",
+        "B5": "R&L",
+        "B6": "GM - OP",
+        "B7": "GM - OP",
+        "B8": "GM - MMW",
+        "B9": "GM - FMTW",
+        "B10": "GM - PMW",
+        "B11": "GM - ICU",
+        "B12": "PSY"
+      }
+    },
+    {
+      "startDate": "2025-06-20",
+      "endDate": "2025-06-27",
+      "postings": {
+        "B1": "EM",
+        "B2": "EM",
+        "B3": "FMT",
+        "B4": "R&L",
+        "B5": "GM - OP",
+        "B6": "GM - OP",
+        "B7": "GM - MMW",
+        "B8": "GM - FMTW",
+        "B9": "GM - PMW",
+        "B10": "GM - ICU",
+        "B11": "PSY",
+        "B12": "DVL"
+      }
+    },
+    {
+      "startDate": "2025-06-28",
+      "endDate": "2025-07-05",
+      "postings": {
+        "B1": "EM",
+        "B2": "FMT",
+        "B3": "R&L",
+        "B4": "GM - OP",
+        "B5": "GM - OP",
+        "B6": "GM - MMW",
+        "B7": "GM - FMTW",
+        "B8": "GM - PMW",
+        "B9": "GM - ICU",
+        "B10": "PSY",
+        "B11": "DVL",
+        "B12": "EM"
+      }
+    },
+    {
+      "startDate": "2025-07-06",
+      "endDate": "2025-07-12",
+      "postings": {
+        "B1": "FMT",
+        "B2": "R&L",
+        "B3": "GM - OP",
+        "B4": "GM - OP",
+        "B5": "GM - MMW",
+        "B6": "GM - FMTW",
+        "B7": "GM - PMW",
+        "B8": "GM - ICU",
+        "B9": "PSY",
+        "B10": "DVL",
+        "B11": "EM",
+        "B12": "EM"
+      }
+    },
+    {
+      "startDate": "2025-07-13",
+      "endDate": "2025-07-20",
+      "postings": {
+        "B1": "R&L",
+        "B2": "GM - OP",
+        "B3": "GM - OP",
+        "B4": "GM - MMW",
+        "B5": "GM - FMTW",
+        "B6": "GM - PMW",
+        "B7": "GM - ICU",
+        "B8": "PSY",
+        "B9": "DVL",
+        "B10": "EM",
+        "B11": "EM",
+        "B12": "FMT"
+      }
+    }
+  ],
+  "newSchedule": [
+    {
+      "startDate": "2025-07-21",
+      "endDate": "2025-07-27",
+      "postings": {
+        "B1": "PSM",
+        "B2": "PSM",
+        "B3": "PSM",
+        "B4": "PSM",
+        "B5": "PSM",
+        "B6": "PSM",
+        "B7": "PSM",
+        "B8": "PSM",
+        "B9": "PSM",
+        "B10": "PSM",
+        "B11": "PSM",
+        "B12": "PSM",
+        "B13": "TB"
+      }
+    },
+    {
+      "startDate": "2025-07-28",
+      "endDate": "2025-08-03",
+      "postings": {
+        "B1": "PSM",
+        "B2": "PSM",
+        "B3": "PSM",
+        "B4": "PSM",
+        "B5": "PSM",
+        "B6": "PSM",
+        "B7": "PSM",
+        "B8": "PSM",
+        "B9": "PSM",
+        "B10": "PSM",
+        "B11": "PSM",
+        "B12": "TB",
+        "B13": "PSM"
+      }
+    },
+    {
+      "startDate": "2025-08-04",
+      "endDate": "2025-08-10",
+      "postings": {
+        "B1": "PSM",
+        "B2": "PSM",
+        "B3": "PSM",
+        "B4": "PSM",
+        "B5": "PSM",
+        "B6": "PSM",
+        "B7": "PSM",
+        "B8": "PSM",
+        "B9": "PSM",
+        "B10": "PSM",
+        "B11": "TB",
+        "B12": "PSM",
+        "B13": "PSM"
+      }
+    },
+    {
+      "startDate": "2025-08-11",
+      "endDate": "2025-08-17",
+      "postings": {
+        "B1": "PSM",
+        "B2": "PSM",
+        "B3": "PSM",
+        "B4": "PSM",
+        "B5": "PSM",
+        "B6": "PSM",
+        "B7": "PSM",
+        "B8": "PSM",
+        "B9": "PSM",
+        "B10": "TB",
+        "B11": "PSM",
+        "B12": "PSM",
+        "B13": "PSM"
+      }
+    },
+    {
+      "startDate": "2025-08-18",
+      "endDate": "2025-08-24",
+      "postings": {
+        "B1": "PSM",
+        "B2": "PSM",
+        "B3": "PSM",
+        "B4": "PSM",
+        "B5": "PSM",
+        "B6": "PSM",
+        "B7": "PSM",
+        "B8": "PSM",
+        "B9": "TB",
+        "B10": "PSM",
+        "B11": "PSM",
+        "B12": "PSM",
+        "B13": "PSM"
+      }
+    },
+    {
+      "startDate": "2025-08-25",
+      "endDate": "2025-08-31",
+      "postings": {
+        "B1": "PSM",
+        "B2": "PSM",
+        "B3": "PSM",
+        "B4": "PSM",
+        "B5": "PSM",
+        "B6": "PSM",
+        "B7": "PSM",
+        "B8": "TB",
+        "B9": "PSM",
+        "B10": "PSM",
+        "B11": "PSM",
+        "B12": "PSM",
+        "B13": "PSM"
+      }
+    },
+    {
+      "startDate": "2025-09-01",
+      "endDate": "2025-09-07",
+      "postings": {
+        "B1": "PSM",
+        "B2": "PSM",
+        "B3": "PSM",
+        "B4": "PSM",
+        "B5": "PSM",
+        "B6": "PSM",
+        "B7": "TB",
+        "B8": "PSM",
+        "B9": "PSM",
+        "B10": "PSM",
+        "B11": "PSM",
+        "B12": "PSM",
+        "B13": "PSM"
+      }
+    },
+    {
+      "startDate": "2025-09-08",
+      "endDate": "2025-09-14",
+      "postings": {
+        "B1": "PSM",
+        "B2": "PSM",
+        "B3": "PSM",
+        "B4": "PSM",
+        "B5": "PSM",
+        "B6": "TB",
+        "B7": "PSM",
+        "B8": "PSM",
+        "B9": "PSM",
+        "B10": "PSM",
+        "B11": "PSM",
+        "B12": "PSM",
+        "B13": "PSM"
+      }
+    },
+    {
+      "startDate": "2025-09-15",
+      "endDate": "2025-09-21",
+      "postings": {
+        "B1": "PSM",
+        "B2": "PSM",
+        "B3": "PSM",
+        "B4": "PSM",
+        "B5": "TB",
+        "B6": "PSM",
+        "B7": "PSM",
+        "B8": "PSM",
+        "B9": "PSM",
+        "B10": "PSM",
+        "B11": "PSM",
+        "B12": "PSM",
+        "B13": "PSM"
+      }
+    },
+    {
+      "startDate": "2025-09-22",
+      "endDate": "2025-09-28",
+      "postings": {
+        "B1": "PSM",
+        "B2": "PSM",
+        "B3": "PSM",
+        "B4": "TB",
+        "B5": "PSM",
+        "B6": "PSM",
+        "B7": "PSM",
+        "B8": "PSM",
+        "B9": "PSM",
+        "B10": "PSM",
+        "B11": "PSM",
+        "B12": "PSM",
+        "B13": "PSM"
+      }
+    },
+    {
+      "startDate": "2025-09-29",
+      "endDate": "2025-10-05",
+      "postings": {
+        "B1": "PSM",
+        "B2": "PSM",
+        "B3": "TB",
+        "B4": "PSM",
+        "B5": "PSM",
+        "B6": "PSM",
+        "B7": "PSM",
+        "B8": "PSM",
+        "B9": "PSM",
+        "B10": "PSM",
+        "B11": "PSM",
+        "B12": "PSM",
+        "B13": "PSM"
+      }
+    },
+    {
+      "startDate": "2025-10-06",
+      "endDate": "2025-10-12",
+      "postings": {
+        "B1": "PSM",
+        "B2": "TB",
+        "B3": "PSM",
+        "B4": "PSM",
+        "B5": "PSM",
+        "B6": "PSM",
+        "B7": "PSM",
+        "B8": "PSM",
+        "B9": "PSM",
+        "B10": "PSM",
+        "B11": "PSM",
+        "B12": "PSM",
+        "B13": "PSM"
+      }
+    },
+    {
+      "startDate": "2025-10-13",
+      "endDate": "2025-10-19",
+      "postings": {
+        "B1": "TB",
+        "B2": "PSM",
+        "B3": "PSM",
+        "B4": "PSM",
+        "B5": "PSM",
+        "B6": "PSM",
+        "B7": "PSM",
+        "B8": "PSM",
+        "B9": "PSM",
+        "B10": "PSM",
+        "B11": "PSM",
+        "B12": "PSM",
+        "B13": "PSM"
+      }
+    },
+    {
+      "startDate": "2025-10-20",
+      "endDate": "2025-10-26",
+      "postings": {
+        "B1": "OBG - OP",
+        "B2": "OBG - OP",
+        "B3": "OBG - MT1",
+        "B4": "OBG - MT2",
+        "B5": "OBG - LR1",
+        "B6": "OBG - LR2",
+        "B7": "FWP",
+        "B8": "AYUSH",
+        "B9": "ANS - GS+O",
+        "B10": "ANS - OBG",
+        "B11": "PED - OP",
+        "B12": "PED - SNC",
+        "B13": "PED - W"
+      }
+    },
+    {
+      "startDate": "2025-10-27",
+      "endDate": "2025-11-02",
+      "postings": {
+        "B1": "OBG - OP",
+        "B2": "OBG - MT1",
+        "B3": "OBG - MT2",
+        "B4": "OBG - LR1",
+        "B5": "OBG - LR2",
+        "B6": "FWP",
+        "B7": "AYUSH",
+        "B8": "ANS - GS+O",
+        "B9": "ANS - OBG",
+        "B10": "PED - OP",
+        "B11": "PED - SNC",
+        "B12": "PED - W",
+        "B13": "OBG - OP"
+      }
+    },
+    {
+      "startDate": "2025-11-03",
+      "endDate": "2025-11-09",
+      "postings": {
+        "B1": "OBG - MT1",
+        "B2": "OBG - MT2",
+        "B3": "OBG - LR1",
+        "B4": "OBG - LR2",
+        "B5": "FWP",
+        "B6": "AYUSH",
+        "B7": "ANS - GS+O",
+        "B8": "ANS - OBG",
+        "B9": "PED - OP",
+        "B10": "PED - SNC",
+        "B11": "PED - W",
+        "B12": "OBG - OP",
+        "B13": "OBG - OP"
+      }
+    },
+    {
+      "startDate": "2025-11-10",
+      "endDate": "2025-11-16",
+      "postings": {
+        "B1": "OBG - MT2",
+        "B2": "OBG - LR1",
+        "B3": "OBG - LR2",
+        "B4": "FWP",
+        "B5": "AYUSH",
+        "B6": "ANS - GS+O",
+        "B7": "ANS - OBG",
+        "B8": "PED - OP",
+        "B9": "PED - SNC",
+        "B10": "PED - W",
+        "B11": "OBG - OP",
+        "B12": "OBG - OP",
+        "B13": "OBG - MT1"
+      }
+    },
+    {
+      "startDate": "2025-11-17",
+      "endDate": "2025-11-23",
+      "postings": {
+        "B1": "OBG - LR1",
+        "B2": "OBG - LR2",
+        "B3": "FWP",
+        "B4": "AYUSH",
+        "B5": "ANS - GS+O",
+        "B6": "ANS - OBG",
+        "B7": "PED - OP",
+        "B8": "PED - SNC",
+        "B9": "PED - W",
+        "B10": "OBG - OP",
+        "B11": "OBG - OP",
+        "B12": "OBG - MT1",
+        "B13": "OBG - MT2"
+      }
+    },
+    {
+      "startDate": "2025-11-24",
+      "endDate": "2025-11-30",
+      "postings": {
+        "B1": "OBG - LR2",
+        "B2": "FWP",
+        "B3": "AYUSH",
+        "B4": "ANS - GS+O",
+        "B5": "ANS - OBG",
+        "B6": "PED - OP",
+        "B7": "PED - SNC",
+        "B8": "PED - W",
+        "B9": "OBG - OP",
+        "B10": "OBG - OP",
+        "B11": "OBG - MT1",
+        "B12": "OBG - MT2",
+        "B13": "OBG - LR1"
+      }
+    },
+    {
+      "startDate": "2025-12-01",
+      "endDate": "2025-12-07",
+      "postings": {
+        "B1": "FWP",
+        "B2": "AYUSH",
+        "B3": "ANS - GS+O",
+        "B4": "ANS - OBG",
+        "B5": "PED - OP",
+        "B6": "PED - SNC",
+        "B7": "PED - W",
+        "B8": "OBG - OP",
+        "B9": "OBG - OP",
+        "B10": "OBG - MT1",
+        "B11": "OBG - MT2",
+        "B12": "OBG - LR1",
+        "B13": "OBG - LR2"
+      }
+    },
+    {
+      "startDate": "2025-12-08",
+      "endDate": "2025-12-14",
+      "postings": {
+        "B1": "AYUSH",
+        "B2": "ANS - GS+O",
+        "B3": "ANS - OBG",
+        "B4": "PED - OP",
+        "B5": "PED - SNC",
+        "B6": "PED - W",
+        "B7": "OBG - OP",
+        "B8": "OBG - OP",
+        "B9": "OBG - MT1",
+        "B10": "OBG - MT2",
+        "B11": "OBG - LR1",
+        "B12": "OBG - LR2",
+        "B13": "FWP"
+      }
+    },
+    {
+      "startDate": "2025-12-15",
+      "endDate": "2025-12-21",
+      "postings": {
+        "B1": "ANS - GS+O",
+        "B2": "ANS - OBG",
+        "B3": "PED - OP",
+        "B4": "PED - SNC",
+        "B5": "PED - W",
+        "B6": "OBG - OP",
+        "B7": "OBG - OP",
+        "B8": "OBG - MT1",
+        "B9": "OBG - MT2",
+        "B10": "OBG - LR1",
+        "B11": "OBG - LR2",
+        "B12": "FWP",
+        "B13": "AYUSH"
+      }
+    },
+    {
+      "startDate": "2025-12-22",
+      "endDate": "2025-12-28",
+      "postings": {
+        "B1": "ANS - OBG",
+        "B2": "PED - OP",
+        "B3": "PED - SNC",
+        "B4": "PED - W",
+        "B5": "OBG - OP",
+        "B6": "OBG - OP",
+        "B7": "OBG - MT1",
+        "B8": "OBG - MT2",
+        "B9": "OBG - LR1",
+        "B10": "OBG - LR2",
+        "B11": "FWP",
+        "B12": "AYUSH",
+        "B13": "ANS - GS+O"
+      }
+    },
+    {
+      "startDate": "2025-12-29",
+      "endDate": "2026-01-04",
+      "postings": {
+        "B1": "PED - OP",
+        "B2": "PED - SNC",
+        "B3": "PED - W",
+        "B4": "OBG - OP",
+        "B5": "OBG - OP",
+        "B6": "OBG - MT1",
+        "B7": "OBG - MT2",
+        "B8": "OBG - LR1",
+        "B9": "OBG - LR2",
+        "B10": "FWP",
+        "B11": "AYUSH",
+        "B12": "ANS - GS+O",
+        "B13": "ANS - OBG"
+      }
+    },
+    {
+      "startDate": "2026-01-05",
+      "endDate": "2026-01-11",
+      "postings": {
+        "B1": "PED - SNC",
+        "B2": "PED - W",
+        "B3": "OBG - OP",
+        "B4": "OBG - OP",
+        "B5": "OBG - MT1",
+        "B6": "OBG - MT2",
+        "B7": "OBG - LR1",
+        "B8": "OBG - LR2",
+        "B9": "FWP",
+        "B10": "AYUSH",
+        "B11": "ANS - GS+O",
+        "B12": "ANS - OBG",
+        "B13": "PED - OP"
+      }
+    },
+    {
+      "startDate": "2026-01-12",
+      "endDate": "2026-01-18",
+      "postings": {
+        "B1": "PED - W",
+        "B2": "OBG - OP",
+        "B3": "OBG - OP",
+        "B4": "OBG - MT1",
+        "B5": "OBG - MT2",
+        "B6": "OBG - LR1",
+        "B7": "OBG - LR2",
+        "B8": "FWP",
+        "B9": "AYUSH",
+        "B10": "ANS - GS+O",
+        "B11": "ANS - OBG",
+        "B12": "PED - OP",
+        "B13": "PED - SNC"
+      }
+    },
+    {
+      "startDate": "2026-01-19",
+      "endDate": "2026-01-25",
+      "postings": {
+        "B1": "GS - OP",
+        "B2": "GS - OP",
+        "B3": "GS - MSW",
+        "B4": "GS - FSW",
+        "B5": "GS - POW",
+        "B6": "GS - ICU",
+        "B7": "OPT",
+        "B8": "OPT",
+        "B9": "ENT",
+        "B10": "ENT",
+        "B11": "ORT - OP",
+        "B12": "ORT - W",
+        "B13": "LABS"
+      }
+    },
+    {
+      "startDate": "2026-01-26",
+      "endDate": "2026-02-01",
+      "postings": {
+        "B1": "GS - OP",
+        "B2": "GS - MSW",
+        "B3": "GS - FSW",
+        "B4": "GS - POW",
+        "B5": "GS - ICU",
+        "B6": "OPT",
+        "B7": "OPT",
+        "B8": "ENT",
+        "B9": "ENT",
+        "B10": "ORT - OP",
+        "B11": "ORT - W",
+        "B12": "LABS",
+        "B13": "GS - OP"
+      }
+    },
+    {
+      "startDate": "2026-02-02",
+      "endDate": "2026-02-08",
+      "postings": {
+        "B1": "GS - MSW",
+        "B2": "GS - FSW",
+        "B3": "GS - POW",
+        "B4": "GS - ICU",
+        "B5": "OPT",
+        "B6": "OPT",
+        "B7": "ENT",
+        "B8": "ENT",
+        "B9": "ORT - OP",
+        "B10": "ORT - W",
+        "B11": "LABS",
+        "B12": "GS - OP",
+        "B13": "GS - OP"
+      }
+    },
+    {
+      "startDate": "2026-02-09",
+      "endDate": "2026-02-15",
+      "postings": {
+        "B1": "GS - FSW",
+        "B2": "GS - POW",
+        "B3": "GS - ICU",
+        "B4": "OPT",
+        "B5": "OPT",
+        "B6": "ENT",
+        "B7": "ENT",
+        "B8": "ORT - OP",
+        "B9": "ORT - W",
+        "B10": "LABS",
+        "B11": "GS - OP",
+        "B12": "GS - OP",
+        "B13": "GS - MSW"
+      }
+    },
+    {
+      "startDate": "2026-02-16",
+      "endDate": "2026-02-22",
+      "postings": {
+        "B1": "GS - POW",
+        "B2": "GS - ICU",
+        "B3": "OPT",
+        "B4": "OPT",
+        "B5": "ENT",
+        "B6": "ENT",
+        "B7": "ORT - OP",
+        "B8": "ORT - W",
+        "B9": "LABS",
+        "B10": "GS - OP",
+        "B11": "GS - OP",
+        "B12": "GS - MSW",
+        "B13": "GS - FSW"
+      }
+    },
+    {
+      "startDate": "2026-02-23",
+      "endDate": "2026-03-01",
+      "postings": {
+        "B1": "GS - ICU",
+        "B2": "OPT",
+        "B3": "OPT",
+        "B4": "ENT",
+        "B5": "ENT",
+        "B6": "ORT - OP",
+        "B7": "ORT - W",
+        "B8": "LABS",
+        "B9": "GS - OP",
+        "B10": "GS - OP",
+        "B11": "GS - MSW",
+        "B12": "GS - FSW",
+        "B13": "GS - POW"
+      }
+    },
+    {
+      "startDate": "2026-03-02",
+      "endDate": "2026-03-08",
+      "postings": {
+        "B1": "OPT",
+        "B2": "OPT",
+        "B3": "ENT",
+        "B4": "ENT",
+        "B5": "ORT - OP",
+        "B6": "ORT - W",
+        "B7": "LABS",
+        "B8": "GS - OP",
+        "B9": "GS - OP",
+        "B10": "GS - MSW",
+        "B11": "GS - FSW",
+        "B12": "GS - POW",
+        "B13": "GS - ICU"
+      }
+    },
+    {
+      "startDate": "2026-03-09",
+      "endDate": "2026-03-15",
+      "postings": {
+        "B1": "OPT",
+        "B2": "ENT",
+        "B3": "ENT",
+        "B4": "ORT - OP",
+        "B5": "ORT - W",
+        "B6": "LABS",
+        "B7": "GS - OP",
+        "B8": "GS - OP",
+        "B9": "GS - MSW",
+        "B10": "GS - FSW",
+        "B11": "GS - POW",
+        "B12": "GS - ICU",
+        "B13": "OPT"
+      }
+    },
+    {
+      "startDate": "2026-03-16",
+      "endDate": "2026-03-22",
+      "postings": {
+        "B1": "ENT",
+        "B2": "ENT",
+        "B3": "ORT - OP",
+        "B4": "ORT - W",
+        "B5": "LABS",
+        "B6": "GS - OP",
+        "B7": "GS - OP",
+        "B8": "GS - MSW",
+        "B9": "GS - FSW",
+        "B10": "GS - POW",
+        "B11": "GS - ICU",
+        "B12": "OPT",
+        "B13": "OPT"
+      }
+    },
+    {
+      "startDate": "2026-03-23",
+      "endDate": "2026-03-29",
+      "postings": {
+        "B1": "ENT",
+        "B2": "ORT - OP",
+        "B3": "ORT - W",
+        "B4": "LABS",
+        "B5": "GS - OP",
+        "B6": "GS - OP",
+        "B7": "GS - MSW",
+        "B8": "GS - FSW",
+        "B9": "GS - POW",
+        "B10": "GS - ICU",
+        "B11": "OPT",
+        "B12": "OPT",
+        "B13": "ENT"
+      }
+    },
+    {
+      "startDate": "2026-03-30",
+      "endDate": "2026-04-05",
+      "postings": {
+        "B1": "ORT - OP",
+        "B2": "ORT - W",
+        "B3": "LABS",
+        "B4": "GS - OP",
+        "B5": "GS - OP",
+        "B6": "GS - MSW",
+        "B7": "GS - FSW",
+        "B8": "GS - POW",
+        "B9": "GS - ICU",
+        "B10": "OPT",
+        "B11": "OPT",
+        "B12": "ENT",
+        "B13": "ENT"
+      }
+    },
+    {
+      "startDate": "2026-04-06",
+      "endDate": "2026-04-12",
+      "postings": {
+        "B1": "ORT - W",
+        "B2": "LABS",
+        "B3": "GS - OP",
+        "B4": "GS - OP",
+        "B5": "GS - MSW",
+        "B6": "GS - FSW",
+        "B7": "GS - POW",
+        "B8": "GS - ICU",
+        "B9": "OPT",
+        "B10": "OPT",
+        "B11": "ENT",
+        "B12": "ENT",
+        "B13": "ORT - OP"
+      }
+    },
+    {
+      "startDate": "2026-04-13",
+      "endDate": "2026-04-20",
+      "postings": {
+        "B1": "LABS",
+        "B2": "GS - OP",
+        "B3": "GS - OP",
+        "B4": "GS - MSW",
+        "B5": "GS - FSW",
+        "B6": "GS - POW",
+        "B7": "GS - ICU",
+        "B8": "OPT",
+        "B9": "OPT",
+        "B10": "ENT",
+        "B11": "ENT",
+        "B12": "ORT - OP",
+        "B13": "ORT - W"
+      }
+    }
+  ]
+}

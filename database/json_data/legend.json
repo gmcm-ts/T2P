@@ -1,0 +1,175 @@
+{
+  "legend": [
+    {
+      "code": "PSM",
+      "site": "Department of Community Medicine",
+      "split": "4 Sub-Splits will be determined at SITE, after each Major split."
+    },
+    {
+      "code": "OBG - OP",
+      "site": "OBG - Outpatient block",
+      "split": "6 at OP (Morning) → 2 at LR for 24h duty after Morning duty, 1 from each subgroup rotates internally."
+    },
+    {
+      "code": "OBG - MT1",
+      "site": "OBG - Maternity Ward 1",
+      "split": "3 at MT1"
+    },
+    {
+      "code": "OBG - MT2",
+      "site": "OBG - Maternity Ward 2",
+      "split": "3 at MT2"
+    },
+    {
+      "code": "OBG - LR1",
+      "site": "OBG - Labour Room, OBG-OT",
+      "split": "2 at LR (Morning) & 1 at LR/OBG-OT for 24h duty, rotates internally."
+    },
+    {
+      "code": "OBG - LR2",
+      "site": "OBG - Labour Room, OBG-ICU",
+      "split": "2 at LR (Morning) & 1 at LR/OBG-ICU for 24h, rotates internally."
+    },
+    {
+      "code": "FWP",
+      "site": "Family Planing Unit",
+      "split": "3 at FP Unit"
+    },
+    {
+      "code": "AYUSH",
+      "site": "AYUSH Block",
+      "split": "3 at AYUSH Block"
+    },
+    {
+      "code": "ANS - GS+O",
+      "site": "General Surgery & Orthopaedics OT's",
+      "split": "2 at GS OT & 1 at ORTHO OT (Morning) → OBG OT for 24h duty after Morning duty, rotates internally."
+    },
+    {
+      "code": "ANS - OBG",
+      "site": "OBG OT & ICU",
+      "split": "2 at OBG OT & 1 at ICU 24h duty, rotates internally."
+    },
+    {
+      "code": "PED - OP",
+      "site": "Paediatrics Outpatient block",
+      "split": "3 at PED - OP"
+    },
+    {
+      "code": "PED - SNC",
+      "site": "Paediatrics SNCU Unit",
+      "split": "3 at SNCU (Morning) & 1 Stays for 24h duty, rotates internally."
+    },
+    {
+      "code": "PED - W",
+      "site": "Paediatrics Ward & ICU",
+      "split": "2 at Ward (Morning) & 1 at P-ICU / SNCU for 24h duty, rotates internally."
+    },
+    {
+      "code": "GS - OP",
+      "site": "General Surgery Outpatient Unit",
+      "split": "4 at OP (Morning) & 2 at Emergency/Casualty for 24h duty, 1 from each subgroup, rotates internally."
+    },
+    {
+      "code": "GS - MSW",
+      "site": "General Surgery MALE Surgical Ward",
+      "split": "3 at GS - MSW, 1→OT if Scheduled, else MSW, rotates internally."
+    },
+    {
+      "code": "GS - FSW",
+      "site": "General Surgery FEMALE Surgical Ward",
+      "split": "3 at GS - FSW, 1 to OT if Scheduled, else FSW, rotates internally."
+    },
+    {
+      "code": "GS - POW",
+      "site": "General Surgery Post-Operative Ward",
+      "split": "2 at POW & 1→MSW, rotates internally."
+    },
+    {
+      "code": "GS - ICU",
+      "site": "Intensive Care Unit",
+      "split": "3 at ICU (Morning) & 1 → Stays at ICU for 24h duty, rotates internally."
+    },
+    {
+      "code": "OPT",
+      "site": "Ophthalmology Outpatient & OT block",
+      "split": "1 from each subgroup at OT Block if Scheduled, else OP, rotates internally."
+    },
+    {
+      "code": "ENT",
+      "site": "ENT Outpatient Unit & OT",
+      "split": "1 from each subgroup→Ward & 1 from each subgroup→ OT if scheduled, else OP, rotates internally."
+    },
+    {
+      "code": "ORT - OP",
+      "site": "Orthopedics Outpatient Units",
+      "split": "3 at OP (Morning) & 1 → Emergency/Casualty for 24h duty after Morning duty, rotates internally."
+    },
+    {
+      "code": "ORT - W",
+      "site": "Orthopedic Ward & OT",
+      "split": "2 at Ward, 1 → OT if Scheduled, else at Ward → Emergency/Casualty for 24h duty, rotates internally."
+    },
+    {
+      "code": "LABS",
+      "site": "Pathology & Microbiology Labs",
+      "split": "2 at Pathology Lab and 1 at Microbiology Labs."
+    },
+    {
+      "code": "GM - OP",
+      "site": "General Medicine Outpatient Unit",
+      "split": "4 at OP (Morning) & 2 at Emergency/Casualty for 24h duty, 1 from each subgroup rotates internally."
+    },
+    {
+      "code": "GM - MMW",
+      "site": "General Medicine MALE Medical Ward",
+      "split": "3 at GM - MMW"
+    },
+    {
+      "code": "GM - FMW",
+      "site": "General Medicine FEMALE Medical Ward",
+      "split": "3 at GM - FMTW"
+    },
+    {
+      "code": "GM - PMW",
+      "site": "General Medicine Pulmonary Medical Ward",
+      "split": "2 at PMW (Morning) & 1 → ICU for 24h duty, rotates internally."
+    },
+    {
+      "code": "GM - ICU",
+      "site": "Intensive Care Unit",
+      "split": "3 at ICU (Morning) & 1 → Stays at ICU for 24h duty, rotates internally."
+    },
+    {
+      "code": "FMT",
+      "site": "Forensic Medicine Block",
+      "split": "3 at Forensic Medicine Block"
+    },
+    {
+      "code": "RD",
+      "site": "Radiology Block",
+      "split": "3 at Radiology Block"
+    },
+    {
+      "code": "DVL",
+      "site": "Dermatology Unit",
+      "split": "3 at DVL Unit."
+    },
+    {
+      "code": "PSY",
+      "site": "Psychiatry Unit",
+      "split": "6 at PSY Unit"
+    },
+    {
+      "code": "EM",
+      "site": "Emergency / Casualty Unit",
+      "split": "2 (Morning), 2 (Afternoon) & 2 (Night), 1 from each subgroup, rotates internally."
+    },
+    {
+      "code": "Each 24-hour duty must mandatorily include set number of interns as mentioned in the schedule, rotating internally within the assigned subgroup.  Swaps or replacements are strictly prohibited without valid justification and prior approval from the department.   No post-duty off is permitted, and interns must report to regular duties the following morning without exception. Failure to report for duty without prior intimation will result in reposting or extension of the internship.",
+      "site": "",
+      "split": ""
+    }
+  ],
+  "note": ""
+}

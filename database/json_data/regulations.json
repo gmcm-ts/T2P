@@ -1,0 +1,100 @@
+{
+  "regulations": [
+    {
+      "abbreviation": "PSM",
+      "department": "Preventive and Social Medicine / Community Medicine",
+      "duration": "12 Weeks"
+    },
+    {
+      "abbreviation": "GM",
+      "department": "General Medicine",
+      "duration": "6 Weeks"
+    },
+    {
+      "abbreviation": "GS",
+      "department": "General Surgery",
+      "duration": "6 Weeks"
+    },
+    {
+      "abbreviation": "OBG",
+      "department": "Obstetrics and Gynaecology",
+      "duration": "6 Weeks"
+    },
+    {
+      "abbreviation": "PED",
+      "department": "Paediatrics",
+      "duration": "3 Weeks"
+    },
+    {
+      "abbreviation": "ORT",
+      "department": "Orthopaedics including Physical Medicine and Rehabilitation (PM&R)",
+      "duration": "2 Weeks"
+    },
+    {
+      "abbreviation": "OPT",
+      "department": "Ophthalmology",
+      "duration": "2 Weeks"
+    },
+    {
+      "abbreviation": "ENT",
+      "department": "Otorhinolaryngology",
+      "duration": "2 Weeks"
+    },
+    {
+      "abbreviation": "EM",
+      "department": "Emergency Medicine / Casualty / Trauma",
+      "duration": "2 Weeks"
+    },
+    {
+      "abbreviation": "ANS",
+      "department": "Anesthesiology and Critical Care",
+      "duration": "2 Weeks"
+    },
+    {
+      "abbreviation": "PSY",
+      "department": "Psychiatry",
+      "duration": "2 Weeks"
+    },
+    {
+      "abbreviation": "DVL",
+      "department": "Dermatology, Venereology and Leprosy",
+      "duration": "1 Week"
+    },
+    {
+      "abbreviation": "FP",
+      "department": "Family Welfare and Planning",
+      "duration": "1 Week"
+    },
+    {
+      "abbreviation": "FMT",
+      "department": "Forensic medicine and Toxicology",
+      "duration": "1 Week"
+    },
+    {
+      "abbreviation": "RD*",
+      "department": "Radio-diagnosis",
+      "duration": "1 Week"
+    },
+    {
+      "abbreviation": "LAB*",
+      "department": "Lab Medicine - Pathology and Microbiology",
+      "duration": "1 Week"
+    },
+    {
+      "abbreviation": "TB*",
+      "department": "(DOTS-TB) Center",
+      "duration": "1 Week"
+    },
+    {
+      "abbreviation": "AY*",
+      "department": "Ayurvedic medicine",
+      "duration": "1 Week"
+    },
+    {
+      "abbreviation": "TOTAL DURATION",
+      "department": "",
+      "duration": "52 Weeks"
+    }
+  ],
+  "note": "*Electives"
+}

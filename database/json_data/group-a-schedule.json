@@ -1,0 +1,963 @@
+{
+  "oldSchedule": [
+    {
+      "startDate": "2025-04-21",
+      "endDate": "2025-04-28",
+      "postings": {
+        "A1": "PSM",
+        "A2": "PSM",
+        "A3": "PSM",
+        "A4": "PSM",
+        "A5": "PSM",
+        "A6": "PSM",
+        "A7": "PSM",
+        "A8": "PSM",
+        "A9": "PSM",
+        "A10": "PSM",
+        "A11": "PSM",
+        "A12": "TB"
+      }
+    },
+    {
+      "startDate": "2025-04-29",
+      "endDate": "2025-05-05",
+      "postings": {
+        "A1": "PSM",
+        "A2": "PSM",
+        "A3": "PSM",
+        "A4": "PSM",
+        "A5": "PSM",
+        "A6": "PSM",
+        "A7": "PSM",
+        "A8": "PSM",
+        "A9": "PSM",
+        "A10": "PSM",
+        "A11": "TB",
+        "A12": "PSM"
+      }
+    },
+    {
+      "startDate": "2025-05-06",
+      "endDate": "2025-05-12",
+      "postings": {
+        "A1": "PSM",
+        "A2": "PSM",
+        "A3": "PSM",
+        "A4": "PSM",
+        "A5": "PSM",
+        "A6": "PSM",
+        "A7": "PSM",
+        "A8": "PSM",
+        "A9": "PSM",
+        "A10": "TB",
+        "A11": "PSM",
+        "A12": "PSM"
+      }
+    },
+    {
+      "startDate": "2025-05-13",
+      "endDate": "2025-05-20",
+      "postings": {
+        "A1": "PSM",
+        "A2": "PSM",
+        "A3": "PSM",
+        "A4": "PSM",
+        "A5": "PSM",
+        "A6": "PSM",
+        "A7": "PSM",
+        "A8": "PSM",
+        "A9": "TB",
+        "A10": "PSM",
+        "A11": "PSM",
+        "A12": "PSM"
+      }
+    },
+    {
+      "startDate": "2025-05-21",
+      "endDate": "2025-05-28",
+      "postings": {
+        "A1": "PSM",
+        "A2": "PSM",
+        "A3": "PSM",
+        "A4": "PSM",
+        "A5": "PSM",
+        "A6": "PSM",
+        "A7": "PSM",
+        "A8": "TB",
+        "A9": "PSM",
+        "A10": "PSM",
+        "A11": "PSM",
+        "A12": "PSM"
+      }
+    },
+    {
+      "startDate": "2025-05-29",
+      "endDate": "2025-06-04",
+      "postings": {
+        "A1": "PSM",
+        "A2": "PSM",
+        "A3": "PSM",
+        "A4": "PSM",
+        "A5": "PSM",
+        "A6": "PSM",
+        "A7": "TB",
+        "A8": "PSM",
+        "A9": "PSM",
+        "A10": "PSM",
+        "A11": "PSM",
+        "A12": "PSM"
+      }
+    },
+    {
+      "startDate": "2025-06-05",
+      "endDate": "2025-06-12",
+      "postings": {
+        "A1": "PSM",
+        "A2": "PSM",
+        "A3": "PSM",
+        "A4": "PSM",
+        "A5": "PSM",
+        "A6": "TB",
+        "A7": "PSM",
+        "A8": "PSM",
+        "A9": "PSM",
+        "A10": "PSM",
+        "A11": "PSM",
+        "A12": "PSM"
+      }
+    },
+    {
+      "startDate": "2025-06-13",
+      "endDate": "2025-06-19",
+      "postings": {
+        "A1": "PSM",
+        "A2": "PSM",
+        "A3": "PSM",
+        "A4": "PSM",
+        "A5": "TB",
+        "A6": "PSM",
+        "A7": "PSM",
+        "A8": "PSM",
+        "A9": "PSM",
+        "A10": "PSM",
+        "A11": "PSM",
+        "A12": "PSM"
+      }
+    },
+    {
+      "startDate": "2025-06-20",
+      "endDate": "2025-06-27",
+      "postings": {
+        "A1": "PSM",
+        "A2": "PSM",
+        "A3": "PSM",
+        "A4": "TB",
+        "A5": "PSM",
+        "A6": "PSM",
+        "A7": "PSM",
+        "A8": "PSM",
+        "A9": "PSM",
+        "A10": "PSM",
+        "A11": "PSM",
+        "A12": "PSM"
+      }
+    },
+    {
+      "startDate": "2025-06-28",
+      "endDate": "2025-07-05",
+      "postings": {
+        "A1": "PSM",
+        "A2": "PSM",
+        "A3": "TB",
+        "A4": "PSM",
+        "A5": "PSM",
+        "A6": "PSM",
+        "A7": "PSM",
+        "A8": "PSM",
+        "A9": "PSM",
+        "A10": "PSM",
+        "A11": "PSM",
+        "A12": "PSM"
+      }
+    },
+    {
+      "startDate": "2025-07-06",
+      "endDate": "2025-07-12",
+      "postings": {
+        "A1": "PSM",
+        "A2": "TB",
+        "A3": "PSM",
+        "A4": "PSM",
+        "A5": "PSM",
+        "A6": "PSM",
+        "A7": "PSM",
+        "A8": "PSM",
+        "A9": "PSM",
+        "A10": "PSM",
+        "A11": "PSM",
+        "A12": "PSM"
+      }
+    },
+    {
+      "startDate": "2025-07-13",
+      "endDate": "2025-07-20",
+      "postings": {
+        "A1": "TB",
+        "A2": "PSM",
+        "A3": "PSM",
+        "A4": "PSM",
+        "A5": "PSM",
+        "A6": "PSM",
+        "A7": "PSM",
+        "A8": "PSM",
+        "A9": "PSM",
+        "A10": "PSM",
+        "A11": "PSM",
+        "A12": "PSM"
+      }
+    }
+  ],
+  "newSchedule": [
+    {
+      "startDate": "2025-07-21",
+      "endDate": "2025-07-27",
+      "postings": {
+        "A1": "OBG - OP",
+        "A2": "OBG - OP",
+        "A3": "OBG - MT1",
+        "A4": "OBG - MT2",
+        "A5": "OBG - LR1",
+        "A6": "OBG - LR2",
+        "A7": "FWP",
+        "A8": "AYUSH",
+        "A9": "ANS - GS+O",
+        "A10": "ANS - OBG",
+        "A11": "PED - OP",
+        "A12": "PED - SNC",
+        "A13": "PED - W"
+      }
+    },
+    {
+      "startDate": "2025-07-28",
+      "endDate": "2025-08-03",
+      "postings": {
+        "A1": "OBG - OP",
+        "A2": "OBG - MT1",
+        "A3": "OBG - MT2",
+        "A4": "OBG - LR1",
+        "A5": "OBG - LR2",
+        "A6": "FWP",
+        "A7": "AYUSH",
+        "A8": "ANS - GS+O",
+        "A9": "ANS - OBG",
+        "A10": "PED - OP",
+        "A11": "PED - SNC",
+        "A12": "PED - W",
+        "A13": "OBG - OP"
+      }
+    },
+    {
+      "startDate": "2025-08-04",
+      "endDate": "2025-08-10",
+      "postings": {
+        "A1": "OBG - MT1",
+        "A2": "OBG - MT2",
+        "A3": "OBG - LR1",
+        "A4": "OBG - LR2",
+        "A5": "FWP",
+        "A6": "AYUSH",
+        "A7": "ANS - GS+O",
+        "A8": "ANS - OBG",
+        "A9": "PED - OP",
+        "A10": "PED - SNC",
+        "A11": "PED - W",
+        "A12": "OBG - OP",
+        "A13": "OBG - OP"
+      }
+    },
+    {
+      "startDate": "2025-08-11",
+      "endDate": "2025-08-17",
+      "postings": {
+        "A1": "OBG - MT2",
+        "A2": "OBG - LR1",
+        "A3": "OBG - LR2",
+        "A4": "FWP",
+        "A5": "AYUSH",
+        "A6": "ANS - GS+O",
+        "A7": "ANS - OBG",
+        "A8": "PED - OP",
+        "A9": "PED - SNC",
+        "A10": "PED - W",
+        "A11": "OBG - OP",
+        "A12": "OBG - OP",
+        "A13": "OBG - MT1"
+      }
+    },
+    {
+      "startDate": "2025-08-18",
+      "endDate": "2025-08-24",
+      "postings": {
+        "A1": "OBG - LR1",
+        "A2": "OBG - LR2",
+        "A3": "FWP",
+        "A4": "AYUSH",
+        "A5": "ANS - GS+O",
+        "A6": "ANS - OBG",
+        "A7": "PED - OP",
+        "A8": "PED - SNC",
+        "A9": "PED - W",
+        "A10": "OBG - OP",
+        "A11": "OBG - OP",
+        "A12": "OBG - MT1",
+        "A13": "OBG - MT2"
+      }
+    },
+    {
+      "startDate": "2025-08-25",
+      "endDate": "2025-08-31",
+      "postings": {
+        "A1": "OBG - LR2",
+        "A2": "FWP",
+        "A3": "AYUSH",
+        "A4": "ANS - GS+O",
+        "A5": "ANS - OBG",
+        "A6": "PED - OP",
+        "A7": "PED - SNC",
+        "A8": "PED - W",
+        "A9": "OBG - OP",
+        "A10": "OBG - OP",
+        "A11": "OBG - MT1",
+        "A12": "OBG - MT2",
+        "A13": "OBG - LR1"
+      }
+    },
+    {
+      "startDate": "2025-09-01",
+      "endDate": "2025-09-07",
+      "postings": {
+        "A1": "FWP",
+        "A2": "AYUSH",
+        "A3": "ANS - GS+O",
+        "A4": "ANS - OBG",
+        "A5": "PED - OP",
+        "A6": "PED - SNC",
+        "A7": "PED - W",
+        "A8": "OBG - OP",
+        "A9": "OBG - OP",
+        "A10": "OBG - MT1",
+        "A11": "OBG - MT2",
+        "A12": "OBG - LR1",
+        "A13": "OBG - LR2"
+      }
+    },
+    {
+      "startDate": "2025-09-08",
+      "endDate": "2025-09-14",
+      "postings": {
+        "A1": "AYUSH",
+        "A2": "ANS - GS+O",
+        "A3": "ANS - OBG",
+        "A4": "PED - OP",
+        "A5": "PED - SNC",
+        "A6": "PED - W",
+        "A7": "OBG - OP",
+        "A8": "OBG - OP",
+        "A9": "OBG - MT1",
+        "A10": "OBG - MT2",
+        "A11": "OBG - LR1",
+        "A12": "OBG - LR2",
+        "A13": "FWP"
+      }
+    },
+    {
+      "startDate": "2025-09-15",
+      "endDate": "2025-09-21",
+      "postings": {
+        "A1": "ANS - GS+O",
+        "A2": "ANS - OBG",
+        "A3": "PED - OP",
+        "A4": "PED - SNC",
+        "A5": "PED - W",
+        "A6": "OBG - OP",
+        "A7": "OBG - OP",
+        "A8": "OBG - MT1",
+        "A9": "OBG - MT2",
+        "A10": "OBG - LR1",
+        "A11": "OBG - LR2",
+        "A12": "FWP",
+        "A13": "AYUSH"
+      }
+    },
+    {
+      "startDate": "2025-09-22",
+      "endDate": "2025-09-28",
+      "postings": {
+        "A1": "ANS - OBG",
+        "A2": "PED - OP",
+        "A3": "PED - SNC",
+        "A4": "PED - W",
+        "A5": "OBG - OP",
+        "A6": "OBG - OP",
+        "A7": "OBG - MT1",
+        "A8": "OBG - MT2",
+        "A9": "OBG - LR1",
+        "A10": "OBG - LR2",
+        "A11": "FWP",
+        "A12": "AYUSH",
+        "A13": "ANS - GS+O"
+      }
+    },
+    {
+      "startDate": "2025-09-29",
+      "endDate": "2025-10-05",
+      "postings": {
+        "A1": "PED - OP",
+        "A2": "PED - SNC",
+        "A3": "PED - W",
+        "A4": "OBG - OP",
+        "A5": "OBG - OP",
+        "A6": "OBG - MT1",
+        "A7": "OBG - MT2",
+        "A8": "OBG - LR1",
+        "A9": "OBG - LR2",
+        "A10": "FWP",
+        "A11": "AYUSH",
+        "A12": "ANS - GS+O",
+        "A13": "ANS - OBG"
+      }
+    },
+    {
+      "startDate": "2025-10-06",
+      "endDate": "2025-10-12",
+      "postings": {
+        "A1": "PED - SNC",
+        "A2": "PED - W",
+        "A3": "OBG - OP",
+        "A4": "OBG - OP",
+        "A5": "OBG - MT1",
+        "A6": "OBG - MT2",
+        "A7": "OBG - LR1",
+        "A8": "OBG - LR2",
+        "A9": "FWP",
+        "A10": "AYUSH",
+        "A11": "ANS - GS+O",
+        "A12": "ANS - OBG",
+        "A13": "PED - OP"
+      }
+    },
+    {
+      "startDate": "2025-10-13",
+      "endDate": "2025-10-19",
+      "postings": {
+        "A1": "PED - W",
+        "A2": "OBG - OP",
+        "A3": "OBG - OP",
+        "A4": "OBG - MT1",
+        "A5": "OBG - MT2",
+        "A6": "OBG - LR1",
+        "A7": "OBG - LR2",
+        "A8": "FWP",
+        "A9": "AYUSH",
+        "A10": "ANS - GS+O",
+        "A11": "ANS - OBG",
+        "A12": "PED - OP",
+        "A13": "PED - SNC"
+      }
+    },
+    {
+      "startDate": "2025-10-20",
+      "endDate": "2025-10-26",
+      "postings": {
+        "A1": "GS - OP",
+        "A2": "GS - OP",
+        "A3": "GS - MSW",
+        "A4": "GS - FSW",
+        "A5": "GS - POW",
+        "A6": "GS - ICU",
+        "A7": "OPT",
+        "A8": "OPT",
+        "A9": "ENT",
+        "A10": "ENT",
+        "A11": "ORT - OP",
+        "A12": "ORT - W",
+        "A13": "LABS"
+      }
+    },
+    {
+      "startDate": "2025-10-27",
+      "endDate": "2025-11-02",
+      "postings": {
+        "A1": "GS - OP",
+        "A2": "GS - MSW",
+        "A3": "GS - FSW",
+        "A4": "GS - POW",
+        "A5": "GS - ICU",
+        "A6": "OPT",
+        "A7": "OPT",
+        "A8": "ENT",
+        "A9": "ENT",
+        "A10": "ORT - OP",
+        "A11": "ORT - W",
+        "A12": "LABS",
+        "A13": "GS - OP"
+      }
+    },
+    {
+      "startDate": "2025-11-03",
+      "endDate": "2025-11-09",
+      "postings": {
+        "A1": "GS - MSW",
+        "A2": "GS - FSW",
+        "A3": "GS - POW",
+        "A4": "GS - ICU",
+        "A5": "OPT",
+        "A6": "OPT",
+        "A7": "ENT",
+        "A8": "ENT",
+        "A9": "ORT - OP",
+        "A10": "ORT - W",
+        "A11": "LABS",
+        "A12": "GS - OP",
+        "A13": "GS - OP"
+      }
+    },
+    {
+      "startDate": "2025-11-10",
+      "endDate": "2025-11-16",
+      "postings": {
+        "A1": "GS - FSW",
+        "A2": "GS - POW",
+        "A3": "GS - ICU",
+        "A4": "OPT",
+        "A5": "OPT",
+        "A6": "ENT",
+        "A7": "ENT",
+        "A8": "ORT - OP",
+        "A9": "ORT - W",
+        "A10": "LABS",
+        "A11": "GS - OP",
+        "A12": "GS - OP",
+        "A13": "GS - MSW"
+      }
+    },
+    {
+      "startDate": "2025-11-17",
+      "endDate": "2025-11-23",
+      "postings": {
+        "A1": "GS - POW",
+        "A2": "GS - ICU",
+        "A3": "OPT",
+        "A4": "OPT",
+        "A5": "ENT",
+        "A6": "ENT",
+        "A7": "ORT - OP",
+        "A8": "ORT - W",
+        "A9": "LABS",
+        "A10": "GS - OP",
+        "A11": "GS - OP",
+        "A12": "GS - MSW",
+        "A13": "GS - FSW"
+      }
+    },
+    {
+      "startDate": "2025-11-24",
+      "endDate": "2025-11-30",
+      "postings": {
+        "A1": "GS - ICU",
+        "A2": "OPT",
+        "A3": "OPT",
+        "A4": "ENT",
+        "A5": "ENT",
+        "A6": "ORT - OP",
+        "A7": "ORT - W",
+        "A8": "LABS",
+        "A9": "GS - OP",
+        "A10": "GS - OP",
+        "A11": "GS - MSW",
+        "A12": "GS - FSW",
+        "A13": "GS - POW"
+      }
+    },
+    {
+      "startDate": "2025-12-01",
+      "endDate": "2025-12-07",
+      "postings": {
+        "A1": "OPT",
+        "A2": "OPT",
+        "A3": "ENT",
+        "A4": "ENT",
+        "A5": "ORT - OP",
+        "A6": "ORT - W",
+        "A7": "LABS",
+        "A8": "GS - OP",
+        "A9": "GS - OP",
+        "A10": "GS - MSW",
+        "A11": "GS - FSW",
+        "A12": "GS - POW",
+        "A13": "GS - ICU"
+      }
+    },
+    {
+      "startDate": "2025-12-08",
+      "endDate": "2025-12-14",
+      "postings": {
+        "A1": "OPT",
+        "A2": "ENT",
+        "A3": "ENT",
+        "A4": "ORT - OP",
+        "A5": "ORT - W",
+        "A6": "LABS",
+        "A7": "GS - OP",
+        "A8": "GS - OP",
+        "A9": "GS - MSW",
+        "A10": "GS - FSW",
+        "A11": "GS - POW",
+        "A12": "GS - ICU",
+        "A13": "OPT"
+      }
+    },
+    {
+      "startDate": "2025-12-15",
+      "endDate": "2025-12-21",
+      "postings": {
+        "A1": "ENT",
+        "A2": "ENT",
+        "A3": "ORT - OP",
+        "A4": "ORT - W",
+        "A5": "LABS",
+        "A6": "GS - OP",
+        "A7": "GS - OP",
+        "A8": "GS - MSW",
+        "A9": "GS - FSW",
+        "A10": "GS - POW",
+        "A11": "GS - ICU",
+        "A12": "OPT",
+        "A13": "OPT"
+      }
+    },
+    {
+      "startDate": "2025-12-22",
+      "endDate": "2025-12-28",
+      "postings": {
+        "A1": "ENT",
+        "A2": "ORT - OP",
+        "A3": "ORT - W",
+        "A4": "LABS",
+        "A5": "GS - OP",
+        "A6": "GS - OP",
+        "A7": "GS - MSW",
+        "A8": "GS - FSW",
+        "A9": "GS - POW",
+        "A10": "GS - ICU",
+        "A11": "OPT",
+        "A12": "OPT",
+        "A13": "ENT"
+      }
+    },
+    {
+      "startDate": "2025-12-29",
+      "endDate": "2026-01-04",
+      "postings": {
+        "A1": "ORT - OP",
+        "A2": "ORT - W",
+        "A3": "LABS",
+        "A4": "GS - OP",
+        "A5": "GS - OP",
+        "A6": "GS - MSW",
+        "A7": "GS - FSW",
+        "A8": "GS - POW",
+        "A9": "GS - ICU",
+        "A10": "OPT",
+        "A11": "OPT",
+        "A12": "ENT",
+        "A13": "ENT"
+      }
+    },
+    {
+      "startDate": "2026-01-05",
+      "endDate": "2026-01-11",
+      "postings": {
+        "A1": "ORT - W",
+        "A2": "LABS",
+        "A3": "GS - OP",
+        "A4": "GS - OP",
+        "A5": "GS - MSW",
+        "A6": "GS - FSW",
+        "A7": "GS - POW",
+        "A8": "GS - ICU",
+        "A9": "OPT",
+        "A10": "OPT",
+        "A11": "ENT",
+        "A12": "ENT",
+        "A13": "ORT - OP"
+      }
+    },
+    {
+      "startDate": "2026-01-12",
+      "endDate": "2026-01-18",
+      "postings": {
+        "A1": "LABS",
+        "A2": "GS - OP",
+        "A3": "GS - OP",
+        "A4": "GS - MSW",
+        "A5": "GS - FSW",
+        "A6": "GS - POW",
+        "A7": "GS - ICU",
+        "A8": "OPT",
+        "A9": "OPT",
+        "A10": "ENT",
+        "A11": "ENT",
+        "A12": "ORT - OP",
+        "A13": "ORT - W"
+      }
+    },
+    {
+      "startDate": "2026-01-19",
+      "endDate": "2026-01-25",
+      "postings": {
+        "A1": "GM - OP",
+        "A2": "GM - OP",
+        "A3": "GM - MMW",
+        "A4": "GM - FMW",
+        "A5": "GM - PMW",
+        "A6": "GM - ICU",
+        "A7": "FMT",
+        "A8": "RD",
+        "A9": "DVL",
+        "A10": "PSY",
+        "A11": "PSY",
+        "A12": "EM",
+        "A13": "EM"
+      }
+    },
+    {
+      "startDate": "2026-01-26",
+      "endDate": "2026-02-01",
+      "postings": {
+        "A1": "GM - OP",
+        "A2": "GM - MMW",
+        "A3": "GM - FMW",
+        "A4": "GM - PMW",
+        "A5": "GM - ICU",
+        "A6": "FMT",
+        "A7": "RD",
+        "A8": "DVL",
+        "A9": "PSY",
+        "A10": "PSY",
+        "A11": "EM",
+        "A12": "EM",
+        "A13": "GM - OP"
+      }
+    },
+    {
+      "startDate": "2026-02-02",
+      "endDate": "2026-02-08",
+      "postings": {
+        "A1": "GM - MMW",
+        "A2": "GM - FMW",
+        "A3": "GM - PMW",
+        "A4": "GM - ICU",
+        "A5": "FMT",
+        "A6": "RD",
+        "A7": "DVL",
+        "A8": "PSY",
+        "A9": "PSY",
+        "A10": "EM",
+        "A11": "EM",
+        "A12": "GM - OP",
+        "A13": "GM - OP"
+      }
+    },
+    {
+      "startDate": "2026-02-09",
+      "endDate": "2026-02-15",
+      "postings": {
+        "A1": "GM - FMW",
+        "A2": "GM - PMW",
+        "A3": "GM - ICU",
+        "A4": "FMT",
+        "A5": "RD",
+        "A6": "DVL",
+        "A7": "PSY",
+        "A8": "PSY",
+        "A9": "EM",
+        "A10": "EM",
+        "A11": "GM - OP",
+        "A12": "GM - OP",
+        "A13": "GM - MMW"
+      }
+    },
+    {
+      "startDate": "2026-02-16",
+      "endDate": "2026-02-22",
+      "postings": {
+        "A1": "GM - PMW",
+        "A2": "GM - ICU",
+        "A3": "FMT",
+        "A4": "RD",
+        "A5": "DVL",
+        "A6": "PSY",
+        "A7": "PSY",
+        "A8": "EM",
+        "A9": "EM",
+        "A10": "GM - OP",
+        "A11": "GM - OP",
+        "A12": "GM - MMW",
+        "A13": "GM - FMW"
+      }
+    },
+    {
+      "startDate": "2026-02-23",
+      "endDate": "2026-03-01",
+      "postings": {
+        "A1": "GM - ICU",
+        "A2": "FMT",
+        "A3": "RD",
+        "A4": "DVL",
+        "A5": "PSY",
+        "A6": "PSY",
+        "A7": "EM",
+        "A8": "EM",
+        "A9": "GM - OP",
+        "A10": "GM - OP",
+        "A11": "GM - MMW",
+        "A12": "GM - FMW",
+        "A13": "GM - PMW"
+      }
+    },
+    {
+      "startDate": "2026-03-02",
+      "endDate": "2026-03-08",
+      "postings": {
+        "A1": "FMT",
+        "A2": "RD",
+        "A3": "DVL",
+        "A4": "PSY",
+        "A5": "PSY",
+        "A6": "EM",
+        "A7": "EM",
+        "A8": "GM - OP",
+        "A9": "GM - OP",
+        "A10": "GM - MMW",
+        "A11": "GM - FMW",
+        "A12": "GM - PMW",
+        "A13": "GM - ICU"
+      }
+    },
+    {
+      "startDate": "2026-03-09",
+      "endDate": "2026-03-15",
+      "postings": {
+        "A1": "RD",
+        "A2": "DVL",
+        "A3": "PSY",
+        "A4": "PSY",
+        "A5": "EM",
+        "A6": "EM",
+        "A7": "GM - OP",
+        "A8": "GM - OP",
+        "A9": "GM - MMW",
+        "A10": "GM - FMW",
+        "A11": "GM - PMW",
+        "A12": "GM - ICU",
+        "A13": "FMT"
+      }
+    },
+    {
+      "startDate": "2026-03-16",
+      "endDate": "2026-03-22",
+      "postings": {
+        "A1": "DVL",
+        "A2": "PSY",
+        "A3": "PSY",
+        "A4": "EM",
+        "A5": "EM",
+        "A6": "GM - OP",
+        "A7": "GM - OP",
+        "A8": "GM - MMW",
+        "A9": "GM - FMW",
+        "A10": "GM - PMW",
+        "A11": "GM - ICU",
+        "A12": "FMT",
+        "A13": "RD"
+      }
+    },
+    {
+      "startDate": "2026-03-23",
+      "endDate": "2026-03-29",
+      "postings": {
+        "A1": "PSY",
+        "A2": "PSY",
+        "A3": "EM",
+        "A4": "EM",
+        "A5": "GM - OP",
+        "A6": "GM - OP",
+        "A7": "GM - MMW",
+        "A8": "GM - FMW",
+        "A9": "GM - PMW",
+        "A10": "GM - ICU",
+        "A11": "FMT",
+        "A12": "RD",
+        "A13": "DVL"
+      }
+    },
+    {
+      "startDate": "2026-03-30",
+      "endDate": "2026-04-05",
+      "postings": {
+        "A1": "PSY",
+        "A2": "EM",
+        "A3": "EM",
+        "A4": "GM - OP",
+        "A5": "GM - OP",
+        "A6": "GM - MMW",
+        "A7": "GM - FMW",
+        "A8": "GM - PMW",
+        "A9": "GM - ICU",
+        "A10": "FMT",
+        "A11": "RD",
+        "A12": "DVL",
+        "A13": "PSY"
+      }
+    },
+    {
+      "startDate": "2026-04-06",
+      "endDate": "2026-04-12",
+      "postings": {
+        "A1": "EM",
+        "A2": "EM",
+        "A3": "GM - OP",
+        "A4": "GM - OP",
+        "A5": "GM - MMW",
+        "A6": "GM - FMW",
+        "A7": "GM - PMW",
+        "A8": "GM - ICU",
+        "A9": "FMT",
+        "A10": "RD",
+        "A11": "DVL",
+        "A12": "PSY",
+        "A13": "PSY"
+      }
+    },
+    {
+      "startDate": "2026-04-13",
+      "endDate": "2026-04-20",
+      "postings": {
+        "A1": "EM",
+        "A2": "GM - OP",
+        "A3": "GM - OP",
+        "A4": "GM - MMW",
+        "A5": "GM - FMW",
+        "A6": "GM - PMW",
+        "A7": "GM - ICU",
+        "A8": "FMT",
+        "A9": "RD",
+        "A10": "DVL",
+        "A11": "PSY",
+        "A12": "PSY",
+        "A13": "EM"
+      }
+    }
+  ]
+}
