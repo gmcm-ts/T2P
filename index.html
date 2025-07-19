@@ -233,11 +233,16 @@
       }
 
       const rollInputElement = document.getElementById("rollInput");
-      const rollInput = rollInputElement.value.trim().toUpperCase();
+      let rollInput = rollInputElement.value.trim().toUpperCase();
 
       if (!rollInput) {
         statusElement.textContent = "Please enter a roll number or group code.";
         return;
+      }
+
+      // --- Normalize 'R' codes with leading zeros (e.g., R07 -> R7) ---
+      if (rollInput.startsWith('R0')) {
+        rollInput = rollInput.replace(/^R0+/, 'R');
       }
 
       // --- Determine which schedule and group data to use ---
