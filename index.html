@@ -418,20 +418,22 @@
 
         // Add custom aliases
         const customAliases = {
-          'PSM': ['spm', 'cm', 'community medicine'],
-          'OBG': ['obs', 'gynae'],
-          'PED': ['peds', 'paediatrics'],
-          'ORT': ['ortho', 'orthopaedics'],
-          'OPT': ['ophtha', 'ophthalmology'],
-          'EM': ['casualty', 'emergency'],
-          'ANS': ['anaesthesia', 'anesthesiology'],
-          'DVL': ['derma', 'dermatology'],
-          'FP': ['family planning'],
-          'FMT': ['forensic'],
-          'RD*': ['rd', 'radio', 'radiology', 'radio-diagnosis'],
-          'LAB*': ['labs', 'lab', 'patho', 'micro'],
-          'TB*': ['tb', 'dots'],
-          'AY*': ['ayush']
+          'PSM': ['spm', 'cm', 'community medicine', 'social medicine', 'preventive medicine'],
+          'OBG': ['obs', 'gynae', 'obstetrics', 'gynaecology', 'gynecology'],
+          'PED': ['peds', 'paediatrics', 'pediatrics', 'child health'],
+          'ORT': ['ortho', 'orthopaedics', 'orthopedics'],
+          'OPT': ['ophtha', 'ophthalmology', 'eye'],
+          'EM': ['casualty', 'emergency', 'accident', 'trauma'],
+          'ANS': ['anaesthesia', 'anesthesiology', 'anesthesia', 'anaesthesiology'],
+          'DVL': ['derma', 'dermatology', 'skin', 'venereology', 'leprosy'],
+          'FP': ['family planning', 'family welfare'],
+          'FMT': ['forensic', 'forensics', 'medical jurisprudence'],
+          'RD*': ['rd', 'radio', 'radiology', 'radio-diagnosis', 'imaging'],
+          'LAB*': ['labs', 'lab', 'patho', 'micro', 'pathology', 'microbiology', 'laboratory medicine', 'diagnostic labs', 'clinical pathology', 'r&l'],
+          'R&L': ['labs', 'lab', 'patho', 'micro', 'pathology', 'microbiology', 'laboratory medicine', 'diagnostic labs', 'clinical pathology', 'r&l'],
+          'LABS': ['labs', 'lab', 'patho', 'micro', 'pathology', 'microbiology', 'laboratory medicine', 'diagnostic labs', 'clinical pathology', 'r&l'],
+          'TB*': ['tb', 'dots', 'tuberculosis', 'chest'],
+          'AY*': ['ayush', 'ayurveda', 'yoga', 'unani', 'siddha', 'homeopathy']
         };
 
         if (customAliases[code]) {
@@ -491,7 +493,9 @@
       const equivalents = {
         'RD*': ['R&L'],   // Radio-diagnosis in old schedule
         'TB*': ['TB'],    // TB in all schedules
-        'LAB*': ['LABS'], // Lab Medicine in new schedule
+        'LAB*': ['LABS', 'R&L'], // Lab Medicine/Pathology/Microbiology in all schedules
+        'R&L': ['LAB*', 'LABS'], // Reverse mapping for R&L
+        'LABS': ['LAB*', 'R&L'], // Reverse mapping for LABS
         'FP': ['FP&AY'],  // Family Planning in old schedule
         'AY*': ['FP&AY'], // AYUSH in old schedule
       };
