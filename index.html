@@ -100,17 +100,26 @@
     input:checked + .slider:before {
       transform: translateX(22px);
     }
+    .input-container {
+      position: relative;
+      width: 100%;
+    }
     #rollInput,
     #department-input {
       padding: 10px;
+      padding-right: 50px;
       font-size: 16px;
-      flex-grow: 1;
+      width: 100%;
+      box-sizing: border-box;
       border: 1px solid #ccc;
       border-radius: 4px;
     }
     #search-button-wrapper {
-      display: flex;
-      flex-grow: 0;
+      position: absolute;
+      right: 4px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 1;
     }
     button {
       padding: 8px 15px;
@@ -196,12 +205,13 @@
         <input type="date" id="date-picker" style="display: none; width: 100%; box-sizing: border-box; font-family: inherit; font-size: 16px; padding: 5px; border: 1px solid #ccc; border-radius: 4px; text-align: center;">
       </div>
       <div id="input-wrapper">
-        <div id="student-input-container" style="display: flex; gap: 10px;">
+        <div id="student-input-container" class="input-container">
           <input type="text" id="rollInput" placeholder="Loading data..." disabled />
           <div id="search-button-wrapper"><button id="searchButton" disabled>Go</button></div>
         </div>
-        <div id="faculty-input-container" style="display: none;">
+        <div id="faculty-input-container" class="input-container" style="display: none;">
           <input type="text" id="department-input" list="department-list" placeholder="Type or select a department..." disabled>
+          <div id="search-button-wrapper" style="display: none;"><button disabled>Go</button></div>
           <datalist id="department-list"></datalist>
         </div>
       </div>
