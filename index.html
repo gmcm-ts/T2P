@@ -31,9 +31,18 @@
     #search-card {
       text-align: center;
     }
-    #current-date {
-      margin-top: 0;
+    #date-wrapper {
+      cursor: pointer;
+      padding: 5px 0;
+      border-radius: 6px;
+      transition: background-color 0.2s;
       margin-bottom: 20px;
+    }
+    #date-wrapper:hover {
+      background-color: #e9ecef;
+    }
+    #current-date {
+      margin: 0;
       color: #555;
       font-size: 16px;
     }
@@ -102,7 +111,10 @@
   <div id="app-container">
     <div id="search-card" class="card">
       <h2>Internship Dashboard</h2>
-      <p id="current-date"></p>
+      <div id="date-wrapper" title="Click to change date">
+        <p id="current-date"></p>
+        <input type="date" id="date-picker" style="display: none; width: 100%; box-sizing: border-box; font-family: inherit; font-size: 16px; padding: 5px; border: 1px solid #ccc; border-radius: 4px; text-align: center;">
+      </div>
       <div id="input-wrapper">
         <input type="text" id="rollInput" placeholder="Loading data..." disabled />
         <button id="searchButton" onclick="lookupInfo()" disabled>Search</button>
@@ -130,17 +142,61 @@
 
   <script>
     const appData = {};
+    let selectedDate = new Date();
     const PIVOT_DATE = new Date('2025-07-21T00:00:00Z'); // The date the new schedule starts
 
     document.addEventListener("DOMContentLoaded", () => {
       const rollInputElement = document.getElementById("rollInput");
       const searchButton = document.getElementById("searchButton");
       const statusElement = document.getElementById("result-status");
+      const dateWrapper = document.getElementById("date-wrapper");
       const dateElement = document.getElementById("current-date");
+      const datePicker = document.getElementById("date-picker");
 
-      const today = new Date();
-      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      dateElement.textContent = `Today is ${today.toLocaleDateString('en-US', options)}`;
+      function updateDateDisplay(date) {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const today = new Date();
+        // Normalize dates to midnight to compare them correctly
+        today.setHours(0, 0, 0, 0);
+        const displayDate = new Date(date);
+        displayDate.setHours(0, 0, 0, 0);
+
+        if (today.getTime() === displayDate.getTime()) {
+          dateElement.textContent = `Today is ${date.toLocaleDateString('en-US', options)}`;
+        } else {
+          dateElement.textContent = `Showing for: ${date.toLocaleDateString('en-US', options)}`;
+        }
+      }
+
+      // Initial setup
+      updateDateDisplay(selectedDate);
+      datePicker.value = selectedDate.toISOString().split('T')[0];
+
+      dateWrapper.addEventListener('click', () => {
+        dateElement.style.display = 'none';
+        datePicker.style.display = 'block';
+        datePicker.focus();
+      });
+
+      datePicker.addEventListener('change', () => {
+        // The picker gives a string 'YYYY-MM-DD'. To avoid timezone issues,
+        // we create the date object ensuring it's interpreted in the local timezone.
+        selectedDate = new Date(datePicker.value + 'T00:00:00');
+        updateDateDisplay(selectedDate);
+        datePicker.style.display = 'none';
+        dateElement.style.display = 'block';
+
+        // If a roll number is already in the input, re-run the search for the new date.
+        if (document.getElementById("rollInput").value.trim()) {
+          lookupInfo();
+        }
+      });
+
+      // When the picker loses focus without a change, it should also hide.
+      datePicker.addEventListener('blur', () => {
+        datePicker.style.display = 'none';
+        dateElement.style.display = 'block';
+      });
 
       // Load all data files concurrently
       const dataFiles = {
@@ -246,8 +302,7 @@
       }
 
       // --- Determine which schedule and group data to use ---
-      const today = new Date();
-      const isOldSchedule = today < PIVOT_DATE;
+      const isOldSchedule = selectedDate < PIVOT_DATE;
       const scheduleKey = isOldSchedule ? 'oldSchedule' : 'newSchedule';
       const groupData = isOldSchedule ? appData.oldGroups : appData.groups;
 
@@ -264,7 +319,7 @@
           if (foundInOther) {
             const scheduleType = isOldSchedule ? 'new' : 'old';
             const scheduleDate = PIVOT_DATE.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-            statusElement.textContent = `Roll No. '${rollInput}' is found in the ${scheduleType} schedule (from ${scheduleDate}), but not in the current one.`;
+            statusElement.textContent = `Roll No. '${rollInput}' is found in the ${scheduleType} schedule (from ${scheduleDate}), but not in the schedule valid for the selected date.`;
           } else {
             statusElement.textContent = `No group found for '${rollInput}'.`;
           }
@@ -282,17 +337,17 @@
 
       // --- Find the current week's posting ---
       // The detailed schedule (e.g., group-a-schedule.json) is used to find the specific posting.
-      const todayStr = today.toISOString().split('T')[0];
+      const lookupDateStr = selectedDate.toISOString().split('T')[0];
       const weekSchedule = detailedScheduleData[scheduleKey].find(week =>
-        todayStr >= week.startDate && todayStr <= week.endDate
+        lookupDateStr >= week.startDate && lookupDateStr <= week.endDate
       );
       // The "at a glance" schedule is used to find the major department.
       const atAGlanceWeek = appData.schedule[scheduleKey].find(week =>
-        todayStr >= week.startDate && todayStr <= week.endDate
+        lookupDateStr >= week.startDate && lookupDateStr <= week.endDate
       );
 
       if (!weekSchedule || !atAGlanceWeek) {
-        statusElement.textContent = `No posting found for today's date.`;
+        statusElement.textContent = `No posting found for the selected date.`;
         return;
       }
 
