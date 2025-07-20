@@ -540,13 +540,15 @@
       });
 
       departmentInput.addEventListener('click', () => {
-        if (departmentInput.value.trim() !== '') {
+        // Only clear and hide results if there's already a value and results are displayed
+        if (facultyResultsContainer.style.display === 'block' && departmentInput.value.trim() !== '') {
           departmentInput.value = '';
-          const facultyResultsContainer = document.getElementById('faculty-results-container');
           facultyResultsContainer.style.display = 'none';
           document.getElementById("result-status").textContent = '';
           facultySearchButton.innerHTML = 'Go';
         }
+        // Always show the datalist options when clicked
+        departmentInput.focus();
       });
 
       departmentInput.addEventListener('input', () => {
