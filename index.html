@@ -385,9 +385,8 @@
         const facultyResultsContainer = document.getElementById('faculty-results-container');
         const departmentInput = document.getElementById('department-input');
 
-        if (facultyResultsContainer.style.display === 'block') {
+        if (facultyResultsContainer.style.display === 'block' && departmentInput.value === '') {
           facultyResultsContainer.style.display = 'none';
-          departmentInput.value = '';
           document.getElementById("result-status").textContent = '';
           facultySearchButton.innerHTML = 'Go';
         } else {
@@ -455,13 +454,22 @@
       });
 
       departmentInput.addEventListener('input', () => {
-        const value = departmentInput.value.trim().toLowerCase();
-        const match = fuzzyDeptSearch[value];
+        const value = departmentInput.value.trim();
+        const options = Array.from(document.getElementById('department-list').options);
+        const match = options.find(opt => opt.value.toLowerCase() === value.toLowerCase());
 
         if (match) {
-          // To provide good UX, set the input to the full name when a match is found
-          departmentInput.value = match.name;
-          facultySearchButton.click();
+          departmentInput.value = match.value;
+          // Trigger the search, but don't clear the input if a selection is made from the datalist
+          const dept = appData.regulations.regulations.find(r => r.department === match.value);
+          if (dept) {
+            lookupFaculty(dept.abbreviation);
+          }
+        } else if (value === '') {
+            const facultyResultsContainer = document.getElementById('faculty-results-container');
+            facultyResultsContainer.style.display = 'none';
+            document.getElementById("result-status").textContent = '';
+            facultySearchButton.innerHTML = 'Go';
         }
       });
     });
