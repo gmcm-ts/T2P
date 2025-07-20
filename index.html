@@ -330,11 +330,9 @@
           </div>
         </div>
         <div id="faculty-input-container" class="input-container" style="display: none;">
-          <input type="text" id="department-input" list="department-list" placeholder="Type or select a department..."
-            disabled>
-          <div id="faculty-search-button-wrapper" class="search-button-wrapper"><button id="facultySearchButton"
-              disabled>Go</button></div>
-          <datalist id="department-list"></datalist>
+          <select id="department-select" disabled>
+            <option value="">Select a department...</option>
+          </select>
         </div>
       </div>
       <p id="result-status"></p>
@@ -385,7 +383,7 @@
       const modeToggle = document.getElementById("mode-toggle-switch");
       const studentInput = document.getElementById("student-input-container");
       const facultyInput = document.getElementById("faculty-input-container");
-      const departmentInput = document.getElementById("department-input");
+      const departmentSelect = document.getElementById("department-select");
       const titleElement = document.getElementById("dashboard-title");
 
       function updateDateDisplay(date) {
@@ -429,8 +427,8 @@
         // If a roll number is already in the input, re-run the search for the new date.
         if (currentMode === 'student' && rollInputElement.value.trim()) {
           lookupStudent();
-        } else if (currentMode === 'faculty' && departmentInput.value.trim()) {
-          facultySearchButton.click();
+        } else if (currentMode === 'faculty' && departmentSelect.value.trim()) {
+          lookupFaculty(departmentSelect.options[departmentSelect.selectedIndex].dataset.code);
         }
       });
 
@@ -468,26 +466,7 @@
         }
       });
 
-      facultySearchButton.addEventListener('click', () => {
-        const facultyResultsContainer = document.getElementById('faculty-results-container');
-        const departmentInput = document.getElementById('department-input');
-
-        if (facultyResultsContainer.style.display === 'block') {
-          facultyResultsContainer.style.display = 'none';
-          document.getElementById("result-status").textContent = '';
-          facultySearchButton.innerHTML = 'Go';
-          return;
-        } else {
-          const deptName = departmentInput.value.trim();
-          const dept = appData.regulations.regulations.find(r => r.department === deptName);
-          if (dept) {
-            lookupFaculty(dept.abbreviation);
-          } else {
-            document.getElementById("faculty-results-container").style.display = 'none';
-            document.getElementById("result-status").textContent = 'Please select a valid department.';
-          }
-        }
-      });
+      // Removed facultySearchButton.addEventListener('click')
 
       // Load all data files concurrently
       const dataFiles = {
@@ -517,8 +496,7 @@
           console.log("All data loaded successfully:", appData);
           populateDepartmentDatalist();
           buildFuzzySearchData();
-          departmentInput.disabled = false;
-          facultySearchButton.disabled = false;
+          departmentSelect.disabled = false;
           rollInputElement.placeholder = "Enter Roll No. or Group";
           rollInputElement.disabled = false;
           searchButton.disabled = false;
@@ -535,50 +513,31 @@
         }
       });
 
-      departmentInput.addEventListener("keyup", function (event) {
-        if (event.key === "Enter") {
-          facultySearchButton.click();
-        }
-      });
-
-      departmentInput.addEventListener('click', () => {
-        // Temporarily clear and restore value to force datalist to show all options
-        const currentValue = departmentInput.value;
-        departmentInput.value = '';
-        departmentInput.focus();
-        departmentInput.value = currentValue;
-      });
-
-      departmentInput.addEventListener('input', () => {
-        const value = departmentInput.value.trim();
-        const options = Array.from(document.getElementById('department-list').options);
-        const match = options.find(opt => opt.value.toLowerCase() === value.toLowerCase());
-
-        if (match) {
-          departmentInput.value = match.value;
-          // Trigger the search, but don't clear the input if a selection is made from the datalist
-          const dept = appData.regulations.regulations.find(r => r.department === match.value);
+      departmentSelect.addEventListener('change', () => {
+        const selectedDepartment = departmentSelect.value;
+        if (selectedDepartment) {
+          const dept = appData.regulations.regulations.find(r => r.department === selectedDepartment);
           if (dept) {
             lookupFaculty(dept.abbreviation);
           }
-        } else if (value === '') {
-          const facultyResultsContainer = document.getElementById('faculty-results-container');
-          facultyResultsContainer.style.display = 'none';
+        } else {
+          // Clear results if "Select a department..." is chosen
+          document.getElementById('faculty-results-container').style.display = 'none';
           document.getElementById("result-status").textContent = '';
-          facultySearchButton.innerHTML = 'Go';
         }
       });
     });
 
     function populateDepartmentDatalist() {
-      const departmentList = document.getElementById("department-list");
-      departmentList.innerHTML = ''; // Clear
+      const departmentSelect = document.getElementById("department-select");
+      departmentSelect.innerHTML = '<option value="">Select a department...</option>'; // Clear and add default option
       appData.regulations.regulations.forEach(reg => {
         if (reg.department && !reg.department.includes('TOTAL')) {
           const option = document.createElement('option');
           option.value = reg.department;
           option.dataset.code = reg.abbreviation;
-          departmentList.appendChild(option);
+          option.textContent = reg.department;
+          departmentSelect.appendChild(option);
         }
       });
     }
