@@ -17,7 +17,6 @@
       color: #e0e0e0;
       /* Lighter text for dark background */
       padding: 10px;
-      /* Add some padding for small screens */
     }
 
     #app-container {
@@ -209,11 +208,15 @@
       color: #888;
       cursor: not-allowed;
     }
-
-    #student-results-container,
-    #faculty-results-container {
+    
+    #student-results-container {
       display: none;
-      /* Hidden by default */
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    #faculty-results-container {
+      display: none; /* Hidden by default */
     }
 
     .result-card h3,
@@ -273,18 +276,20 @@
     }
 
     .report-issue-card {
+      /* Unpinned and acts like a regular card */
       text-align: center;
+      padding: 15px; /* Reduced padding */
     }
-
+    
     .issue-button {
       display: inline-block;
-      padding: 12px 25px;
+      padding: 10px 20px; /* Reduced padding */
       background-color: #007bff;
       /* Blue background */
       color: white;
       text-decoration: none;
       border-radius: 8px;
-      font-size: 15px;
+      font-size: 14px; /* Reduced font size */
       transition: all 0.2s ease;
       border: none;
       /* Remove default border */
@@ -300,7 +305,7 @@
     .disclaimer {
       font-size: 11px;
       color: #888;
-      margin-top: 15px;
+      margin-top: 10px; /* Reduced margin */
       text-align: center;
     }
 
@@ -381,7 +386,6 @@
       </p>
       <p class="copyright">© 2025. All Rights Reserved.</p>
     </div>
-
   </div>
 
   <script>
@@ -473,7 +477,7 @@
         const studentResultsContainer = document.getElementById('student-results-container');
         const rollInputElement = document.getElementById("rollInput");
 
-        if (studentResultsContainer.style.display === 'block') {
+        if (studentResultsContainer.style.display === 'flex') {
           studentResultsContainer.style.display = 'none';
           rollInputElement.value = '';
           document.getElementById("result-status").textContent = '';
@@ -784,8 +788,8 @@
       document.getElementById('guideline-title').textContent = randomGuideline.title;
       document.getElementById('guideline-text').textContent = randomGuideline.points.join(' ');
 
-      studentResultsContainer.style.display = "block";
-      searchButton.innerHTML = '<strong style="font-size: 1.2em;">X</strong>';
+      studentResultsContainer.style.display = "flex";
+      document.getElementById("searchButton").innerHTML = '<strong style="font-size: 1.2em;">X</strong>';
     }
 
     function lookupFaculty(departmentCode) {
