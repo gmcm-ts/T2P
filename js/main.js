@@ -225,8 +225,13 @@ function lookupStudent() {
 
   const groupLetter = groupKey.charAt(0);
   const scheduleKey = isOldSchedule ? 'oldSchedule' : 'newSchedule';
-  const weekSchedule = appData[`group${groupLetter}`]?.[scheduleKey]?.find(w => 
-    selectedDate >= new Date(w.startDate) && selectedDate <= new Date(w.endDate)
+  // Convert selected date to ISO string for comparison
+  const selectedDateISO = selectedDate.toISOString().split('T')[0];
+  
+  // Find matching week in detailed schedule
+  const weekSchedule = appData[`group${groupLetter}`]?.[scheduleKey]?.find(w =>
+    selectedDateISO >= w.startDate &&
+    selectedDateISO <= w.endDate
   );
 
   if (!weekSchedule) return statusElement.textContent = "No schedule found for selected date";
