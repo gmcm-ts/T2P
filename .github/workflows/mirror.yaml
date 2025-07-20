@@ -6,18 +6,19 @@ on:
       - main
 
 permissions:
-  contents: write   # ensure checkout can commit/push
+  contents: write        # allows checkout & commit code
+  workflows: write       # **crucial** for updating workflow files
 
 jobs:
   mirror:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout this repo
+      - name: Checkout using PAT
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          token: ${{ secrets.MIRROR_TOKEN }}  # use your PAT here
+          token: ${{ secrets.MIRROR_TOKEN }}   # ensures PAT (not GITHUB_TOKEN) is used
 
       - name: Push to second repo
         run: |
