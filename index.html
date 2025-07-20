@@ -380,13 +380,21 @@
       });
       
       facultySearchButton.addEventListener('click', () => {
-        const deptName = departmentInput.value.trim();
-        const dept = appData.regulations.regulations.find(r => r.department === deptName);
-        if (dept) {
-          lookupFaculty(dept.abbreviation);
+        const facultyResultsContainer = document.getElementById('faculty-results-container');
+
+        // If results are already visible, reload the page to reset for a new search.
+        if (facultyResultsContainer.style.display === 'block') {
+          location.reload();
         } else {
-            document.getElementById("faculty-results-container").style.display = 'none';
-            document.getElementById("result-status").textContent = 'Please select a valid department.';
+          // Otherwise, perform the faculty search.
+            const deptName = departmentInput.value.trim();
+            const dept = appData.regulations.regulations.find(r => r.department === deptName);
+            if (dept) {
+              lookupFaculty(dept.abbreviation);
+            } else {
+                document.getElementById("faculty-results-container").style.display = 'none';
+                document.getElementById("result-status").textContent = 'Please select a valid department.';
+            }
         }
       });
 
