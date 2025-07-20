@@ -1,10 +1,8 @@
 const appData = {};
 const fuzzyDeptSearch = {};
-let currentMode = 'student';
+let currentMode = 'student'; // 'student' or 'faculty'
 let selectedDate = new Date();
-// Set pivot date in Asia/Calcutta timezone (UTC+5:30)
-const PIVOT_DATE = new Date(Date.UTC(2025, 6, 21, 0, 0, 0)); // July is month 6 in JS
-PIVOT_DATE.setHours(PIVOT_DATE.getHours() + 5, PIVOT_DATE.getMinutes() + 30);
+const PIVOT_DATE = new Date('2025-07-21T00:00:00Z'); // The date the new schedule starts
 
 document.addEventListener("DOMContentLoaded", () => {
   const rollInputElement = document.getElementById("rollInput");
@@ -18,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const facultyInput = document.getElementById("faculty-input-container");
   const departmentSelect = document.getElementById("department-select");
 
-  // Date handling functions
   function updateDateDisplay(date) {
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const today = new Date();
@@ -31,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
       : `Showing for: ${date.toLocaleDateString('en-US', options)}`;
   }
 
+  // Initial setup
   updateDateDisplay(selectedDate);
   datePicker.value = selectedDate.toISOString().split('T')[0];
 
@@ -41,14 +39,18 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   datePicker.addEventListener('change', () => {
-    selectedDate = datePicker.value ? new Date(datePicker.value + 'T00:00:00Z') : new Date();
+    if (!datePicker.value) {
+      selectedDate = new Date();
+    } else {
+      selectedDate = new Date(datePicker.value + 'T00:00:00');
+    }
     updateDateDisplay(selectedDate);
     datePicker.style.display = 'none';
     dateElement.style.display = 'block';
-    
+
     if (currentMode === 'student' && rollInputElement.value.trim()) {
       lookupStudent();
-    } else if (currentMode === 'faculty' && departmentSelect.value) {
+    } else if (currentMode === 'faculty' && departmentSelect.value.trim()) {
       lookupFaculty(departmentSelect.options[departmentSelect.selectedIndex].dataset.code);
     }
   });
@@ -58,7 +60,6 @@ document.addEventListener("DOMContentLoaded", () => {
     dateElement.style.display = 'block';
   });
 
-  // Mode toggle handling
   modeToggle.addEventListener('change', () => {
     currentMode = modeToggle.checked ? 'faculty' : 'student';
     studentInput.style.display = currentMode === 'student' ? 'block' : 'none';
@@ -71,7 +72,6 @@ document.addEventListener("DOMContentLoaded", () => {
     searchButton.innerHTML = 'Go';
   });
 
-  // Search functionality
   searchButton.addEventListener('click', () => {
     const studentResultsContainer = document.getElementById('student-results-container');
     if (studentResultsContainer.style.display === 'flex') {
@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Data loading
+  // Load all data files concurrently
   const dataFiles = {
     groups: 'database/json_data/group-data.json',
     oldGroups: 'database/json_data/old-group-data.json',
@@ -98,28 +98,49 @@ document.addEventListener("DOMContentLoaded", () => {
     regulations: 'database/json_data/regulations.json',
   };
 
-  Promise.all(Object.entries(dataFiles).map(([key, url]) => 
+  const promises = Object.entries(dataFiles).map(([key, url]) =>
     fetch(url)
-      .then(res => res.ok ? res.json() : Promise.reject(`Failed to load ${url}: ${res.status} ${res.statusText}`))
-      .then(data => appData[key] = data)
-  ))
-  .then(() => {
-    populateDepartmentDatalist();
-    buildFuzzySearchData();
-    departmentSelect.disabled = false;
-    rollInputElement.placeholder = "Enter Roll No. or Group";
-    rollInputElement.disabled = false;
-    searchButton.disabled = false;
-  })
-  .catch(error => {
-    console.error("Data load error:", error);
-    statusElement.textContent = "Failed to load data. Please refresh.";
-    rollInputElement.placeholder = "Error";
+      .then(res => {
+        if (!res.ok) throw new Error(`Failed to load ${url}`);
+        return res.json();
+      })
+      .then(data => { appData[key] = data; })
+  );
+
+  Promise.all(promises)
+    .then(() => {
+      console.log("All data loaded successfully:", appData);
+      populateDepartmentDatalist();
+      buildFuzzySearchData();
+      departmentSelect.disabled = false;
+      rollInputElement.placeholder = "Enter Roll No. or Group";
+      rollInputElement.disabled = false;
+      searchButton.disabled = false;
+    })
+    .catch(error => {
+      console.error("Error loading application data:", error);
+      statusElement.textContent = "Failed to load data. Please refresh.";
+      rollInputElement.placeholder = "Error";
+    });
+
+  rollInputElement.addEventListener("keyup", function (event) {
+    if (event.key === "Enter") {
+      lookupStudent();
+    }
   });
 
-  // Event listeners
-  rollInputElement.addEventListener("keyup", e => e.key === "Enter" && lookupStudent());
-  departmentSelect.addEventListener('change', handleDepartmentChange);
+  departmentSelect.addEventListener('change', () => {
+    const selectedDepartment = departmentSelect.value;
+    if (selectedDepartment) {
+      const dept = appData.regulations.regulations.find(r => r.department === selectedDepartment);
+      if (dept) {
+        lookupFaculty(dept.abbreviation);
+      }
+    } else {
+      document.getElementById('faculty-results-container').style.display = 'none';
+      document.getElementById("result-status").textContent = '';
+    }
+  });
 });
 
 function populateDepartmentDatalist() {
@@ -220,30 +241,39 @@ function lookupStudent() {
 
   if (!groupData[groupKey]) {
     const otherData = isOldSchedule ? appData.groups : appData.oldGroups;
-    return statusElement.textContent = findGroupFromRoll(rollInput, otherData)
-      ? `Found in ${isOldSchedule ? 'new' : 'old'} schedule (from ${PIVOT_DATE.toLocaleDateString()})`
-      : "No matching group found";
+    const foundInOther = findGroupFromRoll(rollInput, otherData);
+    if (foundInOther) {
+      statusElement.textContent = `Found in ${isOldSchedule ? 'new' : 'old'} schedule but not for selected date`;
+    } else {
+      statusElement.textContent = "No matching group found";
+    }
+    return;
   }
 
   const groupLetter = groupKey.charAt(0);
   const scheduleKey = isOldSchedule ? 'oldSchedule' : 'newSchedule';
-  // Convert selected date to ISO string for comparison
   const selectedDateISO = selectedDate.toISOString().split('T')[0];
   
-  // Find matching week in detailed schedule
-  const weekSchedule = appData[`group${groupLetter}`]?.[scheduleKey]?.find(w =>
-    selectedDateISO >= w.startDate &&
-    selectedDateISO <= w.endDate
+  const weekSchedule = appData[`group${groupLetter}`]?.[scheduleKey]?.find(w => 
+    selectedDateISO >= w.startDate && selectedDateISO <= w.endDate
   );
 
-  if (!weekSchedule) return statusElement.textContent = "No schedule found for selected date";
+  const atAGlanceWeek = appData.schedule[scheduleKey].find(w => 
+    selectedDateISO >= w.startDate && selectedDateISO <= w.endDate
+  );
+
+  if (!weekSchedule || !atAGlanceWeek) {
+    statusElement.textContent = "No schedule found for selected date";
+    return;
+  }
 
   const postingCode = weekSchedule.postings[groupKey];
-  const deptCode = appData.schedule[scheduleKey].find(w => 
-    selectedDate >= new Date(w.startDate) && selectedDate <= new Date(w.endDate)
-  )?.postings[groupKey];
+  const deptCode = atAGlanceWeek.postings[groupKey];
 
-  if (!postingCode || !deptCode) return statusElement.textContent = "Posting details not found";
+  if (!postingCode || !deptCode) {
+    statusElement.textContent = "Posting details not found";
+    return;
+  }
 
   const legendEntry = appData.legend.legend.find(item => item.code === getCanonicalPostingCode(postingCode));
   const deptEntry = appData.regulations.regulations.find(item => item.abbreviation === deptCode);
@@ -270,34 +300,46 @@ function lookupFaculty(deptCode) {
 
   const isOldSchedule = selectedDate < PIVOT_DATE;
   const scheduleKey = isOldSchedule ? 'oldSchedule' : 'newSchedule';
+  const selectedDateISO = selectedDate.toISOString().split('T')[0];
+  
   const weekSchedule = appData.schedule[scheduleKey].find(w => 
-    selectedDate >= new Date(w.startDate) && selectedDate <= new Date(w.endDate)
+    selectedDateISO >= w.startDate && selectedDateISO <= w.endDate
   );
 
-  if (!weekSchedule) return statusElement.textContent = "No schedule found";
+  if (!weekSchedule) {
+    statusElement.textContent = "No schedule found for selected date";
+    return;
+  }
 
-  const postingsBySite = Object.entries(weekSchedule.postings)
-    .filter(([, code]) => getEquivalentScheduleCodes(deptCode).includes(code))
-    .reduce((acc, [group, code]) => {
-      const groupLetter = group.charAt(0);
-      const detailedWeek = appData[`group${groupLetter}`]?.[scheduleKey]?.find(w => w.startDate === weekSchedule.startDate);
-      const rawCode = detailedWeek?.postings[group];
-      const canonicalCode = getCanonicalPostingCode(rawCode);
-      const site = appData.legend.legend.find(item => item.code === canonicalCode)?.site || rawCode;
-      return {...acc, [site]: [...(acc[site] || []), ...(appData[isOldSchedule ? 'oldGroups' : 'groups'][group] || [])]};
-    }, {});
+  const postingsBySite = {};
+  const searchCodes = getEquivalentScheduleCodes(deptCode);
 
-  if (!Object.keys(postingsBySite).length) return statusElement.textContent = "No students found";
+  for (const [groupCode, code] of Object.entries(weekSchedule.postings)) {
+    if (searchCodes.includes(code)) {
+      const groupLetter = groupCode.charAt(0);
+      const detailedWeek = appData[`group${groupLetter}`]?.[scheduleKey]?.find(w => 
+        w.startDate === weekSchedule.startDate && w.endDate === weekSchedule.endDate
+      );
+      
+      if (detailedWeek?.postings[groupCode]) {
+        const rawCode = detailedWeek.postings[groupCode];
+        const canonicalCode = getCanonicalPostingCode(rawCode);
+        const site = appData.legend.legend.find(item => item.code === canonicalCode)?.site || rawCode;
+        postingsBySite[site] = postingsBySite[site] || [];
+        postingsBySite[site].push(...appData[isOldSchedule ? 'oldGroups' : 'groups'][groupCode]);
+      }
+    }
+  }
 
-  resultsContainer.innerHTML = `<ul>${Object.entries(postingsBySite).map(([site, rolls]) => 
-    `<li><strong>${site}:</strong><br>${rolls.join(', ')}</li>`
-  ).join('')}</ul>`;
+  if (Object.keys(postingsBySite).length === 0) {
+    statusElement.textContent = "No students found for selected date";
+    return;
+  }
+
+  resultsContainer.innerHTML = `<ul>${
+    Object.entries(postingsBySite).map(([site, rolls]) => 
+      `<li><strong>${site}:</strong><br>${rolls.join(', ')}</li>`
+    ).join('')
+  }</ul>`;
   resultsContainer.style.display = 'block';
-}
-
-function handleDepartmentChange() {
-  const selected = document.getElementById("department-select").value;
-  if (!selected) return;
-  const dept = appData.regulations.regulations.find(r => r.department === selected);
-  dept && lookupFaculty(dept.abbreviation);
 }
