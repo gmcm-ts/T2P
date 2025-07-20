@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write   # ensure checkout can commit/push
+
 jobs:
   mirror:
     runs-on: ubuntu-latest
@@ -12,12 +15,14 @@ jobs:
     steps:
       - name: Checkout this repo
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.MIRROR_TOKEN }}  # use your PAT here
 
       - name: Push to second repo
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
-          git remote add mirror https://x-access-token:${{ secrets.MIRROR_TOKEN }}@github.com/gmc-mbnr/T2P.git
+          git remote add mirror \
+            https://x-access-token:${{ secrets.MIRROR_TOKEN }}@github.com/gmc-mbnr/T2P.git
           git push mirror main --force
-
-
