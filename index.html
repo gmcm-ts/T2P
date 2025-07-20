@@ -369,24 +369,28 @@
 
       searchButton.addEventListener('click', () => {
         const studentResultsContainer = document.getElementById('student-results-container');
+        const rollInputElement = document.getElementById("rollInput");
 
-        // If results are already visible, reload the page to reset for a new search.
         if (studentResultsContainer.style.display === 'block') {
-          location.reload();
+          studentResultsContainer.style.display = 'none';
+          rollInputElement.value = '';
+          document.getElementById("result-status").textContent = '';
+          searchButton.innerHTML = 'Go';
         } else {
-          // Otherwise, perform the student search.
           lookupStudent();
         }
       });
       
       facultySearchButton.addEventListener('click', () => {
         const facultyResultsContainer = document.getElementById('faculty-results-container');
+        const departmentInput = document.getElementById('department-input');
 
-        // If results are already visible, reload the page to reset for a new search.
         if (facultyResultsContainer.style.display === 'block') {
-          location.reload();
+          facultyResultsContainer.style.display = 'none';
+          departmentInput.value = '';
+          document.getElementById("result-status").textContent = '';
+          facultySearchButton.innerHTML = 'Go';
         } else {
-          // Otherwise, perform the faculty search.
             const deptName = departmentInput.value.trim();
             const dept = appData.regulations.regulations.find(r => r.department === deptName);
             if (dept) {
@@ -702,6 +706,7 @@
       document.getElementById('guideline-text').textContent = randomGuideline.points.join(' ');
 
       studentResultsContainer.style.display = "block";
+      searchButton.innerHTML = '<strong style="font-size: 1.2em;">X</strong>';
     }
 
     function lookupFaculty(departmentCode) {
@@ -761,6 +766,7 @@
 
       facultyResultsContainer.innerHTML = html;
       facultyResultsContainer.style.display = 'block';
+      facultySearchButton.innerHTML = '<strong style="font-size: 1.2em;">X</strong>';
     }
   </script>
 </body>
