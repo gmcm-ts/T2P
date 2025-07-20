@@ -25,4 +25,4 @@ jobs:
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
           git remote add mirror https://x-access-token:${{ secrets.MIRROR_TOKEN }}@github.com/gmc-mbnr/T2P.git
-          git push mirror refs/heads/main:refs/heads/main --force
+          git push mirror HEAD:refs/heads/main --force
