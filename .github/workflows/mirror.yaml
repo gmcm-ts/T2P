@@ -28,13 +28,13 @@ jobs:
          git reset --hard
          git checkout main -- .
          rm -rf .github
+         git clean -fdx
          git add .
-         git commit -m "Mirror without workflows"
-
+         git commit -m "Mirror without workflows" --allow-empty
 
       - name: Push clean branch
         run: |
-          git config --global user.name "GitHub Action"
-          git config --global user.email "action@github.com"
+          git tag mirror-$(date +%s)
           git remote add mirror https://x-access-token:${{ secrets.MIRROR_TOKEN }}@github.com/gmc-mbnr/T2P.git
           git push mirror HEAD:main --force
+
