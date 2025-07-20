@@ -49,12 +49,27 @@
       margin-bottom: 20px;
     }
 
+    .main-header h1 {
+      font-size: 1.2rem;
+      margin: 0 0 10px;
+      line-height: 1.2;
+    }
+    
+    .main-header .small-text {
+      font-size: 0.75em;
+      font-weight: normal;
+      color: #b0b0b0;
+    }
+
     .main-header .schedule-title {
       font-weight: bold;
       font-size: 1.1em;
     }
 
-    @media (max-width: 400px) {
+    @media (max-width: 480px) { /* Widened breakpoint for better coverage */
+      .main-header h1 {
+        font-size: 1.0rem;
+      }
       .main-header p {
         font-size: 0.9rem;
       }
@@ -311,9 +326,8 @@
   <div id="app-container">
     <div id="search-card" class="card">
       <div class="main-header">
-        <h1>GOVERNMENT GENERAL HOSPITAL <br> AND MEDICAL COLLEGE, <br> <span class="small-text">MAHABUBNAGAR, T.S. PIN:
-            509001.</span></h1>
-        <p class="schedule-title">INTERNSHIP SCHEDULE <br> <span class="small-text">[ 21 APR 2025 - 20 APR 2026 ]</span>
+        <h1>GOVERNMENT GENERAL HOSPITAL <br> AND MEDICAL COLLEGE, <br> <span class="small-text">MAHABUBNAGAR, T.S. PIN: 509001.</span></h1>
+        <p id="dashboard-title" class="schedule-title">INTERNSHIP SCHEDULE <br> <span class="small-text">[ 21 APR 2025 - 20 APR 2026 ]</span>
         </p>
       </div>
       <div class="mode-toggle">
@@ -381,7 +395,6 @@
     document.addEventListener("DOMContentLoaded", () => {
       const rollInputElement = document.getElementById("rollInput");
       const searchButton = document.getElementById("searchButton");
-      const facultySearchButton = document.getElementById("facultySearchButton");
       const statusElement = document.getElementById("result-status");
       const dateWrapper = document.getElementById("date-wrapper");
       const dateElement = document.getElementById("current-date");
@@ -448,7 +461,14 @@
         currentMode = modeToggle.checked ? 'faculty' : 'student';
         studentInput.style.display = (currentMode === 'student') ? 'block' : 'none';
         facultyInput.style.display = (currentMode === 'faculty') ? 'block' : 'none';
-        titleElement.textContent = (currentMode === 'student') ? 'Internship Schedule' : 'Faculty Department View';
+
+        if (titleElement) {
+          if (currentMode === 'student') {
+            titleElement.innerHTML = 'INTERNSHIP SCHEDULE <br> <span class="small-text">[ 21 APR 2025 - 20 APR 2026 ]</span>';
+          } else {
+            titleElement.innerHTML = 'Faculty Department View';
+          }
+        }
 
         // Clear results when switching modes
         document.getElementById('student-results-container').style.display = 'none';
@@ -457,9 +477,6 @@
         rollInputElement.value = ''; // Clear student input
         departmentSelect.value = ''; // Clear faculty input
         searchButton.innerHTML = 'Go'; // Reset search button text
-        // Also reset faculty results container and status when switching modes
-        document.getElementById('faculty-results-container').style.display = 'none';
-        document.getElementById("result-status").textContent = '';
       });
 
       searchButton.addEventListener('click', () => {
@@ -475,8 +492,6 @@
           lookupStudent();
         }
       });
-
-      // Removed facultySearchButton.addEventListener('click')
 
       // Load all data files concurrently
       const dataFiles = {
@@ -840,7 +855,6 @@
 
       facultyResultsContainer.innerHTML = html;
       facultyResultsContainer.style.display = 'block';
-      facultySearchButton.innerHTML = '<strong style="font-size: 1.2em;">X</strong>';
     }
   </script>
 </body>
