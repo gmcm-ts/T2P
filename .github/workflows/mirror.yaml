@@ -19,10 +19,19 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.MIRROR_TOKEN }}
 
-      - name: Push entire branch forcefully
+      - name: Make orphan branch without workflows
+        run: |
+          git checkout --orphan mirror-branch
+          git rm -rf --cached .
+          git reset --hard
+          git checkout main -- .
+          rm -rf .github
+          git add .
+          git commit -m "Mirror without workflows"
+
+      - name: Push clean branch
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
           git remote add mirror https://x-access-token:${{ secrets.MIRROR_TOKEN }}@github.com/gmc-mbnr/T2P.git
-          git push mirror HEAD:refs/heads/main --force
-
+          git push mirror HEAD:main --force
