@@ -1,6 +1,7 @@
 <!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,78 +11,59 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       display: flex;
       justify-content: center;
-      align-items: center;
       min-height: 100vh;
       margin: 0;
       background-color: #000000;
+      color: #e0e0e0;
+      /* Lighter text for dark background */
+      padding: 10px;
+      /* Add some padding for small screens */
+    }
+
+    #app-container {
       width: 100%;
       max-width: 500px;
-      color: #e0e0e0;
+      /* Constrain the app width */
+      margin: 20px auto;
+      /* Center the app container and add vertical margin */
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      /* Space between cards */
     }
+
     .card {
       background-color: #1a1a1a;
       border-radius: 12px;
-      background-color: #1a1a1a;
-      border: 1px solid #333;
-      background-color: #1a1a1a;
       border: 1px solid #333;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-      border: 1px solid #333;
+      padding: 20px;
+      margin-bottom: 20px;
+      /* Add space between cards */
     }
-    .main-header {
-    .main-header {
+
     .main-header {
       text-align: center;
-      color: #007bff; /* Blue font as requested */
+      color: #007bff;
+      /* Blue font as requested */
       margin-bottom: 20px;
     }
-    .main-header p {
-      margin: 0.2em 0;
-      font-weight: 500;
-      line-height: 1.3;
-    }
+
     .main-header .schedule-title {
       font-weight: bold;
       font-size: 1.1em;
     }
+
     @media (max-width: 400px) {
       .main-header p {
         font-size: 0.9rem;
       }
     }
-      text-align: center;
-      color: #007bff; /* Blue font as requested */
-      margin-bottom: 20px;
-      font-weight: 500;
-      line-height: 1.3;
-    }
-    .main-header .schedule-title {
-      font-weight: bold;
-      font-size: 1.1em;
-    }
-    @media (max-width: 400px) {
-      .main-header p {
-        font-size: 0.9rem;
-      }
-    }
-      text-align: center;
-      color: #007bff; /* Blue font as requested */
-      margin-bottom: 20px;
-      font-weight: 500;
-      line-height: 1.3;
-    }
-    .main-header .schedule-title {
-      font-weight: bold;
-      font-size: 1.1em;
-    }
-    @media (max-width: 400px) {
-      .main-header p {
-        font-size: 0.9rem;
-      }
-    }
+
     #search-card {
       text-align: center;
     }
+
     .mode-toggle {
       display: flex;
       justify-content: center;
@@ -89,17 +71,20 @@
       gap: 10px;
       margin-bottom: 20px;
     }
+
     .switch {
       position: relative;
       display: inline-block;
       width: 50px;
       height: 28px;
     }
+
     .switch input {
       opacity: 0;
       width: 0;
       height: 0;
     }
+
     .slider {
       position: absolute;
       cursor: pointer;
@@ -111,6 +96,7 @@
       transition: .4s;
       border-radius: 28px;
     }
+
     #date-wrapper {
       cursor: pointer;
       padding: 5px 0;
@@ -118,9 +104,12 @@
       transition: background-color 0.2s;
       margin-bottom: 20px;
     }
+
     #date-wrapper:hover {
-      background-color: #e9ecef;
+      background-color: #1a1a1a;
+      /* Darker hover for date wrapper */
     }
+
     .slider:before {
       position: absolute;
       content: "";
@@ -132,36 +121,49 @@
       transition: .4s;
       border-radius: 50%;
     }
+
     #current-date {
       margin: 0;
-      color: #555;
+      color: #b0b0b0;
+      /* Adjusted for dark theme */
       font-size: 16px;
     }
+
     #input-wrapper {
       display: flex;
       gap: 10px;
       flex-direction: column;
     }
-    input:checked + .slider {
+
+    input:checked+.slider {
       background-color: #007bff;
     }
-    input:checked + .slider:before {
+
+    input:checked+.slider:before {
       transform: translateX(22px);
     }
+
     .input-container {
       position: relative;
       width: 100%;
     }
+
     #rollInput,
     #department-input {
-      padding: 10px;
+      padding: 12px 15px;
       padding-right: 50px;
       font-size: 16px;
       width: 100%;
       box-sizing: border-box;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      border: 1px solid #007bff;
+      /* Blue border */
+      border-radius: 8px;
+      background-color: #0d0d0d;
+      /* Darker input background */
+      color: #e0e0e0;
+      /* Light text color */
     }
+
     .search-button-wrapper {
       position: absolute;
       right: 4px;
@@ -169,106 +171,141 @@
       transform: translateY(-50%);
       z-index: 1;
     }
+
     button {
-      padding: 8px 15px;
-      font-size: 14px;
+      padding: 10px 20px;
+      font-size: 16px;
       font-weight: 500;
       cursor: pointer;
-      border: 1px solid #007bff;
+      border: none;
+      /* Remove default border */
       background-color: #007bff;
       color: white;
-      border-radius: 4px;
-      transition: background-color 0.2s;
+      border-radius: 8px;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+      /* Smooth transitions */
       white-space: nowrap;
     }
+
     button:hover:not(:disabled) {
       background-color: #0056b3;
+      transform: translateY(-1px);
+      /* Slight lift on hover */
     }
+
     button:disabled {
-      background-color: #ccc;
-      border-color: #ccc;
+      background-color: #333;
+      border-color: #333;
+      color: #888;
       cursor: not-allowed;
     }
+
     #student-results-container,
     #faculty-results-container {
-      display: none; /* Hidden by default */
+      display: none;
+      /* Hidden by default */
     }
-    .result-card h3, .result-card h4 {
+
+    .result-card h3,
+    .result-card h4 {
       margin-top: 0;
-      color: #0056b3;
-      border-bottom: 1px solid #eee;
+      color: #007bff;
+      /* Blue for headings */
+      border-bottom: 1px solid #222;
+      /* Darker border */
       padding-bottom: 10px;
       margin-bottom: 15px;
     }
+
     .result-card p {
       margin: 0 0 10px 0;
       line-height: 1.6;
-      color: #333;
+      color: #b0b0b0;
+      /* Adjusted for dark theme */
     }
+
     .result-card strong {
-      color: #111;
+      color: #e0e0e0;
+      /* Adjusted for dark theme */
     }
+
     #guideline-title {
       display: block;
       margin-bottom: 8px;
     }
+
     #result-status {
       margin-top: 20px;
       font-size: 18px;
       font-weight: 500;
-      color: #333;
+      color: #b0b0b0;
+      /* Adjusted for dark theme */
       text-align: center;
     }
+
     #faculty-results-container ul {
       list-style-type: none;
       padding: 0;
       text-align: left;
     }
+
     #faculty-results-container li {
       margin-bottom: 15px;
       padding-bottom: 15px;
-      border-bottom: 1px solid #f0f2f5;
+      border-bottom: 1px solid #222;
+      /* Darker border */
     }
+
     #faculty-results-container li:last-child {
       border-bottom: none;
       margin-bottom: 0;
       padding-bottom: 0;
     }
+
     .report-issue-card {
       text-align: center;
       margin-top: 20px;
     }
+
     .issue-button {
       display: inline-block;
-      padding: 10px 20px;
-      background-color: #f0f2f5;
-      color: #666;
+      padding: 12px 25px;
+      background-color: #007bff;
+      /* Blue background */
+      color: white;
       text-decoration: none;
-      border-radius: 6px;
-      font-size: 14px;
+      border-radius: 8px;
+      font-size: 15px;
       transition: all 0.2s ease;
-      border: 1px solid #ddd;
+      border: none;
+      /* Remove default border */
     }
+
     .issue-button:hover {
-      background-color: #e4e6e9;
-      color: #333;
-      border-color: #ccc;
+      background-color: #0056b3;
+      color: white;
+      transform: translateY(-1px);
+      /* Slight lift on hover */
     }
+
     .disclaimer {
       font-size: 11px;
       color: #888;
       margin-top: 8px;
       text-align: center;
     }
+
     .copyright {
       font-size: 12px;
-      color: #666;
+      color: #888;
+      /* Adjusted for dark theme */
       text-align: center;
       margin-top: 15px;
       font-weight: 500;
     }
   </style>
 </head>
+
 <body>
   <div id="app-container">
     <div id="search-card" class="card">
@@ -283,16 +320,20 @@
       </div>
       <div id="date-wrapper" title="Click to change date">
         <p id="current-date"></p>
-        <input type="date" id="date-picker" style="display: none; width: 100%; box-sizing: border-box; font-family: inherit; font-size: 16px; padding: 5px; border: 1px solid #ccc; border-radius: 4px; text-align: center;">
+        <input type="date" id="date-picker"
+          style="display: none; width: 100%; box-sizing: border-box; font-family: inherit; font-size: 16px; padding: 8px; border: 1px solid #007bff; border-radius: 8px; text-align: center; background-color: #0d0d0d; color: #e0e0e0;">
       </div>
       <div id="input-wrapper">
         <div id="student-input-container" class="input-container">
           <input type="text" id="rollInput" placeholder="Loading data..." disabled />
-          <div id="search-button-wrapper" class="search-button-wrapper"><button id="searchButton" disabled>Go</button></div>
+          <div id="search-button-wrapper" class="search-button-wrapper"><button id="searchButton" disabled>Go</button>
+          </div>
         </div>
         <div id="faculty-input-container" class="input-container" style="display: none;">
-          <input type="text" id="department-input" list="department-list" placeholder="Type or select a department..." disabled>
-          <div id="faculty-search-button-wrapper" class="search-button-wrapper"><button id="facultySearchButton" disabled>Go</button></div>
+          <input type="text" id="department-input" list="department-list" placeholder="Type or select a department..."
+            disabled>
+          <div id="faculty-search-button-wrapper" class="search-button-wrapper"><button id="facultySearchButton"
+              disabled>Go</button></div>
           <datalist id="department-list"></datalist>
         </div>
       </div>
@@ -315,7 +356,8 @@
         <p id="guideline-text"></p>
       </div>
       <div class="report-issue-card">
-        <a href="https://github.com/Devaprasad-reddy/T2P/issues/new" target="_blank" rel="noopener noreferrer" class="issue-button">
+        <a href="https://github.com/Devaprasad-reddy/T2P/issues/new" target="_blank" rel="noopener noreferrer"
+          class="issue-button">
           Something not right? Report an issue
         </a>
       </div>
@@ -388,7 +430,7 @@
         if (currentMode === 'student' && rollInputElement.value.trim()) {
           lookupStudent();
         } else if (currentMode === 'faculty' && departmentInput.value.trim()) {
-            facultySearchButton.click();
+          facultySearchButton.click();
         }
       });
 
@@ -423,7 +465,7 @@
           lookupStudent();
         }
       });
-      
+
       facultySearchButton.addEventListener('click', () => {
         const facultyResultsContainer = document.getElementById('faculty-results-container');
         const departmentInput = document.getElementById('department-input');
@@ -434,14 +476,14 @@
           facultySearchButton.innerHTML = 'Go';
           return;
         } else {
-            const deptName = departmentInput.value.trim();
-            const dept = appData.regulations.regulations.find(r => r.department === deptName);
-            if (dept) {
-              lookupFaculty(dept.abbreviation);
-            } else {
-                document.getElementById("faculty-results-container").style.display = 'none';
-                document.getElementById("result-status").textContent = 'Please select a valid department.';
-            }
+          const deptName = departmentInput.value.trim();
+          const dept = appData.regulations.regulations.find(r => r.department === deptName);
+          if (dept) {
+            lookupFaculty(dept.abbreviation);
+          } else {
+            document.getElementById("faculty-results-container").style.display = 'none';
+            document.getElementById("result-status").textContent = 'Please select a valid department.';
+          }
         }
       });
 
@@ -461,11 +503,11 @@
 
       const promises = Object.entries(dataFiles).map(([key, url]) =>
         fetch(url)
-        .then(res => {
-          if (!res.ok) throw new Error(`Failed to load ${url}`);
-          return res.json();
-        })
-        .then(data => { appData[key] = data; })
+          .then(res => {
+            if (!res.ok) throw new Error(`Failed to load ${url}`);
+            return res.json();
+          })
+          .then(data => { appData[key] = data; })
       );
 
       Promise.all(promises)
@@ -485,13 +527,13 @@
           rollInputElement.placeholder = "Error";
         });
 
-      rollInputElement.addEventListener("keyup", function(event) {
+      rollInputElement.addEventListener("keyup", function (event) {
         if (event.key === "Enter") {
           lookupStudent();
         }
       });
 
-      departmentInput.addEventListener("keyup", function(event) {
+      departmentInput.addEventListener("keyup", function (event) {
         if (event.key === "Enter") {
           facultySearchButton.click();
         }
@@ -520,10 +562,10 @@
             lookupFaculty(dept.abbreviation);
           }
         } else if (value === '') {
-            const facultyResultsContainer = document.getElementById('faculty-results-container');
-            facultyResultsContainer.style.display = 'none';
-            document.getElementById("result-status").textContent = '';
-            facultySearchButton.innerHTML = 'Go';
+          const facultyResultsContainer = document.getElementById('faculty-results-container');
+          facultyResultsContainer.style.display = 'none';
+          document.getElementById("result-status").textContent = '';
+          facultySearchButton.innerHTML = 'Go';
         }
       });
     });
@@ -833,4 +875,5 @@
     }
   </script>
 </body>
+
 </html>
