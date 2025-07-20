@@ -453,6 +453,16 @@
         }
       });
 
+      departmentInput.addEventListener('click', () => {
+        if (departmentInput.value.trim() !== '') {
+          departmentInput.value = '';
+          const facultyResultsContainer = document.getElementById('faculty-results-container');
+          facultyResultsContainer.style.display = 'none';
+          document.getElementById("result-status").textContent = '';
+          facultySearchButton.innerHTML = 'Go';
+        }
+      });
+
       departmentInput.addEventListener('input', () => {
         const value = departmentInput.value.trim();
         const options = Array.from(document.getElementById('department-list').options);
