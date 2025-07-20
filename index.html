@@ -433,10 +433,11 @@
         const facultyResultsContainer = document.getElementById('faculty-results-container');
         const departmentInput = document.getElementById('department-input');
 
-        if (facultyResultsContainer.style.display === 'block' && departmentInput.value === '') {
+        if (facultyResultsContainer.style.display === 'block') {
           facultyResultsContainer.style.display = 'none';
           document.getElementById("result-status").textContent = '';
           facultySearchButton.innerHTML = 'Go';
+          return;
         } else {
             const deptName = departmentInput.value.trim();
             const dept = appData.regulations.regulations.find(r => r.department === deptName);
