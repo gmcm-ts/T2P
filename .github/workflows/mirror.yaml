@@ -19,3 +19,4 @@ jobs:
           git config --global user.email "action@github.com"
           git remote add mirror https://x-access-token:${{ secrets.MIRROR_TOKEN }}@github.com/gmc-mbnr/T2P.git
           git push mirror main --force
+
