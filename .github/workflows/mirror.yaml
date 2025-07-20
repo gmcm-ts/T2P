@@ -1,0 +1,21 @@
+name: Mirror to second repo
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v3
+
+      - name: Push to second repo
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git remote add mirror https://x-access-token:${{ secrets.MIRROR_TOKEN }}@github.com/gmc-mbnr/T2P.git
+          git push mirror main --force
