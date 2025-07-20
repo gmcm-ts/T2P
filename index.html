@@ -449,7 +449,11 @@
         document.getElementById('faculty-results-container').style.display = 'none';
         statusElement.textContent = '';
         rollInputElement.value = ''; // Clear student input
-        departmentInput.value = ''; // Clear faculty input
+        departmentSelect.value = ''; // Clear faculty input
+        searchButton.innerHTML = 'Go'; // Reset search button text
+        // Also reset faculty results container and status when switching modes
+        document.getElementById('faculty-results-container').style.display = 'none';
+        document.getElementById("result-status").textContent = '';
       });
 
       searchButton.addEventListener('click', () => {
