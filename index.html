@@ -450,6 +450,8 @@
         document.getElementById('student-results-container').style.display = 'none';
         document.getElementById('faculty-results-container').style.display = 'none';
         statusElement.textContent = '';
+        rollInputElement.value = ''; // Clear student input
+        departmentInput.value = ''; // Clear faculty input
       });
 
       searchButton.addEventListener('click', () => {
@@ -540,15 +542,11 @@
       });
 
       departmentInput.addEventListener('click', () => {
-        // Only clear and hide results if there's already a value and results are displayed
-        if (facultyResultsContainer.style.display === 'block' && departmentInput.value.trim() !== '') {
-          departmentInput.value = '';
-          facultyResultsContainer.style.display = 'none';
-          document.getElementById("result-status").textContent = '';
-          facultySearchButton.innerHTML = 'Go';
-        }
-        // Always show the datalist options when clicked
+        // Temporarily clear and restore value to force datalist to show all options
+        const currentValue = departmentInput.value;
+        departmentInput.value = '';
         departmentInput.focus();
+        departmentInput.value = currentValue;
       });
 
       departmentInput.addEventListener('input', () => {
