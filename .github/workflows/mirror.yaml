@@ -21,13 +21,16 @@ jobs:
 
       - name: Make orphan branch without workflows
         run: |
-          git checkout --orphan mirror-branch
-          git rm -rf --cached .
-          git reset --hard
-          git checkout main -- .
-          rm -rf .github
-          git add .
-          git commit -m "Mirror without workflows"
+         git config --global user.name "GitHub Action"
+         git config --global user.email "action@github.com"
+         git checkout --orphan mirror-branch
+         git rm -rf --cached .
+         git reset --hard
+         git checkout main -- .
+         rm -rf .github
+         git add .
+         git commit -m "Mirror without workflows"
+
 
       - name: Push clean branch
         run: |
