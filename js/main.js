@@ -2,7 +2,9 @@ const appData = {};
 const fuzzyDeptSearch = {};
 let currentMode = 'student';
 let selectedDate = new Date();
-const PIVOT_DATE = new Date('2025-07-21T00:00:00Z');
+// Set pivot date in Asia/Calcutta timezone (UTC+5:30)
+const PIVOT_DATE = new Date(Date.UTC(2025, 6, 21, 0, 0, 0)); // July is month 6 in JS
+PIVOT_DATE.setHours(PIVOT_DATE.getHours() + 5, PIVOT_DATE.getMinutes() + 30);
 
 document.addEventListener("DOMContentLoaded", () => {
   const rollInputElement = document.getElementById("rollInput");
