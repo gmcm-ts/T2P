@@ -84,16 +84,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Data loading
   const dataFiles = {
-    groups: '../database/json_data/group-data.json',
-    oldGroups: '../database/json_data/old-group-data.json',
-    schedule: '../database/json_data/schedule-data.json',
-    groupA: '../database/json_data/group-a-schedule.json',
-    groupB: '../database/json_data/group-b-schedule.json',
-    groupC: '../database/json_data/group-c-schedule.json',
-    groupD: '../database/json_data/group-d-schedule.json',
-    legend: '../database/json_data/legend.json',
-    guidelines: '../database/json_data/guidelines.json',
-    regulations: '../database/json_data/regulations.json',
+    groups: 'database/json_data/group-data.json',
+    oldGroups: 'database/json_data/old-group-data.json',
+    schedule: 'database/json_data/schedule-data.json',
+    groupA: 'database/json_data/group-a-schedule.json',
+    groupB: 'database/json_data/group-b-schedule.json',
+    groupC: 'database/json_data/group-c-schedule.json',
+    groupD: 'database/json_data/group-d-schedule.json',
+    legend: 'database/json_data/legend.json',
+    guidelines: 'database/json_data/guidelines.json',
+    regulations: 'database/json_data/regulations.json',
   };
 
   Promise.all(Object.entries(dataFiles).map(([key, url]) => 
