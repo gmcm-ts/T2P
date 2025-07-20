@@ -114,7 +114,7 @@
       border: 1px solid #ccc;
       border-radius: 4px;
     }
-    #search-button-wrapper {
+    .search-button-wrapper {
       position: absolute;
       right: 4px;
       top: 50%;
@@ -240,11 +240,11 @@
       <div id="input-wrapper">
         <div id="student-input-container" class="input-container">
           <input type="text" id="rollInput" placeholder="Loading data..." disabled />
-          <div id="search-button-wrapper"><button id="searchButton" disabled>Go</button></div>
+          <div id="search-button-wrapper" class="search-button-wrapper"><button id="searchButton" disabled>Go</button></div>
         </div>
         <div id="faculty-input-container" class="input-container" style="display: none;">
           <input type="text" id="department-input" list="department-list" placeholder="Type or select a department..." disabled>
-          <div id="search-button-wrapper" style="display: none;"><button disabled>Go</button></div>
+          <div id="faculty-search-button-wrapper" class="search-button-wrapper"><button id="facultySearchButton" disabled>Go</button></div>
           <datalist id="department-list"></datalist>
         </div>
       </div>
@@ -292,6 +292,7 @@
     document.addEventListener("DOMContentLoaded", () => {
       const rollInputElement = document.getElementById("rollInput");
       const searchButton = document.getElementById("searchButton");
+      const facultySearchButton = document.getElementById("facultySearchButton");
       const statusElement = document.getElementById("result-status");
       const dateWrapper = document.getElementById("date-wrapper");
       const dateElement = document.getElementById("current-date");
@@ -343,6 +344,8 @@
         // If a roll number is already in the input, re-run the search for the new date.
         if (currentMode === 'student' && rollInputElement.value.trim()) {
           lookupStudent();
+        } else if (currentMode === 'faculty' && departmentInput.value.trim()) {
+            facultySearchButton.click();
         }
       });
 
@@ -353,11 +356,9 @@
       });
 
       modeToggle.addEventListener('change', () => {
-        const searchButtonWrapper = document.getElementById('search-button-wrapper');
         currentMode = modeToggle.checked ? 'faculty' : 'student';
         studentInput.style.display = (currentMode === 'student') ? 'block' : 'none';
         facultyInput.style.display = (currentMode === 'faculty') ? 'block' : 'none';
-        searchButtonWrapper.style.display = (currentMode === 'student') ? 'flex' : 'none';
         titleElement.textContent = (currentMode === 'student') ? 'Internship Schedule' : 'Faculty Department View';
 
         // Clear results when switching modes
@@ -375,6 +376,17 @@
         } else {
           // Otherwise, perform the student search.
           lookupStudent();
+        }
+      });
+      
+      facultySearchButton.addEventListener('click', () => {
+        const deptName = departmentInput.value.trim();
+        const dept = appData.regulations.regulations.find(r => r.department === deptName);
+        if (dept) {
+          lookupFaculty(dept.abbreviation);
+        } else {
+            document.getElementById("faculty-results-container").style.display = 'none';
+            document.getElementById("result-status").textContent = 'Please select a valid department.';
         }
       });
 
@@ -407,6 +419,7 @@
           populateDepartmentDatalist();
           buildFuzzySearchData();
           departmentInput.disabled = false;
+          facultySearchButton.disabled = false;
           rollInputElement.placeholder = "Enter Roll No. or Group";
           rollInputElement.disabled = false;
           searchButton.disabled = false;
@@ -423,6 +436,12 @@
         }
       });
 
+      departmentInput.addEventListener("keyup", function(event) {
+        if (event.key === "Enter") {
+          facultySearchButton.click();
+        }
+      });
+
       departmentInput.addEventListener('input', () => {
         const value = departmentInput.value.trim().toLowerCase();
         const match = fuzzyDeptSearch[value];
@@ -430,11 +449,6 @@
         if (match) {
           // To provide good UX, set the input to the full name when a match is found
           departmentInput.value = match.name;
-          lookupFaculty(match.code);
-        } else {
-          // If user clears input or types something invalid, hide results
-          document.getElementById("faculty-results-container").style.display = 'none';
-          document.getElementById("result-status").textContent = '';
         }
       });
     });
@@ -466,6 +480,7 @@
           .filter(term => term.length > 1); // Filter out single characters
 
         const searchTerms = [...nameTerms];
+        searchTerms.push(name.toLowerCase()); // Add the full name as a searchable term
 
         // Add the abbreviation itself (without '*')
         const abbr = code.replace('*', '').toLowerCase();
