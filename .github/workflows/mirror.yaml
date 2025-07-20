@@ -6,24 +6,23 @@ on:
       - main
 
 permissions:
-  contents: write        # allows checkout & commit code
-  workflows: write       # **crucial** for updating workflow files
+  contents: write
+  workflows: write
 
 jobs:
   mirror:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout using PAT
+      - name: Checkout full history with PAT
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          token: ${{ secrets.MIRROR_TOKEN }}   # ensures PAT (not GITHUB_TOKEN) is used
+          token: ${{ secrets.MIRROR_TOKEN }}
 
-      - name: Push to second repo
+      - name: Push entire branch forcefully
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
-          git remote add mirror \
-            https://x-access-token:${{ secrets.MIRROR_TOKEN }}@github.com/gmc-mbnr/T2P.git
-          git push mirror main --force
+          git remote add mirror https://x-access-token:${{ secrets.MIRROR_TOKEN }}@github.com/gmc-mbnr/T2P.git
+          git push mirror refs/heads/main:refs/heads/main --force
