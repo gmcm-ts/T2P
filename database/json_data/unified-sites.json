@@ -1,0 +1,20 @@
+{
+  "unifiedSites": [
+    {
+      "name": "Intensive Care Unit (ICU)",
+      "codes": ["GS - ICU", "GM - ICU", "GM - PMW", "OBG - LR2", "ANS - OBG", "PED - W"]
+    },
+    {
+      "name": "Labour Room (LR)",
+      "codes": ["OBG - LR1", "OBG - LR2"]
+    },
+    {
+      "name": "OBG Operating Theatre (OT)",
+      "codes": ["OBG - LR1", "ANS - GS+O", "ANS - OBG"]
+    },
+    {
+      "name": "General Surgery Operating Theatre (GS OT)",
+      "codes": ["GS - MSW", "GS - FSW", "ANS - GS+O"]
+    }
+  ]
+}

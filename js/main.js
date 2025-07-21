@@ -96,6 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
     legend: 'database/json_data/legend.json',
     guidelines: 'database/json_data/guidelines.json',
     regulations: 'database/json_data/regulations.json',
+    unifiedSites: 'database/json_data/unified-sites.json'
   };
 
   const promises = Object.entries(dataFiles).map(([key, url]) =>
@@ -130,15 +131,20 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   departmentSelect.addEventListener('change', () => {
-    const selectedDepartment = departmentSelect.value;
-    if (selectedDepartment) {
-      const dept = appData.regulations.regulations.find(r => r.department === selectedDepartment);
-      if (dept) {
-        lookupFaculty(dept.abbreviation);
-      }
-    } else {
+    const selectedValue = departmentSelect.value;
+    if (!selectedValue) {
       document.getElementById('faculty-results-container').style.display = 'none';
       document.getElementById("result-status").textContent = '';
+      return;
+    }
+
+    if (selectedValue.startsWith('unified--')) {
+      const siteName = selectedValue.replace('unified--', '');
+      lookupUnifiedSite(siteName);
+    } else {
+      const selectedOption = departmentSelect.options[departmentSelect.selectedIndex];
+      const deptCode = selectedOption.dataset.code;
+      if (deptCode) lookupFaculty(deptCode);
     }
   });
 });
@@ -146,6 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function populateDepartmentDatalist() {
   const departmentSelect = document.getElementById("department-select");
   departmentSelect.innerHTML = '<option value="">Select a department...</option>';
+  // Add regular departments
   appData.regulations.regulations.forEach(reg => {
     if (reg.department && !reg.department.includes('TOTAL')) {
       const option = document.createElement('option');
@@ -155,6 +162,21 @@ function populateDepartmentDatalist() {
       departmentSelect.appendChild(option);
     }
   });
+
+  // Add a separator and unified sites if they exist
+  if (appData.unifiedSites && appData.unifiedSites.unifiedSites) {
+    const separator = document.createElement('option');
+    separator.disabled = true;
+    separator.textContent = '— UNIFIED SITES —';
+    departmentSelect.appendChild(separator);
+
+    appData.unifiedSites.unifiedSites.forEach(site => {
+      const option = document.createElement('option');
+      option.value = `unified--${site.name}`; // Prefix to identify unified sites
+      option.textContent = site.name;
+      departmentSelect.appendChild(option);
+    });
+  }
 }
 
 function buildFuzzySearchData() {
@@ -374,4 +396,62 @@ function lookupFaculty(deptCode) {
     ).join('')
   }</ul>`;
   resultsContainer.style.display = 'block';
+}
+
+function lookupUnifiedSite(siteName) {
+    console.log(`[lookupUnifiedSite] Starting lookup for site: "${siteName}"`);
+    const statusElement = document.getElementById("result-status");
+    const resultsContainer = document.getElementById("faculty-results-container");
+    statusElement.textContent = "";
+    resultsContainer.innerHTML = '';
+
+    const unifiedSite = appData.unifiedSites.unifiedSites.find(s => s.name === siteName);
+    if (!unifiedSite) {
+        statusElement.textContent = "Unified site definition not found.";
+        console.error(`[lookupUnifiedSite] Could not find site definition for: ${siteName}`);
+        return;
+    }
+
+    const isOldSchedule = selectedDate < PIVOT_DATE;
+    const scheduleKey = isOldSchedule ? 'oldSchedule' : 'newSchedule';
+    const groupData = isOldSchedule ? appData.oldGroups : appData.groups;
+    const selectedDateISO = selectedDate.toISOString().split('T')[0];
+
+    const allStudents = new Set();
+
+    ['A', 'B', 'C', 'D'].forEach(groupLetter => {
+        const groupScheduleData = appData[`group${groupLetter}`]?.[scheduleKey];
+        if (!groupScheduleData) return;
+
+        const weekSchedule = groupScheduleData.find(w => 
+            selectedDateISO >= w.startDate && selectedDateISO <= w.endDate
+        );
+
+        if (weekSchedule) {
+            for (const [groupCode, postingCode] of Object.entries(weekSchedule.postings)) {
+                const canonicalCode = getCanonicalPostingCode(postingCode);
+                if (unifiedSite.codes.includes(canonicalCode)) {
+                    const members = groupData[groupCode];
+                    if (members) {
+                        members.forEach(student => allStudents.add(student));
+                    }
+                }
+            }
+        }
+    });
+
+    const studentList = Array.from(allStudents).sort((a, b) => {
+        const numA = parseInt(String(a).replace('R', ''), 10);
+        const numB = parseInt(String(b).replace('R', ''), 10);
+        if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
+        return String(a).localeCompare(String(b));
+    });
+
+    if (studentList.length === 0) {
+        statusElement.textContent = "No students found for this site on the selected date.";
+        resultsContainer.style.display = "none";
+    } else {
+        resultsContainer.innerHTML = `<ul><li><strong>${siteName}:</strong><br>${studentList.join(', ')}</li></ul>`;
+        resultsContainer.style.display = 'block';
+    }
 }
