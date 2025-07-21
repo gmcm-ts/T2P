@@ -219,8 +219,10 @@ function getEquivalentScheduleCodes(deptCode) {
     // Maps the regulation deptCode to its variations in old ('R&L', 'FP&AY') and new ('RD', 'LABS', etc.) schedule files.
     'RD*': ['R&L', 'RD'],
     'LAB*': ['R&L', 'LABS'],
+    'LABS*': ['R&L', 'LABS'], // Alias to handle malformed codes like 'L/LABS*'
     'FP': ['FP&AY', 'FWP'],
     'AY*': ['FP&AY', 'AYUSH'],
+    'AYUSH*': ['FP&AY', 'AYUSH'], // Alias to handle malformed codes like 'AY/AYUSH*'
     'TB*': ['TB'] // e.g. TB* in regulations is TB in schedule
   };
 
