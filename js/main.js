@@ -417,13 +417,14 @@ function lookupUnifiedSite(siteName) {
     const groupData = isOldSchedule ? appData.oldGroups : appData.groups;
     const selectedDateISO = selectedDate.toISOString().split('T')[0];
 
-    const allStudents = new Set();
+    // Change from Set to Object to group by posting code
+    const studentsByPosting = {};
 
     ['A', 'B', 'C', 'D'].forEach(groupLetter => {
         const groupScheduleData = appData[`group${groupLetter}`]?.[scheduleKey];
         if (!groupScheduleData) return;
 
-        const weekSchedule = groupScheduleData.find(w => 
+        const weekSchedule = groupScheduleData.find(w =>
             selectedDateISO >= w.startDate && selectedDateISO <= w.endDate
         );
 
@@ -431,27 +432,46 @@ function lookupUnifiedSite(siteName) {
             for (const [groupCode, postingCode] of Object.entries(weekSchedule.postings)) {
                 const canonicalCode = getCanonicalPostingCode(postingCode);
                 if (unifiedSite.codes.includes(canonicalCode)) {
+                    // Initialize the array if it doesn't exist
+                    if (!studentsByPosting[canonicalCode]) {
+                        studentsByPosting[canonicalCode] = [];
+                    }
                     const members = groupData[groupCode];
                     if (members) {
-                        members.forEach(student => allStudents.add(student));
+                        // Add students to the correct posting code group
+                        studentsByPosting[canonicalCode].push(...members);
                     }
                 }
             }
         }
     });
 
-    const studentList = Array.from(allStudents).sort((a, b) => {
-        const numA = parseInt(String(a).replace('R', ''), 10);
-        const numB = parseInt(String(b).replace('R', ''), 10);
-        if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
-        return String(a).localeCompare(String(b));
-    });
+    // Sort numbers within each category and remove duplicates
+    for (const code in studentsByPosting) {
+        const uniqueStudents = Array.from(new Set(studentsByPosting[code]));
+        studentsByPosting[code] = uniqueStudents.sort((a, b) => {
+            const numA = parseInt(String(a).replace('R', ''), 10);
+            const numB = parseInt(String(b).replace('R', ''), 10);
+            if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
+            return String(a).localeCompare(String(b));
+        });
+    }
 
-    if (studentList.length === 0) {
+    if (Object.keys(studentsByPosting).length === 0) {
         statusElement.textContent = "No students found for this site on the selected date.";
         resultsContainer.style.display = "none";
     } else {
-        resultsContainer.innerHTML = `<ul><li><strong>${siteName}:</strong><br>${studentList.join(', ')}</li></ul>`;
+        let htmlOutput = `<ul><li><strong>${siteName}:</strong>`;
+        const sortedPostingCodes = Object.keys(studentsByPosting).sort();
+
+        for (const code of sortedPostingCodes) {
+            const students = studentsByPosting[code];
+            if (students.length > 0) {
+                htmlOutput += `<br> &nbsp; &nbsp; <strong>${code}:</strong> ${students.join(', ')}`;
+            }
+        }
+        htmlOutput += `</li></ul>`;
+        resultsContainer.innerHTML = htmlOutput;
         resultsContainer.style.display = 'block';
     }
 }

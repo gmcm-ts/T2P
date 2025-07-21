@@ -15,6 +15,14 @@
     {
       "name": "General Surgery Operating Theatre (GS OT)",
       "codes": ["GS - MSW", "GS - FSW", "ANS - GS+O"]
+    },
+    {
+      "name": "Orthopaedics Operating Theatre (Ortho OT)",
+      "codes": ["ORT - W", "ANS - GS+O"]
+    },
+    {
+      "name": "Emergency / Casualty",
+      "codes": ["EM", "GS - OP", "ORT - OP", "ORT - W", "GM - OP"]
     }
   ]
 }
