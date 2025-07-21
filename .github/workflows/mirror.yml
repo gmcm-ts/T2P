@@ -1,40 +1,46 @@
-name: Mirror to second repo
+name: Mirror to second repo (Verbose)
 
 on:
   push:
     branches:
-      - main
+      - main                         # Trigger only on pushes to the main branch
 
 permissions:
-  contents: write
+  contents: write                  # Grant write access to repo contents (required for checkout)
 
 jobs:
   mirror:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest         # Use the latest Ubuntu runner
 
     steps:
       - name: Checkout source without GITHUB_TOKEN
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
-          persist-credentials: false    # ← disable injected GITHUB_TOKEN
+          fetch-depth: 0           # Clone full history (needed for orphan branch)
+          persist-credentials: false  # Disable adding GITHUB_TOKEN to git config
 
       - name: Configure Git user
         run: |
-          git config --global user.name "GitHub Action"
-          git config --global user.email "action@github.com"
+          set -x                    # Echo commands for debugging
+          git config --global user.name "GitHub Action"    # Set commit author name
+          git config --global user.email "action@github.com"  # Set commit author email
 
       - name: Prepare clean mirror branch
         run: |
-          git checkout --orphan mirror-branch
-          git rm -rf --cached .
-          git reset --hard origin/main
-          rm -rf .github
-          git clean -fdx
-          git add .
-          git commit -m "Mirror without workflows" --allow-empty
+          set -x
+          git checkout --orphan mirror-branch  # Create a new root branch
+          git rm -rf --cached .                # Unstage all files
+          git reset --hard origin/main         # Populate from main branch
+          rm -rf .github convert-data.js       # Remove workflows and convert-data.js
+          git clean -fdx                       # Remove untracked files/directories
+          git add .                            # Stage all remaining files
+          git commit -m "Mirror without workflows" --allow-empty  # Commit (even if no changes)
 
-      - name: Push via PAT
+      - name: Push via PAT (verbose)
         run: |
-          git remote add mirror "https://x-access-token:${{ secrets.MIRROR_TOKEN }}@github.com/gmc-mbnr/T2P.git"
-          git push mirror HEAD:main --force
+          set -x
+          git config --global http.verbose true  # Show HTTP/auth details in logs
+          git remote add mirror \
+            "https://x-access-token:${{ secrets.MIRROR_TOKEN }}@github.com/gmc-mbnr/T2P.git"  
+                                               # Add remote using your PAT
+          git push -v mirror HEAD:main --force   # Push mirror-branch to main on mirror repo
