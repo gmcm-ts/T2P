@@ -34,6 +34,6 @@ jobs:
 
       - name: Push clean branch with mirror PAT
         run: |
-          git remote add mirror \
-            https://x-access-token:${{ secrets.MIRROR_TOKEN }}@github.com/gmc-mbnr/T2P.git
+          git remote add mirror "https://x-access-token:${{ secrets.MIRROR_TOKEN }}@github.com/gmc-mbnr/T2P.git"
           git push mirror HEAD:main --force
+
