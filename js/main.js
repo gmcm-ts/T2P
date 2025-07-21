@@ -213,8 +213,12 @@ function findColleagues(searchedInput, postingCode, weekSchedule, groupData) {
 
 function getEquivalentScheduleCodes(deptCode) {
   const equivalents = {
-    'RD*': ['R&L'], 'LAB*': ['R&L'], 'R&L': ['RD*', 'LAB*'],
-    'TB*': ['TB'], 'FP': ['FP&AY'], 'AY*': ['FP&AY']
+    // Maps the regulation deptCode to its variations in old ('R&L', 'FP&AY') and new ('RD', 'LABS', etc.) schedule files.
+    'RD*': ['R&L', 'RD'],
+    'LAB*': ['R&L', 'LABS'],
+    'FP': ['FP&AY', 'FWP'],
+    'AY*': ['FP&AY', 'AYUSH'],
+    'TB*': ['TB'] // e.g. TB* in regulations is TB in schedule
   };
   return [deptCode, ...(equivalents[deptCode] || [])];
 }

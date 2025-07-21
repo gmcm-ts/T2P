@@ -61,7 +61,7 @@
       "duration": "1 Week"
     },
     {
-      "abbreviation": "FP",
+      "abbreviation": "FP/FWP",
       "department": "Family Welfare and Planning",
       "duration": "1 Week"
     },
@@ -71,12 +71,12 @@
       "duration": "1 Week"
     },
     {
-      "abbreviation": "RD*",
+      "abbreviation": "R/RD*",
       "department": "Radio-diagnosis",
       "duration": "1 Week"
     },
     {
-      "abbreviation": "LAB*",
+      "abbreviation": "L/LABS*",
       "department": "Lab Medicine - Pathology and Microbiology",
       "duration": "1 Week"
     },
@@ -86,7 +86,7 @@
       "duration": "1 Week"
     },
     {
-      "abbreviation": "AY*",
+      "abbreviation": "AY/AYUSH*",
       "department": "Ayurvedic medicine",
       "duration": "1 Week"
     },
