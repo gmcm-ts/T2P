@@ -225,8 +225,11 @@ function getEquivalentScheduleCodes(deptCode) {
 
 function getCanonicalPostingCode(postingCode) {
   const variations = {
-    'GM - FMTW': 'GM - FMW', 'FP & AY': 'FWP', 'R&L': 'RD*', 'LABS': 'LAB*'
+    'GM - FMTW': 'GM - FMW', // Corrects a typo in old schedule data
+    'FP & AY': 'FP&AY'      // Normalizes spacing from 'FP & AY' to 'FP&AY' for consistency
   };
+  // The R&L and LABS mappings were incorrect and conflicting with getEquivalentScheduleCodes.
+  // This function should only handle minor data variations, not logical code mapping.
   return variations[postingCode] || postingCode;
 }
 
@@ -296,6 +299,7 @@ function lookupStudent() {
 }
 
 function lookupFaculty(deptCode) {
+  console.log(`[lookupFaculty] Starting lookup for deptCode: "${deptCode}"`);
   const statusElement = document.getElementById("result-status");
   const resultsContainer = document.getElementById("faculty-results-container");
   statusElement.textContent = "";
@@ -304,6 +308,7 @@ function lookupFaculty(deptCode) {
 
   const isOldSchedule = selectedDate < PIVOT_DATE;
   const scheduleKey = isOldSchedule ? 'oldSchedule' : 'newSchedule';
+  console.log(`[lookupFaculty] Schedule type: ${scheduleKey}`);
   const selectedDateISO = selectedDate.toISOString().split('T')[0];
   
   const weekSchedule = appData.schedule[scheduleKey].find(w => 
@@ -311,30 +316,42 @@ function lookupFaculty(deptCode) {
   );
 
   if (!weekSchedule) {
+    console.error(`[lookupFaculty] No schedule found for date: ${selectedDateISO}`);
     statusElement.textContent = "No schedule found for selected date";
     return;
   }
+  console.log(`[lookupFaculty] Found schedule week: ${weekSchedule.startDate} to ${weekSchedule.endDate}`);
 
   const postingsBySite = {};
   const searchCodes = getEquivalentScheduleCodes(deptCode);
+  console.log(`[lookupFaculty] Searching for department codes:`, searchCodes);
 
   for (const [groupCode, code] of Object.entries(weekSchedule.postings)) {
     if (searchCodes.includes(code)) {
+      // Found a group in the main schedule that matches the department.
+      // Now, get the detailed posting site from the group-specific schedule.
       const groupLetter = groupCode.charAt(0);
       const detailedWeek = appData[`group${groupLetter}`]?.[scheduleKey]?.find(w => 
         w.startDate === weekSchedule.startDate && w.endDate === weekSchedule.endDate
       );
       
-      if (detailedWeek?.postings[groupCode]) {
+      if (detailedWeek && detailedWeek.postings[groupCode]) {
         const rawCode = detailedWeek.postings[groupCode];
         const canonicalCode = getCanonicalPostingCode(rawCode);
         const site = appData.legend.legend.find(item => item.code === canonicalCode)?.site || rawCode;
-        postingsBySite[site] = postingsBySite[site] || [];
-        postingsBySite[site].push(...appData[isOldSchedule ? 'oldGroups' : 'groups'][groupCode]);
+        
+        const groupMembers = appData[isOldSchedule ? 'oldGroups' : 'groups'][groupCode];
+        if (groupMembers) {
+            postingsBySite[site] = postingsBySite[site] || [];
+            postingsBySite[site].push(...groupMembers);
+        } else {
+            console.warn(`[lookupFaculty] Group code "${groupCode}" found in schedule but not in group data.`);
+        }
       }
     }
   }
 
+  console.log('[lookupFaculty] Final student list by site:', postingsBySite);
   if (Object.keys(postingsBySite).length === 0) {
     statusElement.textContent = "No students found for selected date";
     return;
