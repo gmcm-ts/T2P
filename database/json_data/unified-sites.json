@@ -2,27 +2,54 @@
   "unifiedSites": [
     {
       "name": "Intensive Care Unit (ICU)",
-      "codes": ["GS - ICU", "GM - ICU", "GM - PMW", "OBG - LR2", "ANS - OBG", "PED - W"]
+      "postings": [
+        { "code": "GS - ICU", "count": "all" },
+        { "code": "GM - ICU", "count": "all" },
+        { "code": "GM - PMW", "count": 1 },
+        { "code": "OBG - LR2", "count": 1 },
+        { "code": "ANS - OBG", "count": 1 },
+        { "code": "PED - W", "count": 1 }
+      ]
     },
     {
       "name": "Labour Room (LR)",
-      "codes": ["OBG - LR1", "OBG - LR2"]
+      "postings": [
+        { "code": "OBG - LR1", "count": "all" },
+        { "code": "OBG - LR2", "count": "all" }
+      ]
     },
     {
       "name": "OBG Operating Theatre (OT)",
-      "codes": ["OBG - LR1", "ANS - GS+O", "ANS - OBG"]
+      "postings": [
+        { "code": "OBG - LR1", "count": 1 },
+        { "code": "ANS - GS+O", "count": "all" },
+        { "code": "ANS - OBG", "count": 2 }
+      ]
     },
     {
       "name": "General Surgery Operating Theatre (GS OT)",
-      "codes": ["GS - MSW", "GS - FSW", "ANS - GS+O"]
+      "postings": [
+        { "code": "GS - MSW", "count": 1 },
+        { "code": "GS - FSW", "count": 1 },
+        { "code": "ANS - GS+O", "count": 2 }
+      ]
     },
     {
       "name": "Orthopaedics Operating Theatre (Ortho OT)",
-      "codes": ["ORT - W", "ANS - GS+O"]
+      "postings": [
+        { "code": "ORT - W", "count": 1 },
+        { "code": "ANS - GS+O", "count": 1 }
+      ]
     },
     {
       "name": "Emergency / Casualty",
-      "codes": ["EM", "GS - OP", "ORT - OP", "ORT - W", "GM - OP"]
+      "postings": [
+        { "code": "EM", "count": "all" },
+        { "code": "GS - OP", "count": 2 },
+        { "code": "ORT - OP", "count": 1 },
+        { "code": "ORT - W", "count": 1 },
+        { "code": "GM - OP", "count": 2 }
+      ]
     }
   ]
 }

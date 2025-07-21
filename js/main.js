@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const studentInput = document.getElementById("student-input-container");
   const facultyInput = document.getElementById("faculty-input-container");
   const departmentSelect = document.getElementById("department-select");
+  const siteSelect = document.getElementById("site-select");
 
   function updateDateDisplay(date) {
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -50,8 +51,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (currentMode === 'student' && rollInputElement.value.trim()) {
       lookupStudent();
-    } else if (currentMode === 'faculty' && departmentSelect.value.trim()) {
-      lookupFaculty(departmentSelect.options[departmentSelect.selectedIndex].dataset.code);
+    } else if (currentMode === 'faculty') {
+      if (departmentSelect.value.trim()) {
+        const selectedOption = departmentSelect.options[departmentSelect.selectedIndex];
+        if (selectedOption.dataset.code) lookupFaculty(selectedOption.dataset.code);
+      } else if (siteSelect.value.trim()) {
+        lookupUnifiedSite(siteSelect.value);
+      }
     }
   });
 
@@ -62,6 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   modeToggle.addEventListener('change', () => {
     currentMode = modeToggle.checked ? 'faculty' : 'student';
+    localStorage.setItem('currentMode', currentMode);
     studentInput.style.display = currentMode === 'student' ? 'block' : 'none';
     facultyInput.style.display = currentMode === 'faculty' ? 'block' : 'none';
     document.getElementById('student-results-container').style.display = 'none';
@@ -69,6 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
     statusElement.textContent = '';
     rollInputElement.value = '';
     departmentSelect.value = '';
+    siteSelect.value = '';
     searchButton.innerHTML = 'Go';
   });
 
@@ -112,11 +120,39 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(() => {
       console.log("All data loaded successfully:", appData);
       populateDepartmentDatalist();
+      populateSiteDatalist();
       buildFuzzySearchData();
       departmentSelect.disabled = false;
+      siteSelect.disabled = false;
       rollInputElement.placeholder = "Enter Roll No. or Group";
       rollInputElement.disabled = false;
       searchButton.disabled = false;
+
+      // Restore user's last session
+      const savedMode = localStorage.getItem('currentMode');
+      if (savedMode === 'faculty') {
+        modeToggle.checked = true;
+        currentMode = 'faculty';
+        studentInput.style.display = 'none';
+        facultyInput.style.display = 'block';
+
+        const savedFacultyType = localStorage.getItem('lastSelectedFacultyType');
+        const savedFacultyValue = localStorage.getItem('lastSelectedFacultyValue');
+
+        if (savedFacultyType === 'department' && savedFacultyValue) {
+            departmentSelect.value = savedFacultyValue;
+            if (departmentSelect.value === savedFacultyValue) departmentSelect.dispatchEvent(new Event('change'));
+        } else if (savedFacultyType === 'site' && savedFacultyValue) {
+            siteSelect.value = savedFacultyValue;
+            if (siteSelect.value === savedFacultyValue) siteSelect.dispatchEvent(new Event('change'));
+        }
+      } else { // Default to student mode
+        const savedRoll = localStorage.getItem('lastSearchedRoll');
+        if (savedRoll) {
+            rollInputElement.value = savedRoll;
+            lookupStudent();
+        }
+      }
     })
     .catch(error => {
       console.error("Error loading application data:", error);
@@ -131,28 +167,39 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   departmentSelect.addEventListener('change', () => {
+    siteSelect.value = ''; // Reset the other dropdown
     const selectedValue = departmentSelect.value;
     if (!selectedValue) {
       document.getElementById('faculty-results-container').style.display = 'none';
       document.getElementById("result-status").textContent = '';
       return;
     }
-
-    if (selectedValue.startsWith('unified--')) {
-      const siteName = selectedValue.replace('unified--', '');
-      lookupUnifiedSite(siteName);
-    } else {
-      const selectedOption = departmentSelect.options[departmentSelect.selectedIndex];
-      const deptCode = selectedOption.dataset.code;
-      if (deptCode) lookupFaculty(deptCode);
+    const selectedOption = departmentSelect.options[departmentSelect.selectedIndex];
+    const deptCode = selectedOption.dataset.code;
+    if (deptCode) {
+      lookupFaculty(deptCode);
+      localStorage.setItem('lastSelectedFacultyType', 'department');
+      localStorage.setItem('lastSelectedFacultyValue', selectedValue);
     }
+  });
+
+  siteSelect.addEventListener('change', () => {
+    departmentSelect.value = ''; // Reset the other dropdown
+    const selectedValue = siteSelect.value;
+    if (!selectedValue) {
+      document.getElementById('faculty-results-container').style.display = 'none';
+      document.getElementById("result-status").textContent = '';
+      return;
+    }
+    lookupUnifiedSite(selectedValue);
+    localStorage.setItem('lastSelectedFacultyType', 'site');
+    localStorage.setItem('lastSelectedFacultyValue', selectedValue);
   });
 });
 
 function populateDepartmentDatalist() {
   const departmentSelect = document.getElementById("department-select");
   departmentSelect.innerHTML = '<option value="">Select a department...</option>';
-  // Add regular departments
   appData.regulations.regulations.forEach(reg => {
     if (reg.department && !reg.department.includes('TOTAL')) {
       const option = document.createElement('option');
@@ -162,19 +209,17 @@ function populateDepartmentDatalist() {
       departmentSelect.appendChild(option);
     }
   });
+}
 
-  // Add a separator and unified sites if they exist
+function populateSiteDatalist() {
+  const siteSelect = document.getElementById("site-select");
+  siteSelect.innerHTML = '<option value="">Select a Site...</option>';
   if (appData.unifiedSites && appData.unifiedSites.unifiedSites) {
-    const separator = document.createElement('option');
-    separator.disabled = true;
-    separator.textContent = '— UNIFIED SITES —';
-    departmentSelect.appendChild(separator);
-
     appData.unifiedSites.unifiedSites.forEach(site => {
       const option = document.createElement('option');
-      option.value = `unified--${site.name}`; // Prefix to identify unified sites
+      option.value = site.name;
       option.textContent = site.name;
-      departmentSelect.appendChild(option);
+      siteSelect.appendChild(option);
     });
   }
 }
@@ -327,6 +372,8 @@ function lookupStudent() {
   document.getElementById('guideline-title').textContent = guideline.title;
   document.getElementById('guideline-text').textContent = guideline.points.join(' ');
 
+  localStorage.setItem('lastSearchedRoll', rollInput);
+
   resultsContainer.style.display = "flex";
   document.getElementById("searchButton").innerHTML = '❌';
 }
@@ -404,70 +451,80 @@ function lookupUnifiedSite(siteName) {
     const resultsContainer = document.getElementById("faculty-results-container");
     statusElement.textContent = "";
     resultsContainer.innerHTML = '';
-
+ 
     const unifiedSite = appData.unifiedSites.unifiedSites.find(s => s.name === siteName);
-    if (!unifiedSite) {
-        statusElement.textContent = "Unified site definition not found.";
+    if (!unifiedSite || !unifiedSite.postings) {
+        statusElement.textContent = "Unified site definition not found or is malformed.";
         console.error(`[lookupUnifiedSite] Could not find site definition for: ${siteName}`);
         return;
     }
-
+ 
     const isOldSchedule = selectedDate < PIVOT_DATE;
     const scheduleKey = isOldSchedule ? 'oldSchedule' : 'newSchedule';
     const groupData = isOldSchedule ? appData.oldGroups : appData.groups;
     const selectedDateISO = selectedDate.toISOString().split('T')[0];
-
-    // Change from Set to Object to group by posting code
+ 
     const studentsByPosting = {};
-
+    const contributingCodes = unifiedSite.postings.map(p => p.code);
+ 
     ['A', 'B', 'C', 'D'].forEach(groupLetter => {
         const groupScheduleData = appData[`group${groupLetter}`]?.[scheduleKey];
         if (!groupScheduleData) return;
-
+ 
         const weekSchedule = groupScheduleData.find(w =>
             selectedDateISO >= w.startDate && selectedDateISO <= w.endDate
         );
-
+ 
         if (weekSchedule) {
             for (const [groupCode, postingCode] of Object.entries(weekSchedule.postings)) {
                 const canonicalCode = getCanonicalPostingCode(postingCode);
-                if (unifiedSite.codes.includes(canonicalCode)) {
-                    // Initialize the array if it doesn't exist
-                    if (!studentsByPosting[canonicalCode]) {
-                        studentsByPosting[canonicalCode] = [];
-                    }
+ 
+                if (contributingCodes.includes(canonicalCode)) {
                     const members = groupData[groupCode];
-                    if (members) {
-                        // Add students to the correct posting code group
-                        studentsByPosting[canonicalCode].push(...members);
+                    if (!members || members.length === 0) continue;
+ 
+                    const rule = unifiedSite.postings.find(p => p.code === canonicalCode);
+                    if (!rule) continue;
+ 
+                    if (!studentsByPosting[canonicalCode]) {
+                        studentsByPosting[canonicalCode] = {
+                            rule: rule,
+                            members: new Set()
+                        };
                     }
+                    members.forEach(student => studentsByPosting[canonicalCode].members.add(student));
                 }
             }
         }
     });
-
-    // Sort numbers within each category and remove duplicates
-    for (const code in studentsByPosting) {
-        const uniqueStudents = Array.from(new Set(studentsByPosting[code]));
-        studentsByPosting[code] = uniqueStudents.sort((a, b) => {
-            const numA = parseInt(String(a).replace('R', ''), 10);
-            const numB = parseInt(String(b).replace('R', ''), 10);
-            if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
-            return String(a).localeCompare(String(b));
-        });
-    }
-
+ 
     if (Object.keys(studentsByPosting).length === 0) {
         statusElement.textContent = "No students found for this site on the selected date.";
         resultsContainer.style.display = "none";
     } else {
         let htmlOutput = `<ul><li><strong>${siteName}:</strong>`;
         const sortedPostingCodes = Object.keys(studentsByPosting).sort();
-
+ 
         for (const code of sortedPostingCodes) {
-            const students = studentsByPosting[code];
-            if (students.length > 0) {
-                htmlOutput += `<br> &nbsp; &nbsp; <strong>${code}:</strong> ${students.join(', ')}`;
+            const { rule, members: memberSet } = studentsByPosting[code];
+            const sortedMembers = Array.from(memberSet).sort((a, b) => {
+                const numA = parseInt(String(a).replace('R', ''), 10);
+                const numB = parseInt(String(b).replace('R', ''), 10);
+                if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
+                return String(a).localeCompare(String(b));
+            });
+
+            if (sortedMembers.length > 0) {
+                let postingHtml;
+                if (rule.count === "all" || rule.count >= sortedMembers.length) {
+                    postingHtml = `<strong>${code}:</strong> ${sortedMembers.join(', ')}`;
+                } else {
+                    const count = rule.count;
+                    const countText = { 1: 'One', 2: 'Two', 3: 'Three' }[count] || count;
+                    const plural = count > 1 ? 's' : '';
+                    postingHtml = `<strong>${code}:</strong> ${countText} intern${plural} from [${sortedMembers.join(', ')}]`;
+                }
+                htmlOutput += `<br> &nbsp; &nbsp; ${postingHtml}`;
             }
         }
         htmlOutput += `</li></ul>`;

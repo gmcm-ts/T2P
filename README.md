@@ -1,85 +1,116 @@
-# T2P - Internship Schedule Viewer
+# T2P – Internship Schedule Viewer
 
-**Live Site**: [https://gmc-mbnr.github.io/T2P/]
+**🔗 Live Site:** [https://gmc-mbnr.github.io/T2P/](https://gmc-mbnr.github.io/T2P/)
 
-A streamlined, responsive web application for viewing medical internship schedules at Government General Hospital, Mahabubnagar. This tool provides instant access to posting details for both students and faculty.
+A simple, responsive web app for viewing medical internship schedules at **Government General Hospital, Mahabubnagar**. Instantly check postings by roll number, group, department, or unified site — anytime, anywhere.
 
-## Overview
+---
 
-This application eliminates the need to manually parse complex schedule spreadsheets. By simply entering a roll number or selecting a department, users can get immediate, clear, and accurate information about their current or future postings. The app is designed to be fast, intuitive, and mobile-friendly, ensuring information is always accessible. It intelligently handles multiple schedule periods, automatically displaying the correct data based on the selected date.
+## 📌 Overview
 
-## Key Features
+T2P replaces messy spreadsheets with an easy-to-use interface. Interns can check their postings with just a roll number or group code, while faculty can look up who’s posted where — fast and clearly.
 
-- **Dual-Mode Interface**: Seamlessly switch between `Student View` and `Faculty View`.
-- **Date-Aware Scheduling**:
-    - Includes a date picker to look up schedules for any day.
-    - Automatically transitions between past and future schedule versions based on the effective date (`21 July 2025`).
-- **Student-Specific Lookups**:
-    - Search by **Roll Number** or **Group Code** (e.g., `141`, `A1`, `B12`).
-    - Instantly view your **Department**, **Posting Site**, and specific **Daily Tasks**.
-    - See a list of **Colleagues** assigned to the same posting.
-    - Receive a random **Daily Guideline** to reinforce best practices.
-- **Faculty & Department View**:
-    - Select a department from a dropdown list.
-    - Get a comprehensive list of all students and their specific posting sites within that department for the selected date.
-    - **Fuzzy Search**: The underlying logic supports searching departments by various aliases and abbreviations (e.g., 'ENT', 'Otorhinolaryngology', 'Nose' all point to the same department).
-- **Responsive & User-Friendly**:
-    - Clean, modern UI optimized for both desktop and mobile devices.
-    - Real-time feedback and clear error messaging.
-    - Dark mode theme for comfortable viewing.
+The app:
 
-## How to Use
+* Handles multiple schedule versions automatically.
+* Loads static JSON data for speed.
+* Remembers your last search, so returning users get instant results.
 
-1.  **Select Your Role**: Use the toggle to switch between **Student** and **Faculty** mode. The interface will adapt accordingly.
-2.  **Choose a Date**: The app defaults to today's date. Click the date text to open a calendar and select a different day.
-3.  **Get Your Schedule**:
-    - **As a Student**: Enter your roll number (e.g., `123`) or group code (e.g., `A5`) and click "Go".
-    - **As a Faculty Member**: Select a department from the dropdown list. The results will appear instantly.
-4.  **Review Results**: The app will display the relevant posting details in clear, easy-to-read cards.
+---
 
-## Technical Stack
+## ✅ Key Features
 
--   **Frontend**: HTML5, CSS3, and modern Vanilla JavaScript (ES6+).
--   **Styling**: Pure CSS with Flexbox and Grid for responsive layouts. No external frameworks are used.
--   **Data**: All schedule information is loaded from static JSON files, making the app fast and server-independent.
--   **Core Logic**:
-    -   Asynchronous data fetching with `Promise.all`.
-    -   Efficient in-memory data lookups.
-    -   Custom fuzzy search implementation for department queries.
+* **Student & Faculty Modes:** Toggle easily.
+* **Session Memory:** Remembers last-used mode and query with `localStorage`.
+* **Date Picker:** See schedules for any day.
+* **Dynamic Data:** Switches schedule versions automatically based on the date (`21 July 2025` and later).
+* **Detailed Lookups:**
 
-## Project Structure
+  * **Interns:** Search by *roll number* or *group code* (e.g., `141`, `A5`).
+  * View *department*, *posting site*, *daily tasks*, *colleagues*, and a *random guideline*.
+  * **Faculty:** Lookup by *department* or *unified site* to view all interns posted there.
+* **Mobile-First UI:** Fully responsive, with dark mode for comfortable viewing.
+* **Zero Dependencies:** Pure HTML, CSS, and modern ES6+ JavaScript.
+
+---
+
+## 🗂️ Project Structure
 
 ```
-.
-├── index.html              # Main application file
-├── index.tsx               # (Currently empty, can be used for future TS/React migration)
-├── README.md               # You are here!
-└── database/
-    └── json_data/
-        ├── group-*-schedule.json # Detailed weekly schedules for each major group
-        ├── group-data.json       # Mappings of groups to roll numbers
-        ├── legend.json           # Definitions for posting codes (site, tasks)
-        ├── regulations.json      # NMC regulations and department names/durations
-        ├── guidelines.json       # Daily guidelines for students
-        └── schedule-data.json    # "At-a-glance" schedule for major department rotations
+T2P/
+├── index.html             # Main page
+├── css/
+│   └── styles.css         # Styling
+├── js/
+│   └── main.js            # Core logic
+├── database/
+│   └── json_data/
+│       ├── group-*-schedule.json  # Weekly schedules
+│       ├── group-data.json        # Roll number → group mappings
+│       ├── legend.json            # Posting codes
+│       ├── regulations.json       # NMC rules, durations
+│       ├── guidelines.json        # Daily guidelines
+│       ├── schedule-data.json     # Department rotation overview
+│       └── unified-sites.json     # Site definitions (ICU, OT Complex, etc.)
+└── README.md
 ```
 
-## Development & Tooling
+---
 
-This project is developed using **Visual Studio Code** and prototyped iteratively with **Google's Gemini AI Studio**. It is hosted as a static site on **GitHub Pages**.
+## ⚙️ Technical Stack
 
-## Setup and Deployment
+* **Frontend:** HTML5, CSS3, Vanilla JavaScript (ES6+)
+* **State Persistence:** `localStorage`
+* **Data:** Static JSON files, loaded dynamically
+* **Development:** Visual Studio Code + Gemini Code Assist
+* **Hosting:** GitHub Pages (or any static site host)
 
-This project is a static website and requires no backend or build process.
+---
 
-1.  **Clone the repository.**
-2.  **Serve the files**: Use any static web server. For local development, you can use:
-    -   VS Code's [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension.
-    -   Python's built-in server: `python -m http.server`
-3.  **Deployment**: Deploy the contents of the folder to any static hosting service like GitHub Pages, Vercel, or Netlify.
+## 🚀 Local Development
 
-## Contributing
+1. **Clone the repo**
 
-Found a bug or have a suggestion? Please [open an issue](https://github.com/Devaprasad-reddy/T2P/issues/new) on the GitHub repository. Clear reports with steps to reproduce are greatly appreciated.
+   ```bash
+   git clone https://github.com/gmc-mbnr/T2P.git
+   ```
 
-Feel free to contribute by submitting pull requests or suggesting improvements.
+2. **Serve locally**
+
+   * With VS Code’s **Live Server** extension **OR**
+   * Using Python:
+
+     ```bash
+     python -m http.server
+     ```
+   * Or:
+
+     ```bash
+     npx serve .
+     ```
+
+3. **Open `http://localhost:PORT`** in your browser.
+
+---
+
+## 📦 Deployment
+
+Just push to `main` (or `gh-pages` branch if used). It’s 100% static, so any static host works:
+
+* **GitHub Pages**
+* **Vercel**
+* **Netlify**
+
+---
+
+## 🤝 Contributing
+
+* Found a bug? Data correction? Suggestion?
+  👉 **Open an issue** with clear steps.
+* Pull requests are welcome!
+
+---
+
+## 📄 License
+
+MIT — free for educational use and contributions.

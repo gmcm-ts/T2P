@@ -140,9 +140,13 @@ input:checked+.slider:before {
   width: 100%;
 }
 
+#faculty-input-container {
+}
+
 #rollInput,
 #department-input,
-#department-select {
+#department-select,
+#site-select {
   padding: 12px 15px;
   font-size: 16px;
   width: 100%;
@@ -151,6 +155,10 @@ input:checked+.slider:before {
   border-radius: 12px;
   background-color: #0d0d0d;
   color: #e0e0e0;
+}
+
+#faculty-input-container > select:not(:last-child) {
+  margin-bottom: 12px;
 }
 
 .search-button-wrapper {
