@@ -6,18 +6,22 @@ on:
       - main
 
 permissions:
-  contents: write    # GITHUB_TOKEN can read & write this repo
+  contents: write    # allows checkout of private repo with GITHUB_TOKEN
 
 jobs:
   mirror:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source with GITHUB_TOKEN
+      - name: Checkout source with default token
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          # ⇐— NO token: field here, so it uses GITHUB_TOKEN by default
+          # persist-credentials defaults to true, so GITHUB_TOKEN is set for origin
+
+      - name: Remove built‑in credentials so PAT is used for push
+        run: |
+          git remote remove origin
 
       - name: Make orphan branch without workflows
         run: |
@@ -34,6 +38,6 @@ jobs:
 
       - name: Push clean branch with mirror PAT
         run: |
-          git remote add mirror "https://x-access-token:${{ secrets.MIRROR_TOKEN }}@github.com/gmc-mbnr/T2P.git"
+          git remote add mirror \
+            https://x-access-token:${{ secrets.MIRROR_TOKEN }}@github.com/gmc-mbnr/T2P.git
           git push mirror HEAD:main --force
-
