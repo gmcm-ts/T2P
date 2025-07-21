@@ -212,6 +212,9 @@ function findColleagues(searchedInput, postingCode, weekSchedule, groupData) {
 }
 
 function getEquivalentScheduleCodes(deptCode) {
+  // Handle potential data entry errors like "R/RD*" by taking the part after the last slash.
+  const cleanedDeptCode = deptCode.split('/').pop();
+
   const equivalents = {
     // Maps the regulation deptCode to its variations in old ('R&L', 'FP&AY') and new ('RD', 'LABS', etc.) schedule files.
     'RD*': ['R&L', 'RD'],
@@ -220,7 +223,13 @@ function getEquivalentScheduleCodes(deptCode) {
     'AY*': ['FP&AY', 'AYUSH'],
     'TB*': ['TB'] // e.g. TB* in regulations is TB in schedule
   };
-  return [deptCode, ...(equivalents[deptCode] || [])];
+
+  // Use a Set to gather all possible codes (original, cleaned, and mapped) to avoid duplicates.
+  const searchCodes = new Set([deptCode, cleanedDeptCode]);
+  const mappedCodes = equivalents[cleanedDeptCode] || [];
+  mappedCodes.forEach(code => searchCodes.add(code));
+
+  return Array.from(searchCodes);
 }
 
 function getCanonicalPostingCode(postingCode) {
