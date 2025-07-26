@@ -140,9 +140,6 @@ input:checked+.slider:before {
   width: 100%;
 }
 
-#faculty-input-container {
-}
-
 #rollInput,
 #department-input,
 #department-select,
@@ -157,9 +154,14 @@ input:checked+.slider:before {
   color: #e0e0e0;
 }
 
-#faculty-input-container > select:not(:last-child) {
-  margin-bottom: 12px;
+.or-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #b0b0b0;
+  margin: 10px 0;
 }
+
 
 .search-button-wrapper {
   position: absolute;
