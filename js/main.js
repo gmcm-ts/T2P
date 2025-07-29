@@ -1,5 +1,4 @@
 const appData = {};
-const fuzzyDeptSearch = {};
 let currentMode = 'student'; // 'student' or 'faculty'
 let selectedDate = new Date();
 const PIVOT_DATE = new Date('2025-07-21T00:00:00Z'); // The date the new schedule starts
@@ -121,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("All data loaded successfully:", appData);
       populateDepartmentDatalist();
       populateSiteDatalist();
-      buildFuzzySearchData();
+      
       departmentSelect.disabled = false;
       siteSelect.disabled = false;
       rollInputElement.placeholder = "Enter Roll No. or Group";
@@ -224,45 +223,7 @@ function populateSiteDatalist() {
   }
 }
 
-function buildFuzzySearchData() {
-  appData.regulations.regulations.forEach(reg => {
-    if (!reg.department || reg.department.includes('TOTAL')) return;
 
-    const code = reg.abbreviation;
-    const name = reg.department.toLowerCase();
-    const terms = [
-      ...name.split(/[\/,&\(\)]+/).map(t => t.trim()).filter(t => t.length > 1),
-      name,
-      code.replace('*', '').toLowerCase()
-    ];
-
-    const customAliases = {
-      'PSM': ['psm', 'cm', 'community', 'social', 'preventive', 'medicine'],
-      'GM': ['gm', 'medicine', 'general'],
-      'GS': ['gs', 'surgery', 'general'],
-      'OBG': ['obg', 'obs', 'gyn', 'gynae', 'obstetrics', 'gynaecology'],
-      'PED': ['ped', 'paediatrics', 'pediatrics'],
-      'ORT': ['ort', 'ortho', 'pmr', 'rehabilitation', 'physical medicine'],
-      'OPT': ['opt', 'eye', 'ophth', 'ophthalmology'],
-      'ENT': ['ent', 'ear', 'nose', 'throat', 'otorhinolaryngology'],
-      'EM': ['em', 'emergency', 'casualty', 'trauma'],
-      'ANS': ['ans', 'anesthesia', 'anaesthesia', 'critical', 'care'],
-      'PSY': ['psy', 'psych', 'psychiatry'],
-      'DVL': ['dvl', 'derm', 'skin', 'venereology', 'leprosy', 'dermatology'],
-      'FP': ['fp', 'family', 'welfare', 'planning'],
-      'FMT': ['fmt', 'forensic', 'toxicology'],
-      'RD*': ['rd', 'radio', 'radiology', 'diagnosis', 'r&l'],
-      'LAB*': ['lab', 'path', 'micro', 'pathology', 'microbiology', 'r&l', 'labs'],
-      'R&L': ['r&l', 'rl', 'radiology', 'lab', 'pathology', 'radio', 'labs'],
-      'TB*': ['tb', 'dots', 'tuberculosis', 'center'],
-      'AY*': ['ay', 'ayur', 'ayurvedic', 'medicine']
-    };
-
-    new Set([...terms, ...(customAliases[code] || [])]).forEach(term => {
-      fuzzyDeptSearch[term] = { name: reg.department, code };
-    });
-  });
-}
 
 function findGroupFromRoll(roll, groupData) {
   const numericRoll = parseInt(roll, 10);
