@@ -62,10 +62,6 @@ const guideline = ref(null)
 const departments = ref([])
 const sites = ref([])
 
-// Initialize with empty arrays to prevent forEach errors
-departments.value = []
-sites.value = []
-
 // Watch for mode changes and clear results
 watch(currentMode, () => {
   handleClear()
@@ -147,9 +143,9 @@ onMounted(async () => {
       const savedFacultyValue = getItem('lastSelectedFacultyValue')
       
       if (savedFacultyValue) {
-        await nextTick() // Wait for mode change to propagate
+        await nextTick() // REQUIRED: Wait for mode change to propagate to SearchCard component
         searchQuery.value = savedFacultyValue
-        await nextTick(() => handleSearch())
+        await nextTick(() => handleSearch()) // REQUIRED: Ensure SearchCard receives query before search
       }
     } else {
       currentMode.value = 'student'

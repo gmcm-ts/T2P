@@ -136,8 +136,8 @@ const dateInput = ref(null)
 const localQuery = ref('')
 const departmentValue = ref('')
 const siteValue = ref('')
-const departments = ref([])
-const sites = ref([])
+const departments = computed(() => props.departments || [])
+const sites = computed(() => props.sites || [])
 
 // Watch for mode changes and clear everything
 watch(() => props.mode, (newMode) => {
@@ -146,19 +146,6 @@ watch(() => props.mode, (newMode) => {
   siteValue.value = ''
   emit('update:query', '')
   emit('clear')
-})
-
-// Watch for departments and sites props
-watch(() => props.departments, (newDepts) => {
-  if (newDepts && Array.isArray(newDepts)) {
-    departments.value = newDepts
-  }
-})
-
-watch(() => props.sites, (newSites) => {
-  if (newSites && Array.isArray(newSites)) {
-    sites.value = newSites
-  }
 })
 
 // Watch for query to set dropdown values
