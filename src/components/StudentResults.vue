@@ -45,119 +45,110 @@ defineProps({
 
 <style scoped>
 .results-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .results-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  .results-container {
+    grid-template-columns: 2fr 1fr 1fr;
+  }
 }
 
 .result-card {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  border-left: 4px solid #007bff;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.result-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
 }
 
 .main-result {
-  border-left-color: #28a745;
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 1024px) {
+  .main-result {
+    grid-column: 1 / 2;
+  }
 }
 
 .department {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #28a745;
-  margin: 0 0 1rem 0;
-  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 16px 0;
 }
 
 .info-grid {
   display: grid;
-  gap: 1rem;
+  gap: 12px;
 }
 
 .info-item {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 4px;
 }
 
 .label {
-  font-weight: 600;
-  color: #6c757d;
-  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.05em;
 }
 
 .value {
-  font-size: 1.1rem;
-  color: #333;
-  font-weight: 500;
+  font-size: 14px;
+  color: var(--text);
+  font-weight: 400;
 }
 
 .card-title {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 1.2rem;
+  gap: 8px;
+  font-size: 14px;
   font-weight: 600;
-  color: #333;
-  margin: 0 0 1rem 0;
+  color: var(--text);
+  margin: 0 0 12px 0;
 }
 
 .icon {
-  font-size: 1.3rem;
+  font-size: 16px;
 }
 
 .colleagues {
-  font-size: 1rem;
-  color: #495057;
+  font-size: 14px;
+  color: var(--text-secondary);
   line-height: 1.5;
   margin: 0;
 }
 
-.guideline-card {
-  border-left-color: #ffc107;
-}
-
 .guideline-content {
-  background: #fff8e1;
-  padding: 1rem;
-  border-radius: 8px;
-  border: 1px solid #ffe082;
+  background: var(--bg-hover);
+  padding: 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
 }
 
 .guideline-title {
-  font-size: 1.1rem;
+  font-size: 14px;
   font-weight: 600;
-  color: #f57c00;
-  margin: 0 0 0.5rem 0;
+  color: var(--text);
+  margin: 0 0 8px 0;
 }
 
 .guideline-text {
-  font-size: 1rem;
-  color: #5d4037;
-  line-height: 1.6;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
   margin: 0;
-}
-
-@media (max-width: 768px) {
-  .results-container {
-    gap: 1rem;
-  }
-  
-  .result-card {
-    padding: 1rem;
-  }
-  
-  .department {
-    font-size: 1.3rem;
-  }
 }
 </style>

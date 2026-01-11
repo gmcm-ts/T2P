@@ -16,80 +16,70 @@
 
 <style scoped>
 .header {
-  background: linear-gradient(135deg, #0056b3 0%, #007bff 50%, #0056b3 100%);
-  color: white;
-  padding: 2rem 1rem;
-  text-align: center;
-  box-shadow: 0 4px 20px rgba(0, 123, 255, 0.3);
-  position: relative;
-  overflow: hidden;
-}
-
-.header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-  opacity: 0.3;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 0;
 }
 
 .header-content {
-  max-width: 800px;
+  max-width: 1048px;
   margin: 0 auto;
-  position: relative;
-  z-index: 1;
-}
-
-.title {
-  font-size: 1.8rem;
-  font-weight: 800;
-  margin: 0 0 1.5rem 0;
-  line-height: 1.2;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  letter-spacing: 0.5px;
-}
-
-.subtitle {
-  font-size: 1rem;
-  font-weight: 500;
-  opacity: 0.95;
-  display: block;
-  margin-top: 0.5rem;
-}
-
-.schedule-title {
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin: 0;
-  color: #ffd700;
-}
-
-.period {
-  font-size: 1rem;
-  font-weight: 500;
-  color: #e3f2fd;
-  display: block;
-  margin-top: 0.5rem;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 @media (max-width: 768px) {
-  .header {
-    padding: 1.5rem 1rem;
+  .header-content {
+    padding: 0 16px;
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
   }
-  
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
   .title {
-    font-size: 1.4rem;
+    font-size: 14px;
   }
-  
-  .schedule-title {
-    font-size: 1.2rem;
+}
+
+.subtitle {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin: 2px 0 0 0;
+}
+
+.schedule-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .schedule-info {
+    justify-content: center;
   }
-  
-  .period {
-    font-size: 0.9rem;
-  }
+}
+
+.schedule-title {
+  font-weight: 500;
+}
+
+.period {
+  font-weight: 400;
+  color: var(--text-tertiary);
 }
 </style>

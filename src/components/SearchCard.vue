@@ -1,17 +1,24 @@
 <template>
   <div class="search-card">
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" @click="toggleTheme" :title="`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`">
+      {{ theme === 'light' ? '🌙' : '☀️' }}
+    </button>
+
     <!-- Mode Toggle -->
     <div class="mode-toggle">
-      <span :class="{ active: mode === 'student' }">Intern</span>
-      <label class="switch">
-        <input 
-          type="checkbox" 
-          :checked="mode === 'faculty'"
-          @change="$emit('update:mode', $event.target.checked ? 'faculty' : 'student')"
-        >
-        <span class="slider"></span>
-      </label>
-      <span :class="{ active: mode === 'faculty' }">Faculty</span>
+      <span 
+        :class="{ active: mode === 'student' }"
+        @click="$emit('update:mode', 'student')"
+      >
+        Intern
+      </span>
+      <span 
+        :class="{ active: mode === 'faculty' }"
+        @click="$emit('update:mode', 'faculty')"
+      >
+        Faculty
+      </span>
     </div>
 
     <!-- Date Picker -->
@@ -94,7 +101,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, nextTick } from 'vue'
+import { ref, computed, watch, nextTick, onMounted } from 'vue'
 
 const props = defineProps({
   mode: String,
@@ -106,6 +113,20 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:mode', 'update:date', 'update:query', 'search', 'clear'])
+
+const theme = ref('light')
+
+const toggleTheme = () => {
+  theme.value = theme.value === 'light' ? 'dark' : 'light'
+  document.body.className = theme.value === 'light' ? 'light-theme' : 'dark-theme'
+  localStorage.setItem('theme', theme.value)
+}
+
+onMounted(() => {
+  const savedTheme = localStorage.getItem('theme') || 'light'
+  theme.value = savedTheme
+  document.body.className = savedTheme === 'light' ? 'light-theme' : 'dark-theme'
+})
 
 const showDatePicker = ref(false)
 const dateInput = ref(null)
@@ -232,196 +253,212 @@ watch(showDatePicker, async (show) => {
 
 <style scoped>
 .search-card {
-  background: white;
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  margin-bottom: 2rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.theme-toggle {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.theme-toggle:hover {
+  background: var(--border);
 }
 
 .mode-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  display: inline-flex;
+  background: var(--bg-hover);
+  border-radius: var(--radius);
+  padding: 2px;
+  margin-bottom: 24px;
 }
 
 .mode-toggle span {
+  padding: 6px 12px;
+  font-size: 13px;
   font-weight: 500;
-  transition: color 0.3s;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.15s ease;
 }
 
 .mode-toggle span.active {
-  color: #007bff;
+  background: var(--bg-card);
+  color: var(--text);
+  box-shadow: var(--shadow-small);
 }
 
 .switch {
-  position: relative;
-  width: 60px;
-  height: 30px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  transition: 0.3s;
-  border-radius: 30px;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 22px;
-  width: 22px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  transition: 0.3s;
-  border-radius: 50%;
-}
-
-input:checked + .slider {
-  background-color: #007bff;
-}
-
-input:checked + .slider:before {
-  transform: translateX(30px);
+  display: none;
 }
 
 .date-section {
-  text-align: center;
-  margin-bottom: 2rem;
-  cursor: pointer;
+  margin-bottom: 24px;
 }
 
 .date-display {
-  font-size: 1.1rem;
+  font-size: 14px;
   font-weight: 500;
-  color: #333;
-  margin: 0;
-  padding: 0.5rem;
-  border-radius: 8px;
-  transition: background-color 0.3s;
-}
-
-.date-display:hover {
-  background-color: #f8f9fa;
+  color: var(--text);
+  margin: 0 0 8px 0;
 }
 
 .date-input {
   width: 100%;
-  padding: 0.75rem;
-  border: 2px solid #007bff;
-  border-radius: 8px;
-  font-size: 1rem;
-  margin-top: 0.5rem;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 14px;
+  background: var(--bg-card);
+  color: var(--text);
+  font-family: var(--font-sans);
+}
+
+.date-input:focus {
+  outline: none;
+  border-color: var(--border-strong);
 }
 
 .search-section {
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
 }
 
 .input-group {
   display: flex;
-  gap: 0.5rem;
+  gap: 8px;
+}
+
+@media (max-width: 640px) {
+  .input-group {
+    flex-direction: column;
+  }
 }
 
 .search-input {
   flex: 1;
-  padding: 0.75rem 1rem;
-  border: 2px solid #e9ecef;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: border-color 0.3s;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 14px;
+  background: var(--bg-card);
+  color: var(--text);
+  font-family: var(--font-sans);
+  transition: border-color 0.15s ease;
 }
 
 .search-input:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: var(--border-strong);
+}
+
+.search-input::placeholder {
+  color: var(--text-tertiary);
 }
 
 .search-btn {
-  padding: 0.75rem 1.5rem;
-  background: #007bff;
-  color: white;
+  padding: 8px 16px;
+  background: var(--bg-accent);
+  color: var(--text-inverse);
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
+  border-radius: var(--radius);
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s;
+  font-family: var(--font-sans);
+  transition: opacity 0.15s ease;
+}
+
+@media (max-width: 640px) {
+  .search-btn {
+    width: 100%;
+  }
 }
 
 .search-btn:hover:not(:disabled) {
-  background: #0056b3;
+  opacity: 0.8;
 }
 
 .search-btn:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
 .faculty-inputs {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .faculty-inputs {
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 24px;
+  }
 }
 
 .select-input {
-  padding: 0.75rem 1rem;
-  border: 2px solid #e9ecef;
-  border-radius: 8px;
-  font-size: 1rem;
-  background: white;
-  transition: border-color 0.3s;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 14px;
+  background: var(--bg-card);
+  color: var(--text);
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: border-color 0.15s ease;
 }
 
 .select-input:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: var(--border-strong);
 }
 
 .divider {
   text-align: center;
   font-weight: 500;
-  color: #6c757d;
+  color: var(--text-tertiary);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@media (min-width: 768px) {
+  .divider {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
 }
 
 .clear-btn {
   width: 100%;
-  padding: 0.75rem;
-  background: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
+  padding: 8px 16px;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s;
+  font-family: var(--font-sans);
+  transition: all 0.15s ease;
 }
 
 .clear-btn:hover {
-  background: #c82333;
-}
-
-@media (max-width: 768px) {
-  .search-card {
-    padding: 1.5rem;
-  }
-  
-  .input-group {
-    flex-direction: column;
-  }
+  background: var(--bg-hover);
+  border-color: var(--border-strong);
 }
 </style>

@@ -13,23 +13,23 @@ defineProps({
 
 <style scoped>
 .error-message {
-  background: #fff5f5;
-  border: 1px solid #fed7d7;
-  border-radius: 12px;
-  padding: 1.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
   text-align: center;
-  margin: 1rem 0;
+  margin: 16px 0;
 }
 
 .error-icon {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
+  font-size: 20px;
+  margin-bottom: 8px;
 }
 
 .error-text {
-  color: #c53030;
-  font-size: 1rem;
-  font-weight: 500;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 400;
   margin: 0;
 }
 </style>

@@ -23,6 +23,7 @@
         <FacultyResults 
           v-else-if="currentMode === 'faculty' && facultyResult"
           :result="facultyResult"
+          :title="searchQuery"
         />
         <ErrorMessage 
           v-else-if="error"
@@ -172,20 +173,23 @@ onMounted(async () => {
 <style scoped>
 .app {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  background: var(--bg);
 }
 
 .main-content {
-  flex: 1;
-  padding: 1rem;
-  max-width: 800px;
+  max-width: 1048px;
   margin: 0 auto;
-  width: 100%;
+  padding: 24px;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 16px;
+  }
 }
 
 .fade-enter-active, .fade-leave-active {
-  transition: opacity 0.3s ease;
+  transition: opacity 0.15s ease;
 }
 
 .fade-enter-from, .fade-leave-to {

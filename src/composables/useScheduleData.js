@@ -264,7 +264,7 @@ export function useScheduleData() {
       throw new Error('No students found for this site on the selected date.')
     }
 
-    let htmlOutput = `<ul><li><strong>${siteName}:</strong>`
+    let htmlOutput = `<ul>`
     const sortedPostingCodes = Object.keys(studentsByPosting).sort()
 
     for (const code of sortedPostingCodes) {
@@ -286,10 +286,10 @@ export function useScheduleData() {
           const plural = count > 1 ? 's' : ''
           postingHtml = `<strong>${code}:</strong> ${countText} intern${plural} from [${sortedMembers.join(', ')}]`
         }
-        htmlOutput += `<br> &nbsp; &nbsp; ${postingHtml}`
+        htmlOutput += `<li>${postingHtml}</li>`
       }
     }
-    htmlOutput += `</li></ul>`
+    htmlOutput += `</ul>`
     console.log(`[lookupUnifiedSite] Final HTML output:`, htmlOutput);
     return htmlOutput
   }

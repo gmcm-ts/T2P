@@ -3,7 +3,7 @@
     <div class="result-card">
       <h3 class="title">
         <span class="icon">🏥</span>
-        Faculty View Results
+        {{ title }}
       </h3>
       <div class="results-content" v-html="result"></div>
     </div>
@@ -11,59 +11,64 @@
 </template>
 
 <script setup>
-defineProps({
-  result: String
+const props = defineProps({
+  result: String,
+  title: String
 })
 </script>
 
 <style scoped>
 .faculty-results {
-  margin-top: 1rem;
+  margin-top: 16px;
 }
 
 .result-card {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  border-left: 4px solid #6f42c1;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
 }
 
 .title {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 1.3rem;
+  gap: 8px;
+  font-size: 14px;
   font-weight: 600;
-  color: #6f42c1;
-  margin: 0 0 1rem 0;
+  color: var(--text);
+  margin: 0 0 12px 0;
 }
 
 .icon {
-  font-size: 1.4rem;
+  font-size: 16px;
 }
 
 .results-content {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #333;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text);
 }
 
 .results-content :deep(ul) {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .results-content :deep(li) {
-  margin-bottom: 1rem;
-  padding: 1rem;
-  background: #f8f9fa;
-  border-radius: 8px;
-  border-left: 3px solid #6f42c1;
+  margin-bottom: 12px;
+  padding: 12px;
+  background: var(--bg-hover);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+.results-content :deep(li:last-child) {
+  margin-bottom: 0;
 }
 
 .results-content :deep(strong) {
-  color: #6f42c1;
+  color: var(--text);
   font-weight: 600;
 }
 </style>
