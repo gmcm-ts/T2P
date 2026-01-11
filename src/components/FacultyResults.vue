@@ -44,9 +44,11 @@ const props = defineProps({
 }
 
 .results-content {
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 18px;
+  line-height: 1.6;
   color: var(--text);
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
 .results-content :deep(ul) {
@@ -69,6 +71,9 @@ const props = defineProps({
 
 .results-content :deep(strong) {
   color: var(--text);
-  font-weight: 600;
+  font-weight: 500;
+  font-size: 13px;
+  display: block;
+  margin-bottom: 6px;
 }
 </style>

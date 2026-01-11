@@ -57,7 +57,7 @@ defineProps({
 
 @media (min-width: 1024px) {
   .results-container {
-    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr;
   }
 }
 
@@ -76,6 +76,10 @@ defineProps({
   .main-result {
     grid-column: 1 / 2;
   }
+}
+
+.guideline-card {
+  grid-column: 1 / -1;
 }
 
 .department {
@@ -125,10 +129,11 @@ defineProps({
 }
 
 .colleagues {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text-secondary);
   line-height: 1.5;
   margin: 0;
+  font-weight: 600;
 }
 
 .guideline-content {

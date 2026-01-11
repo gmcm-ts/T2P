@@ -26,7 +26,7 @@
       </div>
       
       <div class="copyright">
-        <p>©Dr_dp 2025. Version 2.2. All Rights Reserved.</p>
+        <p>©Dr_dp 2025. Version 2.3. All Rights Reserved.</p>
       </div>
     </div>
   </footer>
@@ -34,11 +34,11 @@
 
 <style scoped>
 .footer {
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  padding: 3rem 1rem 2rem;
-  margin-top: 4rem;
-  border-top: 1px solid var(--border-primary);
+  background: var(--bg-card);
+  color: var(--text);
+  padding: 32px 16px 24px;
+  margin-top: 32px;
+  border-top: 1px solid var(--border);
 }
 
 .footer-content {
@@ -58,40 +58,38 @@
 .footer-link {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.875rem 1.5rem;
-  background: var(--accent-primary);
-  color: white;
+  gap: 8px;
+  padding: 12px 16px;
+  background: transparent;
+  color: var(--text);
   text-decoration: none;
-  border-radius: var(--radius-lg);
-  font-weight: 600;
-  font-size: 0.875rem;
-  transition: all 0.3s;
-  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius);
+  font-weight: 500;
+  font-size: 14px;
+  transition: opacity 0.15s ease;
+  border: 1px solid var(--border);
 }
 
 .footer-link:hover {
-  background: var(--accent-secondary);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  background: var(--bg-hover);
 }
 
 .disclaimer {
-  margin-bottom: 1.5rem;
+  margin-bottom: 24px;
   color: var(--text-secondary);
 }
 
 .disclaimer p {
-  margin: 0.5rem 0;
-  font-size: 0.875rem;
+  margin: 8px 0;
+  font-size: 14px;
   line-height: 1.5;
 }
 
 .copyright {
   color: var(--text-tertiary);
-  font-size: 0.75rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border-primary);
+  font-size: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
 }
 
 .copyright p {

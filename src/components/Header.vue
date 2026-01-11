@@ -2,14 +2,13 @@
   <header class="header">
     <div class="header-content">
       <h1 class="title">
-        GOVERNMENT GENERAL HOSPITAL<br>
-        AND MEDICAL COLLEGE<br>
-        <span class="subtitle">MAHABUBNAGAR, T.S. PIN: 509001</span>
+        <span class="hospital-name">GOVERNMENT GENERAL HOSPITAL AND MEDICAL COLLEGE</span>
+        <span class="location">MAHABUBNAGAR, T.S. PIN: 509001</span>
       </h1>
-      <p class="schedule-title">
-        INTERNSHIP SCHEDULE<br>
+      <div class="schedule-info">
+        <span class="schedule-title">INTERNSHIP SCHEDULE</span>
         <span class="period">[ 21 APR 2025 - 20 APR 2026 ]</span>
-      </p>
+      </div>
     </div>
   </header>
 </template>
@@ -18,7 +17,7 @@
 .header {
   background: var(--bg-card);
   border-bottom: 1px solid var(--border);
-  padding: 16px 0;
+  padding: 12px 0;
 }
 
 .header-content {
@@ -28,58 +27,108 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .header-content {
-    padding: 0 16px;
     flex-direction: column;
     text-align: center;
     gap: 8px;
   }
 }
 
-.title {
-  font-size: 16px;
-  font-weight: 600;
-  margin: 0;
-  color: var(--text);
-  line-height: 1.4;
-}
-
 @media (max-width: 768px) {
-  .title {
-    font-size: 14px;
+  .header-content {
+    padding: 0 16px;
   }
 }
 
-.subtitle {
-  font-size: 12px;
+.title {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text);
+  line-height: 1.3;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .title {
+    font-size: 16px;
+  }
+}
+
+.hospital-name {
+  font-weight: 600;
+}
+
+@media (min-width: 1200px) {
+  .hospital-name::after {
+    content: " ";
+  }
+}
+
+.location {
+  font-size: 11px;
   font-weight: 400;
   color: var(--text-secondary);
-  margin: 2px 0 0 0;
+}
+
+@media (min-width: 768px) {
+  .location {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .location {
+    display: inline;
+  }
 }
 
 .schedule-info {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
   font-size: 12px;
-  color: var(--text-secondary);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .schedule-info {
-    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media (min-width: 768px) {
+  .schedule-info {
+    font-size: 13px;
   }
 }
 
 .schedule-title {
-  font-weight: 500;
+  font-weight: 600;
+  color: var(--text);
 }
 
 .period {
   font-weight: 400;
   color: var(--text-tertiary);
+  font-size: 11px;
+}
+
+@media (min-width: 768px) {
+  .period {
+    font-size: 12px;
+  }
 }
 </style>

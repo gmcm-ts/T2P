@@ -40,7 +40,9 @@
       <div v-if="mode === 'student'" class="input-group">
         <input 
           v-model="localQuery"
-          type="text" 
+          type="tel" 
+          inputmode="numeric"
+          pattern="[0-9]*"
           placeholder="Enter Roll No. or Group (e.g., 141, A5)"
           class="search-input"
           :disabled="loading"
@@ -297,9 +299,9 @@ watch(showDatePicker, async (show) => {
 }
 
 .mode-toggle span.active {
-  background: var(--bg-card);
-  color: var(--text);
-  box-shadow: var(--shadow-small);
+  background: var(--text);
+  color: var(--bg);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .switch {
@@ -371,9 +373,9 @@ watch(showDatePicker, async (show) => {
 
 .search-btn {
   padding: 8px 16px;
-  background: var(--bg-accent);
-  color: var(--text-inverse);
-  border: none;
+  background: var(--text);
+  color: var(--bg);
+  border: 1px solid var(--text);
   border-radius: var(--radius);
   font-size: 14px;
   font-weight: 500;
@@ -420,6 +422,8 @@ watch(showDatePicker, async (show) => {
   cursor: pointer;
   font-family: var(--font-sans);
   transition: border-color 0.15s ease;
+  width: 100%;
+  min-width: 0;
 }
 
 .select-input:focus {
