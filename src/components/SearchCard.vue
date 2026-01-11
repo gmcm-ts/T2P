@@ -23,10 +23,10 @@
     </div>
 
     <!-- Date Picker -->
-    <div class="date-section" @click="showDatePicker = !showDatePicker">
-      <p class="date-display">{{ dateDisplay }}</p>
+    <div class="date-section">
+      <p class="date-display" @click="toggleDatePicker">{{ dateDisplay }}</p>
       <input 
-        v-if="showDatePicker"
+        v-show="showDatePicker"
         type="date" 
         :value="dateValue"
         @change="updateDate"
@@ -198,6 +198,10 @@ const dateValue = computed(() => {
   return props.date.toISOString().split('T')[0]
 })
 
+const toggleDatePicker = () => {
+  showDatePicker.value = !showDatePicker.value
+}
+
 const updateDate = (event) => {
   const newDate = new Date(event.target.value + 'T00:00:00')
   emit('update:date', newDate)
@@ -319,6 +323,7 @@ watch(showDatePicker, async (show) => {
   font-weight: 500;
   color: var(--text);
   margin: 0 0 8px 0;
+  cursor: pointer;
 }
 
 .date-input {
