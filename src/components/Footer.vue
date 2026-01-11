@@ -8,13 +8,13 @@
           rel="noopener noreferrer"
           class="footer-link"
         >
-          📊 View Complete Schedule
+          <BarChart3 :size="16" /> View Complete Schedule
         </a>
         <a 
           :href="`mailto:drdpdev@gmail.com?subject=T2P Issue Report - Ticket ${generateTicketNumber()}&body=Date: ${new Date().toLocaleString()}%0D%0A%0D%0APlease describe the issue:%0D%0A`" 
           class="footer-link"
         >
-          🐛 Report an Issue
+          <Bug :size="16" /> Report an Issue
         </a>
       </div>
       
@@ -31,6 +31,8 @@
 </template>
 
 <script setup>
+import { BarChart3, Bug } from 'lucide-vue-next'
+
 const generateTicketNumber = () => {
   const now = new Date()
   const timestamp = now.getTime().toString().slice(-6)

@@ -1,5 +1,4 @@
 import { ref } from 'vue'
-import { nextTick } from 'vue'
 
 const appData = ref({})
 const PIVOT_DATE = new Date('2025-07-21T00:00:00Z')

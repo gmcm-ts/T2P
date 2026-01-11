@@ -16,7 +16,7 @@
 
     <div class="result-card">
       <h4 class="card-title">
-        <span class="icon">👥</span>
+        <Users :size="16" />
         Colleagues in this Posting
       </h4>
       <p class="colleagues">{{ colleagues }}</p>
@@ -24,7 +24,7 @@
 
     <div class="result-card guideline-card">
       <h4 class="card-title">
-        <span class="icon">💡</span>
+        <Lightbulb :size="16" />
         Guideline of the Day
       </h4>
       <div class="guideline-content">
@@ -36,6 +36,8 @@
 </template>
 
 <script setup>
+import { Users, Lightbulb } from 'lucide-vue-next'
+
 defineProps({
   result: Object,
   colleagues: String,

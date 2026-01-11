@@ -88,18 +88,16 @@ const handleSearch = async () => {
       setItem('lastSearchedRoll', searchQuery.value)
     } else {
       // Faculty mode - check if it's a department name or site name
-      const selectedDept = departments.value.find(d => d.value === searchQuery.value || d.name === searchQuery.value)
+      const selectedDept = departments.value.find(d => d.value === searchQuery.value)
       
       if (selectedDept) {
         // It's a department lookup - use the code
         const result = await lookupFaculty(selectedDept.code, selectedDate.value)
         facultyResult.value = result
-        setItem('lastSelectedFacultyType', 'department')
       } else {
         // It's a unified site lookup
         const result = await lookupUnifiedSite(searchQuery.value, selectedDate.value)
         facultyResult.value = result
-        setItem('lastSelectedFacultyType', 'site')
       }
       
       setItem('lastSelectedFacultyValue', searchQuery.value)
@@ -146,7 +144,6 @@ onMounted(async () => {
     if (savedMode === 'faculty') {
       currentMode.value = 'faculty'
       
-      const savedFacultyType = getItem('lastSelectedFacultyType')
       const savedFacultyValue = getItem('lastSelectedFacultyValue')
       
       if (savedFacultyValue) {

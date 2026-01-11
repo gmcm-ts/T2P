@@ -2,7 +2,7 @@
   <div class="faculty-results">
     <div class="result-card">
       <h3 class="title">
-        <span class="icon">🏥</span>
+        <Building2 :size="16" />
         {{ title }}
       </h3>
       <ul class="results-content">
@@ -16,6 +16,8 @@
 </template>
 
 <script setup>
+import { Building2 } from 'lucide-vue-next'
+
 const props = defineProps({
   result: Array,
   title: String

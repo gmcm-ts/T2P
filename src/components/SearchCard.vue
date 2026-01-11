@@ -2,7 +2,8 @@
   <div class="search-card">
     <!-- Theme Toggle Button -->
     <button class="theme-toggle" @click="toggleTheme" :title="`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`">
-      {{ theme === 'light' ? '🌙' : '☀️' }}
+      <Moon v-if="theme === 'light'" :size="16" />
+      <Sun v-else :size="16" color="white" />
     </button>
 
     <!-- Mode Toggle -->
@@ -104,6 +105,7 @@
 
 <script setup>
 import { ref, computed, watch, nextTick, onMounted } from 'vue'
+import { Moon, Sun } from 'lucide-vue-next'
 
 const props = defineProps({
   mode: String,
@@ -256,11 +258,16 @@ watch(showDatePicker, async (show) => {
   right: 16px;
   background: var(--bg-hover);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: 50%;
   padding: 8px;
   font-size: 16px;
   cursor: pointer;
   transition: all 0.15s ease;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .theme-toggle:hover {
