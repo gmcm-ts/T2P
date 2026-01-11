@@ -6,7 +6,8 @@ export default defineConfig({
   base: '/',
   root: '.',
   build: {
-    outDir: 'dist'
+    outDir: 'dist',
+    copyPublicDir: true
   },
-  publicDir: 'database'
+  publicDir: false
 })

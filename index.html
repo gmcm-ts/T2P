@@ -1,97 +1,18 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#000000" />
-  <title>Internship Schedule</title>
-  <link rel="manifest" href="favicon_io/site.webmanifest" />
-  <link rel="icon" href="favicon_io/favicon.ico" />
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png" />
-  <link rel="icon" type="image/png" sizes="192x192" href="android-chrome-192x192.png" />
-  <link rel="icon" type="image/png" sizes="512x512" href="android-chrome-512x512.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png" />
-  <link rel="stylesheet" href="css/styles.css">
+  <meta name="theme-color" content="#000000">
+  <title>T2P - Internship Schedule</title>
+  <link rel="manifest" href="/favicon_io/site.webmanifest">
+  <link rel="icon" href="/favicon_io/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
 </head>
-
 <body>
-  <div id="app-container">
-    <div id="search-card" class="card">
-      <div class="main-header">
-        <h1>GOVERNMENT GENERAL HOSPITAL <br> AND MEDICAL COLLEGE, <br> <span class="small-text">MAHABUBNAGAR, T.S. PIN: 509001.</span></h1>
-        <p id="dashboard-title" class="schedule-title">INTERNSHIP SCHEDULE <br> <span class="small-text">[ 21 APR 2025 - 20 APR 2026 ]</span></p>
-      </div>
-      <div class="mode-toggle">
-        <span>Intern</span>
-        <label class="switch">
-          <input type="checkbox" id="mode-toggle-switch">
-          <span class="slider"></span>
-        </label>
-        <span>Faculty</span>
-      </div>
-      <div id="date-wrapper" title="Click to change date">
-        <p id="current-date"></p>
-        <input type="date" id="date-picker"
-          style="display: none; width: 100%; box-sizing: border-box; font-family: inherit; font-size: 16px; padding: 8px; border: 1px solid #007bff; border-radius: 8px; text-align: center; background-color: #0d0d0d; color: #e0e0e0;">
-      </div>
-      <div id="input-wrapper">
-        <div id="student-input-container" class="input-container">
-          <input type="text" id="rollInput" placeholder="Loading data..." disabled />
-          <div id="search-button-wrapper" class="search-button-wrapper"><button id="searchButton" disabled>Go</button></div>
-        </div>
-        <div id="faculty-input-container" class="input-container" style="display: none;">
-          <select id="department-select" disabled>
-            <option value="">Select a department...</option>
-          </select>
-          <div class="or-divider">OR</div>
-          <select id="site-select" disabled>
-            <option value="">Select a Site...</option>
-          </select>
-        </div>
-      </div>
-      <p id="result-status"></p>
-    </div>
-
-    <div id="student-results-container">
-      <div class="card result-card">
-        <h3><span id="result-department"></span></h3>
-        <p><strong>Posting Site:</strong> <span id="result-site"></span></p>
-        <p><strong>Today's Focus:</strong> <span id="result-task"></span></p>
-      </div>
-      <div class="card result-card">
-        <h4>Colleagues in this Posting</h4>
-        <p id="result-colleagues">No other colleagues found.</p>
-      </div>
-      <div class="card result-card">
-        <h4>Guideline of the Day</h4>
-        <strong id="guideline-title"></strong>
-        <p id="guideline-text"></p>
-      </div>
-    </div>
-
-    <div id="faculty-results-container" class="card result-card">
-    </div>
-
-    <div class="card report-issue-card">
-      <a href="https://docs.google.com/spreadsheets/d/1ZieRF7JE97GgNjVMtKSsOXWcUVvyQOjf/edit?usp=sharing&ouid=116512367941844366243&rtpof=true&sd=true" target="_blank" rel="noopener noreferrer"
-        class="issue-button" style="margin-bottom: 10px;">
-        click here to view complete schedule
-      </a>
-      <a href="https://github.com/gmcm-ts/T2P/issues/new" target="_blank" rel="noopener noreferrer"
-        class="issue-button">
-        Something not right? Report an issue
-      </a>
-      <p class="disclaimer">
-        This site may contain errors — verify and report issues here.<br>
-        Please verify information independently before reporting to duties.
-      </p>
-      <p class="copyright">©Dr_dp 2025. Version 1.4. All Rights Reserved.</p>
-    </div>
-  </div>
-
-  <script src="js/main.js"></script>
+  <div id="app"></div>
+  <script type="module" src="/src/main.js"></script>
 </body>
 </html>
