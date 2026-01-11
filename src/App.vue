@@ -7,6 +7,8 @@
         v-model:date="selectedDate"
         v-model:query="searchQuery"
         :loading="loading"
+        :departments="departments"
+        :sites="sites"
         @search="handleSearch"
         @clear="handleClear"
       />
@@ -34,7 +36,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch, nextTick } from 'vue'
 import { useScheduleData } from './composables/useScheduleData'
 import { useLocalStorage } from './composables/useLocalStorage'
 import Header from './components/Header.vue'
@@ -44,7 +46,7 @@ import FacultyResults from './components/FacultyResults.vue'
 import ErrorMessage from './components/ErrorMessage.vue'
 import Footer from './components/Footer.vue'
 
-const { loadData, lookupStudent, lookupFaculty, lookupUnifiedSite } = useScheduleData()
+const { loadData, lookupStudent, lookupFaculty, lookupUnifiedSite, appData } = useScheduleData()
 const { getItem, setItem } = useLocalStorage()
 
 const currentMode = ref('student')
@@ -56,6 +58,17 @@ const studentResult = ref(null)
 const facultyResult = ref(null)
 const colleagues = ref('')
 const guideline = ref(null)
+const departments = ref([])
+const sites = ref([])
+
+// Initialize with empty arrays to prevent forEach errors
+departments.value = []
+sites.value = []
+
+// Watch for mode changes and clear results
+watch(currentMode, () => {
+  handleClear()
+})
 
 const handleSearch = async () => {
   if (!searchQuery.value.trim()) return
@@ -73,8 +86,21 @@ const handleSearch = async () => {
       guideline.value = result.guideline
       setItem('lastSearchedRoll', searchQuery.value)
     } else {
-      const result = await lookupFaculty(searchQuery.value, selectedDate.value)
-      facultyResult.value = result
+      // Faculty mode - check if it's a department name or site name
+      const selectedDept = departments.value.find(d => d.value === searchQuery.value || d.name === searchQuery.value)
+      
+      if (selectedDept) {
+        // It's a department lookup - use the code
+        const result = await lookupFaculty(selectedDept.code, selectedDate.value)
+        facultyResult.value = result
+        setItem('lastSelectedFacultyType', 'department')
+      } else {
+        // It's a unified site lookup
+        const result = await lookupUnifiedSite(searchQuery.value, selectedDate.value)
+        facultyResult.value = result
+        setItem('lastSelectedFacultyType', 'site')
+      }
+      
       setItem('lastSelectedFacultyValue', searchQuery.value)
     }
     setItem('currentMode', currentMode.value)
@@ -90,6 +116,8 @@ const handleClear = () => {
   studentResult.value = null
   facultyResult.value = null
   error.value = ''
+  colleagues.value = ''
+  guideline.value = null
 }
 
 onMounted(async () => {
@@ -97,14 +125,41 @@ onMounted(async () => {
   try {
     await loadData()
     
-    // Restore session
-    const savedMode = getItem('currentMode')
-    if (savedMode) currentMode.value = savedMode
+    // Populate departments and sites
+    if (appData.value.regulations?.regulations) {
+      departments.value = appData.value.regulations.regulations
+        .filter(reg => reg.department && !reg.department.includes('TOTAL'))
+        .map(reg => ({ 
+          value: reg.department,
+          code: reg.abbreviation,
+          name: reg.department
+        }))
+    }
     
-    const savedQuery = getItem(currentMode.value === 'student' ? 'lastSearchedRoll' : 'lastSelectedFacultyValue')
-    if (savedQuery) {
-      searchQuery.value = savedQuery
-      await handleSearch()
+    if (appData.value.unifiedSites?.unifiedSites) {
+      sites.value = appData.value.unifiedSites.unifiedSites.map(site => site.name)
+    }
+    
+    // Restore session EXACTLY like original
+    const savedMode = getItem('currentMode')
+    if (savedMode === 'faculty') {
+      currentMode.value = 'faculty'
+      
+      const savedFacultyType = getItem('lastSelectedFacultyType')
+      const savedFacultyValue = getItem('lastSelectedFacultyValue')
+      
+      if (savedFacultyValue) {
+        await nextTick() // Wait for mode change to propagate
+        searchQuery.value = savedFacultyValue
+        setTimeout(() => handleSearch(), 100)
+      }
+    } else {
+      currentMode.value = 'student'
+      const savedRoll = getItem('lastSearchedRoll')
+      if (savedRoll) {
+        searchQuery.value = savedRoll
+        await handleSearch()
+      }
     }
   } catch (err) {
     error.value = 'Failed to load application data'

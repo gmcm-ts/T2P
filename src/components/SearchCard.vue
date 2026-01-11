@@ -53,10 +53,15 @@
           v-model="departmentValue"
           class="select-input"
           :disabled="loading"
-          @change="handleFacultySearch"
+          @change="handleDepartmentChange"
         >
           <option value="">Select Department...</option>
-          <option v-for="dept in departments" :key="dept.code" :value="dept.code">
+          <option 
+            v-for="dept in (departments || [])" 
+            :key="dept.code || dept.name" 
+            :value="dept.value || dept.name"
+            :data-code="dept.code"
+          >
             {{ dept.name }}
           </option>
         </select>
@@ -67,10 +72,10 @@
           v-model="siteValue"
           class="select-input"
           :disabled="loading"
-          @change="handleFacultySearch"
+          @change="handleSiteChange"
         >
           <option value="">Select Site...</option>
-          <option v-for="site in sites" :key="site" :value="site">
+          <option v-for="site in (sites || [])" :key="site" :value="site">
             {{ site }}
           </option>
         </select>
@@ -95,29 +100,61 @@ const props = defineProps({
   mode: String,
   date: Date,
   query: String,
-  loading: Boolean
+  loading: Boolean,
+  departments: Array,
+  sites: Array
 })
 
 const emit = defineEmits(['update:mode', 'update:date', 'update:query', 'search', 'clear'])
 
 const showDatePicker = ref(false)
 const dateInput = ref(null)
-const localQuery = ref(props.query)
+const localQuery = ref('')
 const departmentValue = ref('')
 const siteValue = ref('')
+const departments = ref([])
+const sites = ref([])
 
-// Mock data - replace with actual data from composable
-const departments = ref([
-  { code: 'GM', name: 'General Medicine' },
-  { code: 'GS', name: 'General Surgery' },
-  { code: 'OBG', name: 'Obstetrics & Gynaecology' }
-])
+// Watch for mode changes and clear everything
+watch(() => props.mode, (newMode) => {
+  localQuery.value = ''
+  departmentValue.value = ''
+  siteValue.value = ''
+  emit('update:query', '')
+  emit('clear')
+})
 
-const sites = ref([
-  'ICU Complex',
-  'OT Complex',
-  'Emergency Department'
-])
+// Watch for departments and sites props
+watch(() => props.departments, (newDepts) => {
+  if (newDepts && Array.isArray(newDepts)) {
+    departments.value = newDepts
+  }
+})
+
+watch(() => props.sites, (newSites) => {
+  if (newSites && Array.isArray(newSites)) {
+    sites.value = newSites
+  }
+})
+
+// Watch for query to set dropdown values
+watch(() => props.query, (newQuery) => {
+  if (props.mode === 'student') {
+    localQuery.value = newQuery || ''
+  } else if (props.mode === 'faculty' && newQuery) {
+    const savedFacultyType = localStorage.getItem('lastSelectedFacultyType')
+    if (savedFacultyType === 'department') {
+      departmentValue.value = newQuery
+      siteValue.value = ''
+    } else if (savedFacultyType === 'site') {
+      siteValue.value = newQuery
+      departmentValue.value = ''
+    }
+  } else if (props.mode === 'faculty' && !newQuery) {
+    departmentValue.value = ''
+    siteValue.value = ''
+  }
+}, { immediate: true })
 
 const dateDisplay = computed(() => {
   const today = new Date()
@@ -149,19 +186,41 @@ const handleSearch = () => {
   }
 }
 
-const handleFacultySearch = () => {
-  const query = departmentValue.value || siteValue.value
-  if (query) {
-    if (departmentValue.value) siteValue.value = ''
-    if (siteValue.value) departmentValue.value = ''
-    emit('update:query', query)
-    emit('search')
+const handleDepartmentChange = (event) => {
+  siteValue.value = '' // Reset the other dropdown
+  const selectedValue = event.target.value
+  if (!selectedValue) {
+    emit('clear')
+    return
+  }
+  
+  // Find the department by matching the selected value (department name)
+  const selectedDept = departments.value.find(d => d.value === selectedValue || d.name === selectedValue)
+  
+  if (selectedDept && selectedDept.code) {
+    // Store the department name as query but pass code for lookup
+    emit('update:query', selectedValue)
+    // Save faculty type for session restoration
+    localStorage.setItem('lastSelectedFacultyType', 'department')
+    localStorage.setItem('lastSelectedFacultyValue', selectedValue)
+    emit('search', { type: 'department', code: selectedDept.code })
   }
 }
 
-watch(() => props.query, (newQuery) => {
-  localQuery.value = newQuery
-})
+const handleSiteChange = (event) => {
+  departmentValue.value = '' // Reset the other dropdown
+  const selectedValue = event.target.value
+  if (!selectedValue) {
+    emit('clear')
+    return
+  }
+  
+  // Save faculty type for session restoration
+  localStorage.setItem('lastSelectedFacultyType', 'site')
+  localStorage.setItem('lastSelectedFacultyValue', selectedValue)
+  emit('update:query', selectedValue)
+  emit('search', { type: 'site', value: selectedValue })
+}
 
 watch(showDatePicker, async (show) => {
   if (show) {

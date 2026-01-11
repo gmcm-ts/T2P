@@ -16,51 +16,80 @@
 
 <style scoped>
 .header {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  background: linear-gradient(135deg, #0056b3 0%, #007bff 50%, #0056b3 100%);
   color: white;
   padding: 2rem 1rem;
   text-align: center;
-  border-bottom: 3px solid #007bff;
+  box-shadow: 0 4px 20px rgba(0, 123, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+  opacity: 0.3;
 }
 
 .header-content {
   max-width: 800px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 .title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 0 0 1rem 0;
-  line-height: 1.3;
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.2;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.5px;
 }
 
 .subtitle {
-  font-size: 0.9rem;
-  font-weight: 400;
-  opacity: 0.9;
+  font-size: 1rem;
+  font-weight: 500;
+  opacity: 0.95;
+  display: block;
+  margin-top: 0.5rem;
 }
 
 .schedule-title {
-  font-size: 1.2rem;
-  font-weight: 600;
+  font-size: 1.4rem;
+  font-weight: 700;
   margin: 0;
-  color: #007bff;
+  color: #ffd700;
 }
 
 .period {
-  font-size: 0.9rem;
-  font-weight: 400;
-  opacity: 0.8;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #e3f2fd;
+  display: block;
+  margin-top: 0.5rem;
 }
 
 @media (max-width: 768px) {
+  .header {
+    padding: 1.5rem 1rem;
+  }
+  
   .title {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
   }
   
   .schedule-title {
-    font-size: 1rem;
+    font-size: 1.2rem;
+  }
+  
+  .period {
+    font-size: 0.9rem;
   }
 }
 </style>

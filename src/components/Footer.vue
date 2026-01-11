@@ -26,7 +26,7 @@
       </div>
       
       <div class="copyright">
-        <p>©Dr_dp 2025. Version 2.0. All Rights Reserved.</p>
+        <p>©Dr_dp 2025. Version 2.1. All Rights Reserved.</p>
       </div>
     </div>
   </footer>

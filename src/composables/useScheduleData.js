@@ -20,13 +20,8 @@ export function useScheduleData() {
     }
 
     const promises = Object.entries(dataFiles).map(async ([key, url]) => {
-      console.log(`Fetching: ${url}`)
       const response = await fetch(url)
-      console.log(`Response for ${url}:`, response.status, response.statusText)
-      if (!response.ok) {
-        console.error(`Failed to load ${url}: ${response.status} ${response.statusText}`)
-        throw new Error(`Failed to load ${url}: ${response.status}`)
-      }
+      if (!response.ok) throw new Error(`Failed to load ${url}`)
       const data = await response.json()
       appData.value[key] = data
     })
@@ -40,6 +35,31 @@ export function useScheduleData() {
     return Object.entries(groupData).find(([, rolls]) => rolls.includes(searchKey))?.[0]
   }
 
+  const findColleagues = (searchedInput, postingCode, weekSchedule, groupData) => {
+    return Object.entries(weekSchedule.postings)
+      .filter(([, code]) => code === postingCode)
+      .flatMap(([group]) => groupData[group] || [])
+      .filter(roll => roll !== (isNaN(searchedInput) ? searchedInput.toUpperCase() : parseInt(searchedInput, 10)))
+      .join(', ')
+  }
+
+  const getEquivalentScheduleCodes = (deptCode) => {
+    const cleanedDeptCode = deptCode.split('/').pop()
+    const equivalents = {
+      'RD*': ['R&L', 'RD'],
+      'LAB*': ['R&L', 'LABS'],
+      'LABS*': ['R&L', 'LABS'],
+      'FP': ['FP&AY', 'FWP'],
+      'AY*': ['FP&AY', 'AYUSH'],
+      'AYUSH*': ['FP&AY', 'AYUSH'],
+      'TB*': ['TB']
+    }
+    const searchCodes = new Set([deptCode, cleanedDeptCode])
+    const mappedCodes = equivalents[cleanedDeptCode] || []
+    mappedCodes.forEach(code => searchCodes.add(code))
+    return Array.from(searchCodes)
+  }
+
   const getCanonicalPostingCode = (postingCode) => {
     const variations = {
       'GM - FMTW': 'GM - FMW',
@@ -50,12 +70,20 @@ export function useScheduleData() {
 
   const lookupStudent = async (rollInput, selectedDate) => {
     const cleanRoll = rollInput.trim().toUpperCase().replace(/^R0+/, 'R')
+    if (!cleanRoll) throw new Error('Please enter a roll number or group code.')
+
     const isOldSchedule = selectedDate < PIVOT_DATE
     const groupData = isOldSchedule ? appData.value.oldGroups : appData.value.groups
     const groupKey = findGroupFromRoll(cleanRoll, groupData) || cleanRoll
 
     if (!groupData[groupKey]) {
-      throw new Error('No matching group found')
+      const otherData = isOldSchedule ? appData.value.groups : appData.value.oldGroups
+      const foundInOther = findGroupFromRoll(cleanRoll, otherData)
+      if (foundInOther) {
+        throw new Error(`Found in ${isOldSchedule ? 'new' : 'old'} schedule but not for selected date`)
+      } else {
+        throw new Error('No matching group found')
+      }
     }
 
     const groupLetter = groupKey.charAt(0)
@@ -87,15 +115,7 @@ export function useScheduleData() {
     const deptEntry = appData.value.regulations.regulations.find(item => 
       item.abbreviation === deptCode
     )
-
-    // Find colleagues
-    const colleagues = Object.entries(weekSchedule.postings)
-      .filter(([, code]) => code === postingCode)
-      .flatMap(([group]) => groupData[group] || [])
-      .filter(roll => roll !== (isNaN(cleanRoll) ? cleanRoll.toUpperCase() : parseInt(cleanRoll, 10)))
-      .join(', ')
-
-    // Random guideline
+    const colleagues = findColleagues(cleanRoll, postingCode, weekSchedule, groupData)
     const guideline = appData.value.guidelines[Math.floor(Math.random() * appData.value.guidelines.length)]
 
     return {
@@ -109,15 +129,169 @@ export function useScheduleData() {
     }
   }
 
-  const lookupFaculty = async (query, selectedDate) => {
-    // Implementation for faculty lookup
-    // This would be similar to the original but adapted for Vue
-    throw new Error('Faculty lookup not implemented yet')
+  const lookupFaculty = async (deptCode, selectedDate) => {
+    if (!appData.value.schedule) {
+      throw new Error('Schedule data not loaded')
+    }
+    
+    const isOldSchedule = selectedDate < PIVOT_DATE
+    const scheduleKey = isOldSchedule ? 'oldSchedule' : 'newSchedule'
+    const selectedDateISO = selectedDate.toISOString().split('T')[0]
+    
+    const weekSchedule = appData.value.schedule[scheduleKey]?.find(w => 
+      selectedDateISO >= w.startDate && selectedDateISO <= w.endDate
+    )
+
+    if (!weekSchedule || !weekSchedule.postings) {
+      throw new Error('No schedule found for selected date')
+    }
+
+    const postingsBySite = {}
+    const searchCodes = getEquivalentScheduleCodes(deptCode)
+
+    for (const [groupCode, code] of Object.entries(weekSchedule.postings)) {
+      if (searchCodes.includes(code)) {
+        const groupLetter = groupCode.charAt(0)
+        const detailedWeek = appData.value[`group${groupLetter}`]?.[scheduleKey]?.find(w => 
+          w.startDate === weekSchedule.startDate && w.endDate === weekSchedule.endDate
+        )
+        
+        if (detailedWeek && detailedWeek.postings && detailedWeek.postings[groupCode]) {
+          const rawCode = detailedWeek.postings[groupCode]
+          const canonicalCode = getCanonicalPostingCode(rawCode)
+          const site = appData.value.legend?.legend?.find(item => item.code === canonicalCode)?.site || rawCode
+          
+          const groupMembers = appData.value[isOldSchedule ? 'oldGroups' : 'groups']?.[groupCode]
+          if (groupMembers && Array.isArray(groupMembers)) {
+            postingsBySite[site] = postingsBySite[site] || []
+            postingsBySite[site].push(...groupMembers)
+          }
+        }
+      }
+    }
+
+    if (Object.keys(postingsBySite).length === 0) {
+      throw new Error('No students found for selected date')
+    }
+
+    return `<ul>${
+      Object.entries(postingsBySite).map(([site, rolls]) => 
+        `<li><strong>${site}:</strong><br>${rolls.join(', ')}</li>`
+      ).join('')
+    }</ul>`
   }
 
   const lookupUnifiedSite = async (siteName, selectedDate) => {
-    // Implementation for unified site lookup
-    throw new Error('Unified site lookup not implemented yet')
+    console.log(`[lookupUnifiedSite] Starting lookup for site: "${siteName}"`);
+    
+    if (!appData.value.unifiedSites?.unifiedSites) {
+      console.error('[lookupUnifiedSite] Unified sites data not loaded');
+      throw new Error('Unified sites data not loaded')
+    }
+    
+    const unifiedSite = appData.value.unifiedSites.unifiedSites.find(s => s.name === siteName)
+    console.log(`[lookupUnifiedSite] Found unified site:`, unifiedSite);
+    
+    if (!unifiedSite) {
+      console.error(`[lookupUnifiedSite] Site "${siteName}" not found`);
+      throw new Error(`Unified site "${siteName}" not found`)
+    }
+    
+    if (!unifiedSite.postings || !Array.isArray(unifiedSite.postings)) {
+      console.error(`[lookupUnifiedSite] Site "${siteName}" has invalid postings:`, unifiedSite.postings);
+      throw new Error(`Unified site "${siteName}" has no valid postings configuration`)
+    }
+
+    const isOldSchedule = selectedDate < PIVOT_DATE
+    const scheduleKey = isOldSchedule ? 'oldSchedule' : 'newSchedule'
+    const groupData = isOldSchedule ? appData.value.oldGroups : appData.value.groups
+    const selectedDateISO = selectedDate.toISOString().split('T')[0]
+    console.log(`[lookupUnifiedSite] Using schedule: ${scheduleKey}, date: ${selectedDateISO}`);
+
+    const studentsByPosting = {}
+    const contributingCodes = unifiedSite.postings.map(p => p.code)
+    console.log(`[lookupUnifiedSite] Contributing codes:`, contributingCodes);
+
+    ['A', 'B', 'C', 'D'].forEach(groupLetter => {
+      const groupScheduleData = appData.value[`group${groupLetter}`]?.[scheduleKey]
+      if (!groupScheduleData) {
+        console.log(`[lookupUnifiedSite] No schedule data for group ${groupLetter}`);
+        return;
+      }
+
+      const weekSchedule = groupScheduleData.find(w =>
+        selectedDateISO >= w.startDate && selectedDateISO <= w.endDate
+      )
+
+      if (weekSchedule && weekSchedule.postings) {
+        console.log(`[lookupUnifiedSite] Processing group ${groupLetter} postings:`, Object.keys(weekSchedule.postings));
+        
+        for (const [groupCode, postingCode] of Object.entries(weekSchedule.postings)) {
+          const canonicalCode = getCanonicalPostingCode(postingCode)
+
+          if (contributingCodes.includes(canonicalCode)) {
+            console.log(`[lookupUnifiedSite] Found matching code ${canonicalCode} for group ${groupCode}`);
+            
+            const members = groupData?.[groupCode]
+            if (!members || members.length === 0) {
+              console.log(`[lookupUnifiedSite] No members for group ${groupCode}`);
+              continue;
+            }
+
+            const rule = unifiedSite.postings.find(p => p.code === canonicalCode)
+            if (!rule) {
+              console.log(`[lookupUnifiedSite] No rule found for code ${canonicalCode}`);
+              continue;
+            }
+
+            if (!studentsByPosting[canonicalCode]) {
+              studentsByPosting[canonicalCode] = {
+                rule: rule,
+                members: new Set()
+              }
+            }
+            members.forEach(student => studentsByPosting[canonicalCode].members.add(student))
+          }
+        }
+      } else {
+        console.log(`[lookupUnifiedSite] No week schedule found for group ${groupLetter}`);
+      }
+    })
+
+    console.log(`[lookupUnifiedSite] Final students by posting:`, studentsByPosting);
+    
+    if (Object.keys(studentsByPosting).length === 0) {
+      throw new Error('No students found for this site on the selected date.')
+    }
+
+    let htmlOutput = `<ul><li><strong>${siteName}:</strong>`
+    const sortedPostingCodes = Object.keys(studentsByPosting).sort()
+
+    for (const code of sortedPostingCodes) {
+      const { rule, members: memberSet } = studentsByPosting[code]
+      const sortedMembers = Array.from(memberSet).sort((a, b) => {
+        const numA = parseInt(String(a).replace('R', ''), 10)
+        const numB = parseInt(String(b).replace('R', ''), 10)
+        if (!isNaN(numA) && !isNaN(numB)) return numA - numB
+        return String(a).localeCompare(String(b))
+      })
+
+      if (sortedMembers.length > 0) {
+        let postingHtml
+        if (rule.count === "all" || rule.count >= sortedMembers.length) {
+          postingHtml = `<strong>${code}:</strong> ${sortedMembers.join(', ')}`
+        } else {
+          const count = rule.count
+          const countText = { 1: 'One', 2: 'Two', 3: 'Three' }[count] || count
+          const plural = count > 1 ? 's' : ''
+          postingHtml = `<strong>${code}:</strong> ${countText} intern${plural} from [${sortedMembers.join(', ')}]`
+        }
+        htmlOutput += `<br> &nbsp; &nbsp; ${postingHtml}`
+      }
+    }
+    htmlOutput += `</li></ul>`
+    console.log(`[lookupUnifiedSite] Final HTML output:`, htmlOutput);
+    return htmlOutput
   }
 
   return {
