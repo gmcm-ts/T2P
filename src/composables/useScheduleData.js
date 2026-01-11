@@ -20,7 +20,7 @@ export function useScheduleData() {
     }
 
     const promises = Object.entries(dataFiles).map(async ([key, url]) => {
-      const response = await fetch(url)
+      const response = await fetch(url.replace('/database/', '/json_data/'))
       if (!response.ok) throw new Error(`Failed to load ${url}`)
       const data = await response.json()
       appData.value[key] = data
