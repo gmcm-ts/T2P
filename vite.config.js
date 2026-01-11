@@ -3,7 +3,7 @@ import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   plugins: [vue()],
-  base: '/T2P/',
+  base: '/',
   root: '.',
   build: {
     outDir: 'dist'
