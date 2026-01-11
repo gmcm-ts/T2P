@@ -6,21 +6,21 @@ const PIVOT_DATE = new Date('2025-07-21T00:00:00Z')
 export function useScheduleData() {
   const loadData = async () => {
     const dataFiles = {
-      groups: '/database/json_data/group-data.json',
-      oldGroups: '/database/json_data/old-group-data.json',
-      schedule: '/database/json_data/schedule-data.json',
-      groupA: '/database/json_data/group-a-schedule.json',
-      groupB: '/database/json_data/group-b-schedule.json',
-      groupC: '/database/json_data/group-c-schedule.json',
-      groupD: '/database/json_data/group-d-schedule.json',
-      legend: '/database/json_data/legend.json',
-      guidelines: '/database/json_data/guidelines.json',
-      regulations: '/database/json_data/regulations.json',
-      unifiedSites: '/database/json_data/unified-sites.json'
+      groups: '/json_data/group-data.json',
+      oldGroups: '/json_data/old-group-data.json',
+      schedule: '/json_data/schedule-data.json',
+      groupA: '/json_data/group-a-schedule.json',
+      groupB: '/json_data/group-b-schedule.json',
+      groupC: '/json_data/group-c-schedule.json',
+      groupD: '/json_data/group-d-schedule.json',
+      legend: '/json_data/legend.json',
+      guidelines: '/json_data/guidelines.json',
+      regulations: '/json_data/regulations.json',
+      unifiedSites: '/json_data/unified-sites.json'
     }
 
     const promises = Object.entries(dataFiles).map(async ([key, url]) => {
-      const response = await fetch(url.replace('/database/', '/json_data/'))
+      const response = await fetch(url)
       if (!response.ok) throw new Error(`Failed to load ${url}`)
       const data = await response.json()
       appData.value[key] = data
