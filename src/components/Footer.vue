@@ -11,9 +11,7 @@
           📊 View Complete Schedule
         </a>
         <a 
-          href="https://github.com/gmcm-ts/T2P/issues/new" 
-          target="_blank" 
-          rel="noopener noreferrer"
+          :href="`mailto:drdpdev@gmail.com?subject=T2P Issue Report - Ticket ${generateTicketNumber()}&body=Date: ${new Date().toLocaleString()}%0D%0A%0D%0APlease describe the issue:%0D%0A`" 
           class="footer-link"
         >
           🐛 Report an Issue
@@ -31,6 +29,14 @@
     </div>
   </footer>
 </template>
+
+<script setup>
+const generateTicketNumber = () => {
+  const now = new Date()
+  const timestamp = now.getTime().toString().slice(-6)
+  return `T2P${timestamp}`
+}
+</script>
 
 <style scoped>
 .footer {
