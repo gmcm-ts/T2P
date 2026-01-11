@@ -30,7 +30,7 @@
   gap: 16px;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1024px) {
   .header-content {
     flex-direction: column;
     text-align: center;
@@ -71,7 +71,7 @@
   font-weight: 600;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1025px) {
   .hospital-name::after {
     content: " ";
   }
@@ -89,7 +89,7 @@
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1025px) {
   .location {
     display: inline;
   }
@@ -103,7 +103,7 @@
   font-size: 12px;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1024px) {
   .schedule-info {
     align-items: center;
   }

@@ -7,7 +7,7 @@
       </h3>
       <ul class="results-content">
         <li v-for="item in result" :key="item.site">
-          <strong>{{ item.site }}:</strong><br>
+          <strong>{{ item.site }}:</strong>
           {{ item.students }}
         </li>
       </ul>
@@ -79,6 +79,6 @@ const props = defineProps({
   font-weight: 500;
   font-size: 13px;
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 </style>

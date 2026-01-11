@@ -40,23 +40,23 @@
 }
 
 /* Force light theme class */
-.light-theme {
-  --bg: #ffffff !important;
-  --bg-card: #ffffff !important;
-  --bg-hover: #f9f9f9 !important;
-  --text: #000000 !important;
-  --text-secondary: #525252 !important;
-  --border: #d4d4d8 !important;
+body.light-theme {
+  --bg: #ffffff;
+  --bg-card: #ffffff;
+  --bg-hover: #f9f9f9;
+  --text: #000000;
+  --text-secondary: #525252;
+  --border: #d4d4d8;
 }
 
 /* Force dark theme class */
-.dark-theme {
-  --bg: #000000 !important;
-  --bg-card: #111111 !important;
-  --bg-hover: #1a1a1a !important;
-  --text: #ffffff !important;
-  --text-secondary: #a1a1aa !important;
-  --border: #27272a !important;
+body.dark-theme {
+  --bg: #000000;
+  --bg-card: #111111;
+  --bg-hover: #1a1a1a;
+  --text: #ffffff;
+  --text-secondary: #a1a1aa;
+  --border: #27272a;
 }
 
 * {

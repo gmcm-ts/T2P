@@ -268,7 +268,11 @@ export function useScheduleData() {
           const plural = count > 1 ? 's' : ''
           studentsText = `${countText} intern${plural} from [${sortedMembers.join(', ')}]`
         }
-        results.push({ site: code, students: studentsText })
+        
+        const legendEntry = appData.value.legend?.legend?.find(item => item.code === code)
+        const siteName = legendEntry?.site || code
+        
+        results.push({ site: siteName, students: studentsText })
       }
     }
     return results
