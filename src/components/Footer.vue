@@ -24,7 +24,7 @@
       </div>
       
       <div class="copyright">
-        <p>©Dr_dp 2025. Version 2.3. All Rights Reserved.</p>
+        <p>©Dr_dp 2025. Version {{ version }}. All Rights Reserved.</p>
       </div>
     </div>
   </footer>
@@ -32,6 +32,9 @@
 
 <script setup>
 import { BarChart3, Bug } from 'lucide-vue-next'
+import packageJson from '../../package.json'
+
+const version = packageJson.version
 
 const generateTicketNumber = () => {
   const now = new Date()
