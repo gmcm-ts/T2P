@@ -41,13 +41,12 @@
       <div v-if="mode === 'student'" class="input-group">
         <input 
           v-model="localQuery"
-          type="tel" 
-          inputmode="numeric"
-          pattern="[0-9]*"
-          placeholder="Enter Roll No. or Group (e.g., 141, A5)"
+          type="text" 
+          placeholder="Enter Roll No. or Group (e.g., 141, R5, A5)"
           class="search-input"
           :disabled="loading"
           @keyup.enter="handleSearch"
+          @input="handleInput"
         >
         <button 
           @click="handleSearch"
@@ -203,6 +202,15 @@ const updateDate = (event) => {
   const newDate = new Date(event.target.value + 'T00:00:00')
   emit('update:date', newDate)
   showDatePicker.value = false
+}
+
+const handleInput = (event) => {
+  const value = event.target.value
+  // Allow numbers, R prefix, and group letters (A-Z)
+  const filtered = value.replace(/[^0-9RA-Z]/gi, '').toUpperCase()
+  if (filtered !== value) {
+    localQuery.value = filtered
+  }
 }
 
 const handleSearch = () => {

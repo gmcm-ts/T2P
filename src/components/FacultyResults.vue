@@ -56,9 +56,6 @@ const props = defineProps({
   color: var(--text);
   font-weight: 700;
   letter-spacing: 1px;
-}
-
-.results-content {
   list-style: none;
   padding: 0;
   margin: 0;

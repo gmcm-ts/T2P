@@ -203,7 +203,8 @@ export function useScheduleData() {
     const studentsByPosting = {}
     const contributingCodes = unifiedSite.postings.map(p => p.code)
 
-    for (const groupLetter of ['A', 'B', 'C', 'D']) {
+    const groupLetters = [...new Set(Object.keys(groupData).map(key => key.charAt(0)))]
+    for (const groupLetter of groupLetters) {
       const groupScheduleData = appData.value[`group${groupLetter}`]?.[scheduleKey]
       if (!groupScheduleData || !Array.isArray(groupScheduleData)) {
         continue;
