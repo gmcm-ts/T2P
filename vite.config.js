@@ -9,5 +9,5 @@ export default defineConfig({
     outDir: 'dist',
     copyPublicDir: true
   },
-  publicDir: false
+  publicDir: 'public'
 })

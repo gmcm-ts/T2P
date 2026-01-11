@@ -5,14 +5,19 @@
         <span class="icon">🏥</span>
         {{ title }}
       </h3>
-      <div class="results-content" v-html="result"></div>
+      <ul class="results-content">
+        <li v-for="item in result" :key="item.site">
+          <strong>{{ item.site }}:</strong><br>
+          {{ item.students }}
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script setup>
 const props = defineProps({
-  result: String,
+  result: Array,
   title: String
 })
 </script>
@@ -51,13 +56,13 @@ const props = defineProps({
   letter-spacing: 1px;
 }
 
-.results-content :deep(ul) {
+.results-content {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.results-content :deep(li) {
+.results-content li {
   margin-bottom: 12px;
   padding: 12px;
   background: var(--bg-hover);
@@ -65,11 +70,11 @@ const props = defineProps({
   border: 1px solid var(--border);
 }
 
-.results-content :deep(li:last-child) {
+.results-content li:last-child {
   margin-bottom: 0;
 }
 
-.results-content :deep(strong) {
+.results-content strong {
   color: var(--text);
   font-weight: 500;
   font-size: 13px;

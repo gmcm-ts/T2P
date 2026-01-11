@@ -137,7 +137,7 @@ onMounted(async () => {
         }))
     }
     
-    if (appData.value.unifiedSites?.unifiedSites) {
+    if (appData.value.unifiedSites?.unifiedSites && Array.isArray(appData.value.unifiedSites.unifiedSites)) {
       sites.value = appData.value.unifiedSites.unifiedSites.map(site => site.name)
     }
     
@@ -152,7 +152,7 @@ onMounted(async () => {
       if (savedFacultyValue) {
         await nextTick() // Wait for mode change to propagate
         searchQuery.value = savedFacultyValue
-        setTimeout(() => handleSearch(), 100)
+        await nextTick(() => handleSearch())
       }
     } else {
       currentMode.value = 'student'

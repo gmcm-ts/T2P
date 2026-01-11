@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+import { nextTick } from 'vue'
 
 const appData = ref({})
 const PIVOT_DATE = new Date('2025-07-21T00:00:00Z')
@@ -174,31 +175,24 @@ export function useScheduleData() {
       throw new Error('No students found for selected date')
     }
 
-    return `<ul>${
-      Object.entries(postingsBySite).map(([site, rolls]) => 
-        `<li><strong>${site}:</strong><br>${rolls.join(', ')}</li>`
-      ).join('')
-    }</ul>`
+    return Object.entries(postingsBySite).map(([site, rolls]) => ({
+      site,
+      students: rolls.join(', ')
+    }))
   }
 
   const lookupUnifiedSite = async (siteName, selectedDate) => {
-    console.log(`[lookupUnifiedSite] Starting lookup for site: "${siteName}"`);
-    
     if (!appData.value.unifiedSites?.unifiedSites) {
-      console.error('[lookupUnifiedSite] Unified sites data not loaded');
       throw new Error('Unified sites data not loaded')
     }
     
     const unifiedSite = appData.value.unifiedSites.unifiedSites.find(s => s.name === siteName)
-    console.log(`[lookupUnifiedSite] Found unified site:`, unifiedSite);
     
     if (!unifiedSite) {
-      console.error(`[lookupUnifiedSite] Site "${siteName}" not found`);
       throw new Error(`Unified site "${siteName}" not found`)
     }
     
     if (!unifiedSite.postings || !Array.isArray(unifiedSite.postings)) {
-      console.error(`[lookupUnifiedSite] Site "${siteName}" has invalid postings:`, unifiedSite.postings);
       throw new Error(`Unified site "${siteName}" has no valid postings configuration`)
     }
 
@@ -206,41 +200,33 @@ export function useScheduleData() {
     const scheduleKey = isOldSchedule ? 'oldSchedule' : 'newSchedule'
     const groupData = isOldSchedule ? appData.value.oldGroups : appData.value.groups
     const selectedDateISO = selectedDate.toISOString().split('T')[0]
-    console.log(`[lookupUnifiedSite] Using schedule: ${scheduleKey}, date: ${selectedDateISO}`);
 
     const studentsByPosting = {}
     const contributingCodes = unifiedSite.postings.map(p => p.code)
-    console.log(`[lookupUnifiedSite] Contributing codes:`, contributingCodes);
 
-    ['A', 'B', 'C', 'D'].forEach(groupLetter => {
+    for (const groupLetter of ['A', 'B', 'C', 'D']) {
       const groupScheduleData = appData.value[`group${groupLetter}`]?.[scheduleKey]
-      if (!groupScheduleData) {
-        console.log(`[lookupUnifiedSite] No schedule data for group ${groupLetter}`);
-        return;
+      if (!groupScheduleData || !Array.isArray(groupScheduleData)) {
+        continue;
       }
 
       const weekSchedule = groupScheduleData.find(w =>
         selectedDateISO >= w.startDate && selectedDateISO <= w.endDate
       )
 
-      if (weekSchedule && weekSchedule.postings) {
-        console.log(`[lookupUnifiedSite] Processing group ${groupLetter} postings:`, Object.keys(weekSchedule.postings));
-        
+      if (weekSchedule && weekSchedule.postings && typeof weekSchedule.postings === 'object') {
         for (const [groupCode, postingCode] of Object.entries(weekSchedule.postings)) {
           const canonicalCode = getCanonicalPostingCode(postingCode)
 
           if (contributingCodes.includes(canonicalCode)) {
-            console.log(`[lookupUnifiedSite] Found matching code ${canonicalCode} for group ${groupCode}`);
-            
             const members = groupData?.[groupCode]
-            if (!members || members.length === 0) {
-              console.log(`[lookupUnifiedSite] No members for group ${groupCode}`);
+            
+            if (!members || !Array.isArray(members) || members.length === 0) {
               continue;
             }
 
             const rule = unifiedSite.postings.find(p => p.code === canonicalCode)
             if (!rule) {
-              console.log(`[lookupUnifiedSite] No rule found for code ${canonicalCode}`);
               continue;
             }
 
@@ -253,18 +239,14 @@ export function useScheduleData() {
             members.forEach(student => studentsByPosting[canonicalCode].members.add(student))
           }
         }
-      } else {
-        console.log(`[lookupUnifiedSite] No week schedule found for group ${groupLetter}`);
       }
-    })
-
-    console.log(`[lookupUnifiedSite] Final students by posting:`, studentsByPosting);
+    }
     
     if (Object.keys(studentsByPosting).length === 0) {
       throw new Error('No students found for this site on the selected date.')
     }
 
-    let htmlOutput = `<ul>`
+    const results = []
     const sortedPostingCodes = Object.keys(studentsByPosting).sort()
 
     for (const code of sortedPostingCodes) {
@@ -277,21 +259,19 @@ export function useScheduleData() {
       })
 
       if (sortedMembers.length > 0) {
-        let postingHtml
+        let studentsText
         if (rule.count === "all" || rule.count >= sortedMembers.length) {
-          postingHtml = `<strong>${code}:</strong> ${sortedMembers.join(', ')}`
+          studentsText = sortedMembers.join(', ')
         } else {
           const count = rule.count
           const countText = { 1: 'One', 2: 'Two', 3: 'Three' }[count] || count
           const plural = count > 1 ? 's' : ''
-          postingHtml = `<strong>${code}:</strong> ${countText} intern${plural} from [${sortedMembers.join(', ')}]`
+          studentsText = `${countText} intern${plural} from [${sortedMembers.join(', ')}]`
         }
-        htmlOutput += `<li>${postingHtml}</li>`
+        results.push({ site: code, students: studentsText })
       }
     }
-    htmlOutput += `</ul>`
-    console.log(`[lookupUnifiedSite] Final HTML output:`, htmlOutput);
-    return htmlOutput
+    return results
   }
 
   return {

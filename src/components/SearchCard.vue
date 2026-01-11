@@ -165,11 +165,12 @@ watch(() => props.query, (newQuery) => {
   if (props.mode === 'student') {
     localQuery.value = newQuery || ''
   } else if (props.mode === 'faculty' && newQuery) {
-    const savedFacultyType = localStorage.getItem('lastSelectedFacultyType')
-    if (savedFacultyType === 'department') {
+    // Check if it's a department or site based on the data
+    const isDepartment = departments.value.some(d => d.value === newQuery || d.name === newQuery)
+    if (isDepartment) {
       departmentValue.value = newQuery
       siteValue.value = ''
-    } else if (savedFacultyType === 'site') {
+    } else {
       siteValue.value = newQuery
       departmentValue.value = ''
     }
@@ -211,38 +212,24 @@ const handleSearch = () => {
 
 const handleDepartmentChange = (event) => {
   siteValue.value = '' // Reset the other dropdown
-  const selectedValue = event.target.value
-  if (!selectedValue) {
-    emit('clear')
-    return
-  }
-  
-  // Find the department by matching the selected value (department name)
-  const selectedDept = departments.value.find(d => d.value === selectedValue || d.name === selectedValue)
-  
-  if (selectedDept && selectedDept.code) {
-    // Store the department name as query but pass code for lookup
-    emit('update:query', selectedValue)
-    // Save faculty type for session restoration
-    localStorage.setItem('lastSelectedFacultyType', 'department')
-    localStorage.setItem('lastSelectedFacultyValue', selectedValue)
-    emit('search', { type: 'department', code: selectedDept.code })
+  const selectedValue = event.target.value;
+  emit('update:query', selectedValue);
+  if (selectedValue) {
+    emit('search');
+  } else {
+    emit('clear');
   }
 }
 
 const handleSiteChange = (event) => {
   departmentValue.value = '' // Reset the other dropdown
-  const selectedValue = event.target.value
-  if (!selectedValue) {
-    emit('clear')
-    return
+  const selectedValue = event.target.value;
+  emit('update:query', selectedValue);
+  if (selectedValue) {
+    emit('search');
+  } else {
+    emit('clear');
   }
-  
-  // Save faculty type for session restoration
-  localStorage.setItem('lastSelectedFacultyType', 'site')
-  localStorage.setItem('lastSelectedFacultyValue', selectedValue)
-  emit('update:query', selectedValue)
-  emit('search', { type: 'site', value: selectedValue })
 }
 
 watch(showDatePicker, async (show) => {
